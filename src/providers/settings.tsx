@@ -51,9 +51,6 @@ interface SettingsContextValue {
   consent: string | null;
   sexOptions: BasicItem[];
   ageRangeOptions: AgeOption[];
-  closeContactInfo: string;
-  closeContactAlert: string;
-  closeContactTodo: string;
   dpinText: string;
   tandcText: string;
   checkerThankYouText: CheckerThankYouText;
@@ -75,9 +72,6 @@ const defaultValue: SettingsContextValue = {
   },
   sexOptions: [],
   ageRangeOptions: [],
-  closeContactInfo: '',
-  closeContactAlert: '',
-  closeContactTodo: '',
   dpinText: '',
   tandcText: '',
   checkerThankYouText: {}
@@ -153,15 +147,6 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
         tc.fileLimitiOS = Number(apiSettings.fileLimitiOS);
       }
 
-      const closeContactInfo =
-        getDbText(apiSettings, 'closeContactInfo') ||
-        t('closeContactInfo:intro');
-      const closeContactAlert =
-        getDbText(apiSettings, 'closeContactAlert') || t('closeContact:intro');
-      const closeContactTodo =
-        getDbText(apiSettings, 'closeContactTodo') ||
-        t('closeContactInfo:todo');
-
       const dpinText =
         getDbText(apiSettings, 'dpinText') || t('dataProtectionPolicy:text');
 
@@ -187,9 +172,6 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
         traceConfiguration: tc,
         sexOptions: getSexOptions(t),
         ageRangeOptions: getAgeRangeOptions(t),
-        closeContactInfo,
-        closeContactAlert,
-        closeContactTodo,
         dpinText,
         tandcText,
         checkerThankYouText

@@ -9,7 +9,7 @@ import * as Haptics from 'expo-haptics';
 import {Spacing} from 'components/atoms/layout';
 import {Button} from 'components/atoms/button';
 
-import {baseStyles, inputStyle, colors, text} from 'theme';
+import {baseStyles, inputStyle, colors} from 'theme';
 
 import countryCodes from 'assets/country-codes';
 
@@ -139,11 +139,3 @@ export const PhoneNumberUs: FC<PhoneNumberUsProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  countryCode: {
-    flexDirection: 'row',
-    paddingTop: 12,
-    paddingBottom: 8
-  }
-});

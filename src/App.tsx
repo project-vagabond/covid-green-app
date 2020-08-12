@@ -260,27 +260,27 @@ function Navigation({
         <Stack.Screen
           name="closeContactInfo"
           component={CloseContactInfo}
-          options={{title: t('viewNames:closeContactInfo')}}
+          options={{title: t('closeContactInfo:title')}}
         />
         <Stack.Screen
           name="closeContact"
           component={CloseContact}
-          options={{title: t('viewNames:closeContact')}}
+          options={{title: t('closeContact:title')}}
         />
         <Stack.Screen
           name="closeContactRequiredAge"
           component={CloseContactRequiredAge}
-          options={{title: t('viewNames:closeContactRequiredAge')}}
+          options={{title: t('closeContact:requiredAge:title')}}
         />
         <Stack.Screen
           name="closeContactUnderAge"
           component={CloseContactUnderAge}
-          options={{title: t('viewNames:closeContactUnderAge')}}
+          options={{title: t('closeContact:underAge:title')}}
         />
         <Stack.Screen
           name="callBack"
           component={CallBack}
-          options={{title: t('viewNames:callBack')}}
+          options={{title: t('callBack:title')}}
         />
 
         <Stack.Screen

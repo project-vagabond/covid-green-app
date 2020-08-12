@@ -53,7 +53,6 @@ export const ContactTracingInformation = ({navigation, route}: Props) => {
 
   const handlePermissions = async () => {
     await askPermissions();
-    const opts = (route && route.params) || {};
     navigation.reset({
       index: 0,
       routes: [{name: 'main'}]

@@ -3,24 +3,26 @@ import {Text, StyleSheet} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
 
-import {DataProtectionLink} from './data-protection-policy';
-
-import {useApplication} from 'providers/context';
-import {useExposure} from 'providers/exposure';
 import {
   validateCode,
   uploadExposureKeys,
   ValidationResult
 } from 'services/api/exposures';
-import {AppIcons} from 'assets/icons';
-import {Button} from 'components/atoms/button';
-import {Card} from 'components/atoms/card';
-import {CodeInput} from 'components/molecules/code-input';
-import {colors, text, baseStyles} from 'theme';
-import {KeyboardScrollable} from 'components/templates/keyboard-scrollable';
-import {Markdown} from 'components/atoms/markdown';
+import {useApplication} from 'providers/context';
+import {useExposure} from 'providers/exposure';
+
 import {Spacing} from 'components/atoms/layout';
+import {Button} from 'components/atoms/button';
+import {CodeInput} from 'components/molecules/code-input';
+import {Markdown} from 'components/atoms/markdown';
 import {Toast} from 'components/atoms/toast';
+import {ResultCard} from 'components/molecules/result-card';
+import {KeyboardScrollable} from 'components/templates/keyboard-scrollable';
+
+import {colors, baseStyles} from 'theme';
+import {AppIcons} from 'assets/icons';
+
+import {DataProtectionLink} from './data-protection-policy';
 
 type UploadStatus =
   | 'initialising'
@@ -189,7 +191,7 @@ export const UploadKeys = ({navigation}) => {
 
   const renderUploadSuccess = () => (
     <ResultCard
-      statusMessage={t('uploadKeys:uploadSuccess:toast')}
+      messageTitle={t('uploadKeys:uploadSuccess:toast')}
       message={t('uploadKeys:uploadSuccess:thanks')}
       buttonType={'empty'}
       buttonText={t('uploadKeys:uploadSuccess:updates')}

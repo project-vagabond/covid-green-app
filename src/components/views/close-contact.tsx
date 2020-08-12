@@ -67,23 +67,3 @@ export const CloseContact: FC<any> = () => {
     </Scrollable>
   );
 };
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1
-  },
-  notice: {
-    ...text.default,
-    lineHeight: 21
-  },
-  card: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    alignSelf: 'center'
-  },
-  cardIcon: {
-    marginRight: 20
-  },
-  cardText: {}
-});
