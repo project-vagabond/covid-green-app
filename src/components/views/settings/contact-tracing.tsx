@@ -141,9 +141,9 @@ export const ContactTracingSettings = () => {
 
       <Separator />
 
-      <Text style={text.defaultBold}>{t('followUpCall:shortTitle')}</Text>
+      <Text style={text.defaultBold}>{t('callBack:shortTitle')}</Text>
       <Spacing s={12} />
-      <Markdown>{t('followUpCall:noteAlt')}</Markdown>
+      <Markdown>{t('callBack:noteAlt')}</Markdown>
       <Spacing s={12} />
       <PhoneNumber
         buttonLabel={t('common:confirmChanges')}

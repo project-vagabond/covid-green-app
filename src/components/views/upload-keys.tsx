@@ -187,28 +187,15 @@ export const UploadKeys = ({navigation}) => {
     );
   };
 
-  const renderUploadSuccess = () => {
-    return (
-      <Card padding={{v: 4}}>
-        <Spacing s={16} />
-        <Toast
-          color="rgba(0, 207, 104, 0.16)"
-          message={t('uploadKeys:uploadSuccess:toast')}
-          type="success"
-          icon={<AppIcons.Success width={24} height={24} color={colors.success} />}
-        />
-        <Text style={[text.default, styles.successText]}>
-          {t('uploadKeys:uploadSuccess:thanks')}
-        </Text>
-        <Button
-          type="empty"
-          onPress={() => navigation.navigate('main', {screen: 'dashboard'})}>
-          {t('uploadKeys:uploadSuccess:updates')}
-        </Button>
-        <Spacing s={16} />
-      </Card>
-    );
-  };
+  const renderUploadSuccess = () => (
+    <ResultCard
+      statusMessage={t('uploadKeys:uploadSuccess:toast')}
+      message={t('uploadKeys:uploadSuccess:thanks')}
+      buttonType={'empty'}
+      buttonText={t('uploadKeys:uploadSuccess:updates')}
+      onButtonPress={() => navigation.navigate('main', {screen: 'dashboard'})}
+    />
+  );
 
   return (
     <KeyboardScrollable heading={t('uploadKeys:title')}>

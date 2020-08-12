@@ -54,7 +54,10 @@ export const ContactTracingInformation = ({navigation, route}: Props) => {
   const handlePermissions = async () => {
     await askPermissions();
     const opts = (route && route.params) || {};
-    navigation.navigate('followUpCall', opts);
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'main'}]
+    });
   };
 
   const handleLater = () => {
