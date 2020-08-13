@@ -27,7 +27,7 @@ const markdownStyles = {
   }
 };
 
-export const CloseContact: FC<any> = () => {
+export const CloseContact: FC = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
   const {callBackIsQueued} = useCallBackStatus();

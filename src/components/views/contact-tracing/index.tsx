@@ -117,7 +117,7 @@ export const ContactTracing = ({navigation}) => {
           <Card
             onPress={() =>
               navigation.navigate(
-                !hasCloseContact ? 'closeContact' : 'closeContactInfo'
+                hasCloseContact ? 'closeContact' : 'closeContactInfo'
               )
             }
             padding={{r: 4}}>

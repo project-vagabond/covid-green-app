@@ -4,7 +4,7 @@ import {useTranslation} from 'react-i18next';
 import {Markdown} from 'components/atoms/markdown';
 import {Scrollable} from 'components/templates/scrollable';
 
-export const CloseContactInfo: FC<any> = () => {
+export const CloseContactInfo: FC = () => {
   const {t} = useTranslation();
 
   return (

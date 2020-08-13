@@ -49,10 +49,10 @@ import {SymptomChecker} from 'components/views/symptom-checker';
 import {SymptomsHistory} from 'components/views/symptoms-history';
 import {ContactTracing} from 'components/views/contact-tracing';
 import {CountyBreakdown} from 'components/views/county-breakdown';
-import {CloseContactInfo} from './components/views/close-contact-info';
+import {CloseContactInfo} from 'components/views/close-contact-info';
 import {CloseContact} from 'components/views/close-contact';
-import {CloseContactRequiredAge} from './components/views/close-contact-required-age';
-import {CloseContactUnderAge} from './components/views/close-contact-under-age';
+import {CloseContactRequiredAge} from 'components/views/close-contact-required-age';
+import {CloseContactUnderAge} from 'components/views/close-contact-under-age';
 import {CallBack} from 'components/views/call-back';
 
 import {UploadKeys} from 'components/views/upload-keys';

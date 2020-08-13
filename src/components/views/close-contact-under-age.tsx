@@ -25,7 +25,7 @@ const markdownStyles = {
   }
 };
 
-export const CloseContactUnderAge: FC<any> = () => {
+export const CloseContactUnderAge: FC = () => {
   const {t} = useTranslation();
   const navigation = useNavigation();
 
