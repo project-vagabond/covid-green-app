@@ -23,8 +23,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Setup Yarn Cache
+        uses: bahmutov/npm-install@v1
+
       - name: Yarn Install
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Copy the Default Environment
         run: cp .env.sample .env
