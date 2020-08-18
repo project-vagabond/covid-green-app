@@ -23,4 +23,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - run: npm install yarn
+      - name: Yarn Install
+        run: yarn install
+
+      - name: Copy the Default Environment
+        run: cp .env.sample .env
+
+      - name: Install CocoaPods Dependencies
+        run: cd ios && pod install
+
+      - name: iOS Build
+        run: cd ios && cp .env.default.sample .env.default && fastlane beta
+
