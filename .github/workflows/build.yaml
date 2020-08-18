@@ -1,0 +1,25 @@
+name: Build / Test
+on:
+  push:
+    branches:
+      test-actions
+    #pull_request:
+
+jobs:
+  run-tests:
+    name: Run All Tests
+    runs-on: macos-latest 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [ 12.x ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Running tests with node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm install yarn
