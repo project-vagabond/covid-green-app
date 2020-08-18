@@ -24,7 +24,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Setup Yarn Cache
-        uses: bahmutov/npm-install@v1
+        uses: bahmutov/npm-install@v1.4.3
         with:
           useYarn: true
           usePackageLock: true
