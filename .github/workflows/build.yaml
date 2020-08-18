@@ -34,6 +34,13 @@ jobs:
       - name: Copy the Default Environment
         run: cp .env.sample .env
 
+			- uses: actions/cache@v1
+				with:
+					path: ios/Pods
+					key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+					restore-keys: |
+						${{ runner.os }}-pods-
+
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 
