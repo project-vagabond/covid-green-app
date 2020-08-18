@@ -26,8 +26,7 @@ jobs:
       - name: Setup Yarn Cache
         uses: bahmutov/npm-install@v1.4.3
         with:
-          useYarn: true
-          usePackageLock: true
+          useLockFile: true
 
       - name: Yarn Install
         run: yarn install --frozen-lockfile
