@@ -18,21 +18,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-#      - name: Generate .env file
-#        uses: cuchi/jinja2-action@v1.2.0
-#        with:
-#          template: .env.j2
-#          output_file: .env
-#          strict: true
-#          variables: |
-#            api_host=${{ secrets.API_HOST }}
-#            safetynet_key=${{ secrets.SAFETYNET_KEY }}
-
       - name: Generate .env file
-        run: |
-          python3 -c "open('.env','w').write(open('.env.template').read() % {'api_host': '${{ secrets.API_HOST }}', 'safetynet_key': '${{ secrets.SAFETYNET_KEY }}'})"
+        uses: project-vagabond/template-action@master
+        with:
+          template: .env.template
+          output: .env
+          vars:
+            API_HOST: "${{ secrets.API_HOST }}"
+            SAFETYNET_KEY: "${{ secrets.SAFETYNET_KEY }}"
 
       - run: cat .env
+
+        #  run: |
+        #  python3 -c "open('.env','w').write(open('.env.template').read() % {'api_host': '${{ secrets.API_HOST }}', 'safetynet_key': '${{ secrets.SAFETYNET_KEY }}'})"
 
 #      - name: Running tests with node ${{ matrix.node-version }}
 #        uses: actions/setup-node@v1
