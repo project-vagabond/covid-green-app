@@ -18,33 +18,45 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Running tests with node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+			- name: Setup nginx
+				uses: cuchi/jinja2-action@v1.2.0
+				with:
+					template: .env.j2
+					output_file: .env
+					strict: true
+					variables: |
+						api_host=${{ secrets.API_HOST }}
+						safetynet_key=${{ secrets.SAFETYNET_KEY }}
 
-      - name: Setup Yarn Cache
-        uses: bahmutov/npm-install@v1.4.3
-        with:
-          useLockFile: true
+			- run: cat .env
 
-      - name: Yarn Install
-        run: yarn install --frozen-lockfile
-
-      - name: Copy the Default Environment
-        run: cp .env.sample .env
-
-      - name: Setup CocoaPods Cache
-        uses: actions/cache@v1
-        with:
-          path: ios/Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-
-      - name: Install CocoaPods Dependencies
-        run: cd ios && pod install
-
-      - name: iOS Build
-        run: cd ios && cp .env.default.sample .env.default && fastlane beta
-
+#      - name: Running tests with node ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#
+#      - name: Setup Yarn Cache
+#        uses: bahmutov/npm-install@v1.4.3
+#        with:
+#          useLockFile: true
+#
+#      - name: Yarn Install
+#        run: yarn install --frozen-lockfile
+#
+#      - name: Copy the Default Environment
+#        run: cp .env.sample .env
+#
+#      - name: Setup CocoaPods Cache
+#        uses: actions/cache@v1
+#        with:
+#          path: ios/Pods
+#          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-pods-
+#
+#      - name: Install CocoaPods Dependencies
+#        run: cd ios && pod install
+#
+#      - name: iOS Build
+#        run: cd ios && cp .env.default.sample .env.default && fastlane beta
+#
