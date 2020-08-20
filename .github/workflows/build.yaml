@@ -23,9 +23,11 @@ jobs:
         with:
           template: .env.template
           output: .env
-          vars:
-            API_HOST: "${{ secrets.API_HOST }}"
-            SAFETYNET_KEY: "${{ secrets.SAFETYNET_KEY }}"
+          vars: |
+            {
+              "API_HOST": "${{ secrets.API_HOST }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
+            }
 
       - run: cat .env
 
