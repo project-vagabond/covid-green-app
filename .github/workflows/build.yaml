@@ -18,17 +18,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-			- name: Setup nginx
-				uses: cuchi/jinja2-action@v1.2.0
-				with:
-					template: .env.j2
-					output_file: .env
-					strict: true
-					variables: |
-						api_host=${{ secrets.API_HOST }}
-						safetynet_key=${{ secrets.SAFETYNET_KEY }}
+      - name: Setup nginx
+        uses: cuchi/jinja2-action@v1.2.0
+        with:
+          template: .env.j2
+          output_file: .env
+          strict: true
+          variables: |
+            api_host=${{ secrets.API_HOST }}
+            safetynet_key=${{ secrets.SAFETYNET_KEY }}
 
-			- run: cat .env
+      - run: cat .env
 
 #      - name: Running tests with node ${{ matrix.node-version }}
 #        uses: actions/setup-node@v1
