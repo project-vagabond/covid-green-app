@@ -30,7 +30,7 @@ jobs:
             }
 
       - name: Generate iOS AuthKey
-        run: echo "${{ secrets.IOS_AUTH_KEY }}" > "ios/AuthKey_${{ secrets.IOS_AUTH_KEY_ID }}.j8"
+        run: echo "${{ secrets.IOS_AUTH_KEY }}" > "ios/AuthKey_${{ secrets.IOS_AUTH_KEY_ID }}.p8"
 
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
@@ -58,8 +58,8 @@ jobs:
 
       - run: cat ios/firebase/development/GoogleService-Info.plist
 
-        #  run: |
-        #  python3 -c "open('.env','w').write(open('.env.template').read() % {'api_host': '${{ secrets.API_HOST }}', 'safetynet_key': '${{ secrets.SAFETYNET_KEY }}'})"
+
+
 
 #      - name: Running tests with node ${{ matrix.node-version }}
 #        uses: actions/setup-node@v1
@@ -74,9 +74,6 @@ jobs:
 #      - name: Yarn Install
 #        run: yarn install --frozen-lockfile
 #
-#      - name: Copy the Default Environment
-#        run: cp .env.sample .env
-#
 #      - name: Setup CocoaPods Cache
 #        uses: actions/cache@v1
 #        with:
@@ -89,5 +86,8 @@ jobs:
 #        run: cd ios && pod install
 #
 #      - name: iOS Build
-#        run: cd ios && cp .env.default.sample .env.default && fastlane beta
+#        run: cd ios && fastlane internal
+#
+#      - name: Android Build
+#        run: cd android && fastlane internal
 #
