@@ -41,22 +41,22 @@ jobs:
           template: .templates/ios/firebase/development/GoogleService-Info.plist.template
           output: ios/firebase/development/GoogleService-Info.plist
           vars: |
-						{
-							"IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
-							"IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
-							"IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
-							"ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
-							"ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
-							"GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
-							"BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
-							"PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
-							"STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
-							"IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
-							"ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
-							"DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
-						}
+            {
+              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
+              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
+              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
+              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
+              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
+              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
+              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
+              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
+              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
+              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
+              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
+              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
+            }
 
-			- run: cat ios/firebase/development/GoogleService-Info.plist
+      - run: cat ios/firebase/development/GoogleService-Info.plist
 
         #  run: |
         #  python3 -c "open('.env','w').write(open('.env.template').read() % {'api_host': '${{ secrets.API_HOST }}', 'safetynet_key': '${{ secrets.SAFETYNET_KEY }}'})"
