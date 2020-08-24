@@ -1,0 +1,75 @@
+name: Build / Test
+on:
+  push:
+    branches:
+      test-actions-mg
+    #pull_request:
+
+
+jobs:
+  run-tests:
+    name: Run All Tests
+    runs-on: macos-latest 
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [ 14.x ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkout tools repo
+        uses: actions/checkout@v2
+        with:
+          repository: project-vagabond/app-secrets
+          path: app-secrets
+
+
+	  - name: Link Secrets
+         run: |
+           cp app-secrets/android/android-api-key.json ./android
+           cp app-secrets/android/upload-keystore.jks ./android
+           cp app-secrets/android/app/src/release/google-services.json ./android/app/src/release
+           cp app-secrets/android/app/src/debug/google-services.json ./android/app/src/debug
+           cp app-secrets/android/env.default.mg ./android/.env.default
+           cp app-secrets/ios/env.default.mg ./ios/.env.default
+           cp app-secrets/.env .
+
+      - name: Running tests with node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+#
+      - name: Setup Yarn Cache
+        uses: bahmutov/npm-install@v1.4.3
+        with:
+          useLockFile: true
+#
+      - name: Yarn Install
+        run: yarn install --frozen-lockfile
+#
+      - name: Setup CocoaPods Cache
+        uses: actions/cache@v1
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Setup Ruby 
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
+
+      - name: Bundler and Fastlane
+         run: bundler install fastlane
+#
+      - name: Install CocoaPods Dependencies
+        run: cd ios && pod install
+#
+      - name: iOS Build
+        run: cd ios && fastlane internal
+#
+      - name: Android Build
+        run: cd android && fastlane internal
+#
