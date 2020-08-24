@@ -61,7 +61,7 @@ jobs:
           ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
 
       - name: Bundler and Fastlane
-        run: bundler install fastlane
+        run: gem install fastlane
 #
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
