@@ -35,7 +35,7 @@ jobs:
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
-      - name: Generate iOS proximity config DEV
+      - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
         with:
           template: .templates/ios/firebase/development/GoogleService-Info.plist.template
@@ -56,7 +56,7 @@ jobs:
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
             }
 
-      - name: Generate iOS proximity config PROD
+      - name: Generate iOS firebase config PROD
         uses: project-vagabond/template-action@v1
         with:
           template: .templates/ios/firebase/production/GoogleService-Info.plist.template
@@ -77,7 +77,7 @@ jobs:
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
             }
 
-      - name: Generate Android proximity config DEV
+      - name: Generate Android firebase config DEV
         uses: project-vagabond/template-action@v1
         with:
           template: .templates/android/app/src/debug/google-services.json.template
@@ -98,7 +98,7 @@ jobs:
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
             }
 
-      - name: Generate iOS proximity config PROD
+      - name: Generate iOS firebase config PROD
         uses: project-vagabond/template-action@v1
         with:
           template: .templates/android/app/src/release/google-services.json.template
@@ -121,6 +121,27 @@ jobs:
       - run: cat ios/firebase/development/GoogleService-Info.plist
 
 
+      - name: Generate iOS env.default
+        uses: project-vagabond/template-action@v1
+        with:
+          template: .templates/android/env.default.template
+          output: android/.env.default
+          vars: |
+            {
+              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
+              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
+              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
+              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
+              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
+              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
+              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
+              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
+              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
+              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
+              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
+              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
+            }
+      - run: cat ios/firebase/development/GoogleService-Info.plist
 
 
 #      - name: Running tests with node ${{ matrix.node-version }}
