@@ -24,9 +24,8 @@ jobs:
           repository: project-vagabond/app-secrets
           path: app-secrets
 
-
-	  - name: Link Secrets
-         run: |
+      - name: Link Secrets
+        run: |
            cp app-secrets/android/android-api-key.json ./android
            cp app-secrets/android/upload-keystore.jks ./android
            cp app-secrets/android/app/src/release/google-services.json ./android/app/src/release
@@ -62,7 +61,7 @@ jobs:
           ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
 
       - name: Bundler and Fastlane
-         run: bundler install fastlane
+        run: bundler install fastlane
 #
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
