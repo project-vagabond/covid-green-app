@@ -205,12 +205,15 @@ jobs:
         run: cd ios && pod install
 
       - name: Printenv
-        run: printenv
+        run: printenv && npx react-native info
+
+      - name: Android Jetify
+        run: npx jetify
 #
       - name: Android Build
-        run: cd android && fastlane internal
+        run: cd android && . .env.default && fastlane internal
 
       - name: iOS Build
-        run: cd ios && fastlane internal
+        run: cd ios && . .env.default && fastlane internal
 #
 #
