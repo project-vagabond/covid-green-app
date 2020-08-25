@@ -37,19 +37,11 @@ jobs:
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
       - name: Generate Android API Key file
-        run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d > "android/android-api-key.json"
+        run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d -o "android/android-api-key.json"
 
       - name: Generate Android Upload Keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d > "android/upload-keystore.jks"        
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"        
 
-      - name: Debug
-        run: |
-          pwd
-          ls -a
-          ls -a android
-          ls -a ios
-          exit 1
-          
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
@@ -166,6 +158,10 @@ jobs:
               "API_HOST": "${{ secrets.API_HOST }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
             }
+
+
+      - name: debug
+        run: . ./android/.env.default && echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH" && ls -lah $ANDROID_KEYSTORE_PATH && exit 1
 
       - name: Running tests with node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
