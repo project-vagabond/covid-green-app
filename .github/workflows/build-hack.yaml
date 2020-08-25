@@ -40,7 +40,16 @@ jobs:
         run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d > "android/android-api-key.json"
 
       - name: Generate Android Upload Keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d > "android/upload-keystore.jks"
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d > "android/upload-keystore.jks"        
+
+      - name: Debug
+        run: |
+          pwd
+          ls -a
+          ls -a android
+          ls -a ios
+          exit 1
+          
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
