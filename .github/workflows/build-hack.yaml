@@ -182,9 +182,6 @@ jobs:
         with:
           useLockFile: false
 
-#      - name: Yarn Install
-#        run: yarn install
-#
       - name: Setup CocoaPods Cache
         uses: actions/cache@v1
         with:
@@ -204,9 +201,10 @@ jobs:
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 #
+      - name: Android Build
+        run: cd android && fastlane internal
+
       - name: iOS Build
         run: cd ios && fastlane internal
 #
-      - name: Android Build
-        run: cd android && fastlane internal
 #
