@@ -160,18 +160,6 @@ jobs:
             }
 
 
-      - name: debug
-        run: |
-          . ./android/.env.default
-          echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH"
-          ls -lah $ANDROID_KEYSTORE_PATH
-          echo ${{ secrets.ANDROID_UPLOAD_KEYSTORE }} | base64
-          echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o $ANDROID_KEYSTORE_PATH        
-          ls -lah $ANDROID_KEYSTORE_PATH
-          file $ANDROID_KEYSTORE_PATH
-          head $ANDROID_KEYSTORE_PATH | base64
-          exit 1
-
       - name: Running tests with node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
