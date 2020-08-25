@@ -152,8 +152,8 @@ jobs:
               "GITHUB_WORKSPACE": "${{ github.workspace }}",
               "API_HOST": "${{ secrets.API_HOST }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
-              "ANDROD_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
-              "ANDROD_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
+              "ANDROID_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
+              "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
               "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
             }
 
