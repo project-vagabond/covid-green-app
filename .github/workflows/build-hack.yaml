@@ -7,32 +7,18 @@ on:
 
 
 jobs:
-  build-it:
-    name: Build and Push to Fastlane
+  setup-env:
+    name: Setup environment
     runs-on: macos-latest 
     strategy:
       fail-fast: false
       matrix:
         node-version: [ 14.x ]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-#      - name: Checkout tools repo
-#        uses: actions/checkout@v2
-#        with:
-#          repository: project-vagabond/app-secrets
-#          path: app-secrets
-#
-#      - name: Link Secrets
-#        run: |
-#           cp app-secrets/android/android-api-key.json ./android
-#           cp app-secrets/android/upload-keystore.jks ./android
-#           cp app-secrets/android/app/src/release/google-services.json ./android/app/src/release
-#           cp app-secrets/android/app/src/debug/google-services.json ./android/app/src/debug
-#           cp app-secrets/android/env.default.mg ./android/.env.default
-#           cp app-secrets/ios/env.default.mg ./ios/.env.default
-#           cp app-secrets/.env .
       - name: Generate .env file
         uses: project-vagabond/template-action@v1
         with:
@@ -51,10 +37,10 @@ jobs:
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
       - name: Generate Android API Key file
-        run: echo "${{ secrets.ANDROID_API_KEY }}" > "android/android-api-key.json"
+        run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d > "android/android-api-key.json"
 
       - name: Generate Android Upload Keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" > "android/upload-keystore.jks"
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d > "android/upload-keystore.jks"
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
@@ -200,10 +186,36 @@ jobs:
         with:
           ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
           bundler-cache: true
+  
+  build-ios:
+    name: iOS Build and Fastlane
+    runs-on: macos-latest 
+    needs: setup-env
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [ 14.x ]
 
+    steps:
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 
+      - name: Printenv
+        run: printenv && npx react-native info
+
+      - name: iOS Build
+        run: cd ios && . .env.default && fastlane internal
+
+  build-android:
+    name: Android Build and Fastlane
+    runs-on: macos-latest 
+    needs: setup-env
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [ 14.x ]
+
+    steps:
       - name: Printenv
         run: printenv && npx react-native info
 
@@ -213,7 +225,5 @@ jobs:
       - name: Android Build
         run: cd android && . .env.default && fastlane internal
 
-      - name: iOS Build
-        run: cd ios && . .env.default && fastlane internal
 #
 #
