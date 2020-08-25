@@ -165,6 +165,7 @@ jobs:
           . ./android/.env.default
           echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH"
           ls -lah $ANDROID_KEYSTORE_PATH
+          echo ${{ secrets.ANDROID_UPLOAD_KEYSTORE }} | base64
           echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o $ANDROID_KEYSTORE_PATH        
           ls -lah $ANDROID_KEYSTORE_PATH
           file $ANDROID_KEYSTORE_PATH
