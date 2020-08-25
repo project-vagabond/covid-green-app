@@ -154,7 +154,7 @@ jobs:
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
               "ANDROID_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
               "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
-              "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
+              "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}"
             }
 
       - name: Generate iOS env.default
