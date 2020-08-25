@@ -183,7 +183,7 @@ jobs:
           useLockFile: true
 #
       - name: Yarn Install
-        run: yarn install #--frozen-lockfile
+        run: yarn install
 #
       - name: Setup CocoaPods Cache
         uses: actions/cache@v1
@@ -195,12 +195,12 @@ jobs:
 
       - name: Setup Ruby 
         uses: actions/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: "${{ github.workspace }}/ios/Gemfile"
         with:
           ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
+          bundler-cache: true
 
-      - name: Bundler and Fastlane
-        run: cd ios && gem install bundler && bundle install 
-#
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 #
