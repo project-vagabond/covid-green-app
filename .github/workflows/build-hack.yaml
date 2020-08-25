@@ -50,6 +50,12 @@ jobs:
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
+      - name: Generate Android API Key file
+        run: echo "${{ secrets.ANDROID_API_KEY }}" > "android/android-api-key.json"
+
+      - name: Generate Android Upload Keystore
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" > "android/upload-keystore.jks"
+
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
         with:
@@ -143,20 +149,12 @@ jobs:
           output: android/.env.default
           vars: |
             {
+              "GITHUB_WORKSPACE": "${{ github.workspace }}",
               "API_HOST": "${{ secrets.API_HOST }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
+              "ANDROD_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
+              "ANDROD_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
+              "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
             }
 
       - name: Generate iOS env.default
@@ -166,20 +164,12 @@ jobs:
           output: ios/.env.default
           vars: |
             {
+              "APPLE_ID": "${{ secrets.APPLE_ID }}",
+              "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
+              "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
+              "TEAM_ID": "${{ secrets.TEAM_ID }}",
               "API_HOST": "${{ secrets.API_HOST }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
             }
 
       - name: Running tests with node ${{ matrix.node-version }}
