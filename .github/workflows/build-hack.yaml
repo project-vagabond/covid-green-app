@@ -165,6 +165,8 @@ jobs:
           . ./android/.env.default
           echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH"
           ls -lah $ANDROID_KEYSTORE_PATH
+          file $ANDROID_KEYSTORE_PATH
+          head $ANDROID_KEYSTORE_PATH | base64
           exit 1
 
       - name: Running tests with node ${{ matrix.node-version }}
