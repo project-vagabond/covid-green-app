@@ -161,7 +161,11 @@ jobs:
 
 
       - name: debug
-        run: . ./android/.env.default && echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH" && ls -lah $ANDROID_KEYSTORE_PATH && exit 1
+        run: |
+          . ./android/.env.default
+          echo "KEYSTORE_PATH: $ANDROID_KEYSTORE_PATH"
+          ls -lah $ANDROID_KEYSTORE_PATH
+          exit 1
 
       - name: Running tests with node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
