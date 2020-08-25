@@ -1,4 +1,4 @@
-name: Build / Test
+name: Build and Push to Fastlane
 on:
   push:
     branches:
@@ -7,8 +7,8 @@ on:
 
 
 jobs:
-  run-tests:
-    name: Run All Tests
+  build-it:
+    name: Build and Push to Fastlane
     runs-on: macos-latest 
     strategy:
       fail-fast: false
@@ -151,7 +151,7 @@ jobs:
             {
               "GITHUB_WORKSPACE": "${{ github.workspace }}",
               "API_HOST": "${{ secrets.API_HOST }}",
-              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
               "ANDROID_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
               "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
               "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
