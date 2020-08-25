@@ -179,11 +179,11 @@ jobs:
 #
       - name: Setup Yarn Cache
         uses: bahmutov/npm-install@v1.4.3
-#        with:
-#          useLockFile: true
-#
-      - name: Yarn Install
-        run: yarn install
+        with:
+          useLockFile: false
+
+#      - name: Yarn Install
+#        run: yarn install
 #
       - name: Setup CocoaPods Cache
         uses: actions/cache@v1
