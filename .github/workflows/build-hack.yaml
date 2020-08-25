@@ -183,7 +183,7 @@ jobs:
           useLockFile: true
 #
       - name: Yarn Install
-        run: yarn install --frozen-lockfile
+        run: yarn install #--frozen-lockfile
 #
       - name: Setup CocoaPods Cache
         uses: actions/cache@v1
