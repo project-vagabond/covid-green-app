@@ -186,36 +186,7 @@ jobs:
         with:
           ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
           bundler-cache: true
-  
-  build-ios:
-    name: iOS Build and Fastlane
-    runs-on: macos-latest 
-    needs: setup-env
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [ 14.x ]
 
-    steps:
-      - name: Install CocoaPods Dependencies
-        run: cd ios && pod install
-
-      - name: Printenv
-        run: printenv && npx react-native info
-
-      - name: iOS Build
-        run: cd ios && . .env.default && fastlane internal
-
-  build-android:
-    name: Android Build and Fastlane
-    runs-on: macos-latest 
-    needs: setup-env
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [ 14.x ]
-
-    steps:
       - name: Printenv
         run: printenv && npx react-native info
 
@@ -225,5 +196,9 @@ jobs:
       - name: Android Build
         run: cd android && . .env.default && fastlane internal
 
-#
-#
+      - name: Install CocoaPods Dependencies
+        run: cd ios && pod install
+
+      - name: iOS Build
+        run: cd ios && . .env.default && fastlane internal
+
