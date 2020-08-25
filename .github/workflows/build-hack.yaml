@@ -181,6 +181,7 @@ jobs:
         uses: bahmutov/npm-install@v1.4.3
         with:
           useLockFile: false
+        run: yarn install
 
       - name: Setup CocoaPods Cache
         uses: actions/cache@v1
@@ -200,6 +201,9 @@ jobs:
 
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
+
+      - name: Printenv
+        run: printenv
 #
       - name: Android Build
         run: cd android && fastlane internal
