@@ -216,8 +216,8 @@ jobs:
       - name: Android Build
         run: cd android && . .env.default && fastlane internal
 
-  setup-env:
-    name: iOS Build
+  android-build:
+    name: Android Build
     runs-on: macos-latest 
     strategy:
       fail-fast: false
@@ -238,7 +238,7 @@ jobs:
       - name: Android Build
         run: cd android && . .env.default && fastlane internal
 
-  setup-env:
+  ios-build:
     name: iOS Build
     runs-on: macos-latest 
     strategy:
