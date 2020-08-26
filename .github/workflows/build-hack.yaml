@@ -261,4 +261,7 @@ jobs:
         run: cd ios && pod install
 
       - name: iOS Build
+        run: cd ios && . .env.default && fastlane gha_setup
+
+      - name: iOS Build
         run: cd ios && . .env.default && fastlane beta
