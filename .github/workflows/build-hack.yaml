@@ -224,7 +224,8 @@ jobs:
               "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
               "TEAM_ID": "${{ secrets.TEAM_ID }}",
               "API_HOST": "${{ secrets.API_HOST }}",
-              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
+              "SIGNING_KEY_P12_PASSWORD": "${{ secrets.SIGNING_KEY_P12_PASSWORD }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"              
             }
 
 
