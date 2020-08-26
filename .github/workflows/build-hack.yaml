@@ -202,11 +202,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install and run xcodegen
-        run: |
-          brew install xcodegen
-          xcodegen generate
-
       - name: Generate .env file
         uses: project-vagabond/template-action@v1
         with:
