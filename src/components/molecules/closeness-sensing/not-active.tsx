@@ -25,16 +25,18 @@ export const NotActive: FC<NotActiveProps> = ({
   const {t} = useTranslation();
   const exposure = useExposure();
 
-  // ios
-  const gotoSettings = async () => {
+  const gotoPhoneSettings = async () => {
     try {
-      if (exposureOff) {
+      if (Platform.OS === 'ios') {
         Linking.openURL('app-settings:');
-      } else {
-        Linking.openURL('App-Prefs:');
+      } else if (Platform.OS === 'android') {
+        await IntentLauncher.startActivityAsync(
+          'com.google.android.gms.settings.EXPOSURE_NOTIFICATION_SETTINGS'
+        );
+        await exposure.supportsExposureApi();
       }
     } catch (e) {
-      console.log("Error opening app's settings (iOS)", e);
+      console.log("Error opening phone's settings", e);
     }
   };
 
@@ -66,12 +68,12 @@ export const NotActive: FC<NotActiveProps> = ({
     Platform.OS === 'ios'
       ? exposureOff
         ? bluetoothOff
-          ? 'message11'
-          : 'message10'
+          ? 'text11'
+          : 'text10'
         : bluetoothOff
-        ? 'message01'
-        : 'message00'
-      : 'message';
+        ? 'text01'
+        : 'text00'
+      : 'text';
 
   return (
     <Card padding={{h: 0, v: 0}}>
@@ -94,7 +96,9 @@ export const NotActive: FC<NotActiveProps> = ({
         <Spacing s={24} />
         <View style={sharedStyles.buttonsWrapper}>
           <Button
-            onPress={Platform.OS === 'ios' ? gotoSettings : enableExposures}>
+            onPress={
+              Platform.OS === 'ios' ? gotoPhoneSettings : enableExposures
+            }>
             {t(`closenessSensing:notActive:${Platform.OS}:ctaButton`)}
           </Button>
         </View>

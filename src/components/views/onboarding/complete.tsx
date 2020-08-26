@@ -19,7 +19,7 @@ import {ClosenessSensing} from 'components/molecules/closeness-sensing';
 export const Completion: FC<any> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
-  const {supported, canSupport, status, enabled} = useExposure();
+  const {supported, canSupport, status, enabled, isAuthorised} = useExposure();
 
   const gotoDashboard = () =>
     nav.reset({
@@ -38,7 +38,10 @@ export const Completion: FC<any> = () => {
       <ClosenessSensing.Supported />
     );
   } else {
-    if (status.state === StatusState.active && enabled) {
+    if (isAuthorised === AuthorisedStatus.blocked) {
+      statusKey = 'notEnabled';
+      closenessSensingStatusCard = <ClosenessSensing.NotEnabled />;
+    } else if (status.state === StatusState.active && enabled) {
       statusKey = 'active';
       closenessSensingStatusCard = <ClosenessSensing.Active share />;
     } else {
@@ -62,7 +65,7 @@ export const Completion: FC<any> = () => {
         <Button
           type={statusKey === 'active' ? 'default' : 'empty'}
           onPress={gotoDashboard}>
-          {t(`closenessSensing:${statusKey}:ctaButton`)}
+          {t(`closenessSensing:${statusKey}:next`)}
         </Button>
       </View>
     </Scrollable>

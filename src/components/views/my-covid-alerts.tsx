@@ -54,10 +54,12 @@ export const MyCovidAlerts = ({navigation}) => {
     );
     showCards = false;
   } else {
-    if (status.state === StatusState.active && enabled) {
-      exposureStatusCard = <ClosenessSensing.Active />;
-    } else if (isAuthorised === AuthorisedStatus.unknown) {
+    if (isAuthorised === AuthorisedStatus.unknown) {
+      exposureStatusCard = <ClosenessSensing.NotAuthorized />;
+    } else if (isAuthorised === AuthorisedStatus.blocked) {
       exposureStatusCard = <ClosenessSensing.NotEnabled />;
+    } else if (status.state === StatusState.active && enabled) {
+      exposureStatusCard = <ClosenessSensing.Active />;
     } else {
       const type = status.type || [];
       exposureStatusCard = (

@@ -500,12 +500,12 @@
       "text": "Thank you for doing your part to stop the spread of COVID-19.",
       "shareText": "Share this app with friends.\nHelp keep NY Safe.",
       "share": "Share",
-      "ctaButton": "Done"
+      "next": "Done"
     },
     "notSupported": {
       "title": "Closeness Sensing is not available",
       "text": "Unfortunately, your device doesn’t support Closeness Sensing, so you can't receive COVID Alerts. You can still use this app to log your health and view NY COVID data",
-      "ctaButton": "Continue"
+      "next": "Continue"
     },
     "supported": {
       "title": {
@@ -517,27 +517,32 @@
         "android": "To enable it, you must upgrade the latest version of the Google Play Services App."
       },
       "checkForUpgrade": "Check for upgrades",
-      "ctaButton": "Set it up later and continue"
+      "next": "Set it up later and continue"
+    },
+    "notAuthorised": {
+      "title": "Closeness Sensing is not setup",
+      "text": "[text explaining that we are going to ask for permissions (because they skipper)]",
+      "setup": "[Ask for permissions]"
     },
     "notEnabled": {
       "title": "Closeness Sensing is not enabled",
-      "text": "TBD",
-      "ctaButton": "TBD"
+      "text": "[text explaining that they need to go to app settings and enable ENS]",
+      "gotoSettings": "Go to app settings"
     },
     "notActive": {
       "title": "Closeness Sensing is not active",
       "ios": {
-        "message00": "You need to accept Exposure Notification Services in your settings",
-        "message10": "You need to accept Exposure Notification Services in your settings",
-        "message01": "Please enable Bluetooth in your phone settings.",
-        "message11": "You need to accept Exposure Notification Services and Bluetooth in your settings",
+        "text00": "You need to accept Exposure Notification Services in your settings",
+        "text10": "You need to accept Exposure Notification Services in your settings",
+        "text01": "Please enable Bluetooth in your phone settings.",
+        "text11": "You need to accept Exposure Notification Services and Bluetooth in your settings",
         "ctaButton": "Go to phone settings"
       },
       "android": {
-        "message": "You need to enable Exposure Notification Services to activate Closeness Sensing and COVID Alerts",
+        "text": "You need to enable Exposure Notification Services to activate Closeness Sensing and COVID Alerts",
         "ctaButton": "Enable"
       },
-      "ctaButton": "Continue"
+      "next": "Continue"
     }
   }
 }
