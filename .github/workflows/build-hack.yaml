@@ -194,28 +194,6 @@ jobs:
           name: workspace-archive
           path: .
 
-  setup-env:
-    name: Android Build
-    runs-on: macos-latest 
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [ 14.x ]
-
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: workspace-archive      
-
-      - name: Printenv
-        run: printenv && npx react-native info
-
-      - name: Android Jetify
-        run: npx jetify
-#
-      - name: Android Build
-        run: cd android && . .env.default && fastlane internal
-
   android-build:
     name: Android Build
     runs-on: macos-latest 
@@ -247,6 +225,10 @@ jobs:
         node-version: [ 14.x ]
 
     steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: workspace-archive      
+
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 
