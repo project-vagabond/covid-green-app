@@ -1,0 +1,47 @@
+import React, {FC} from 'react';
+import {View, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useTranslation} from 'react-i18next';
+
+import {Button} from 'components/atoms/button';
+import {Card} from 'components/atoms/card';
+import {Spacing} from 'components/atoms/layout';
+
+import {text} from 'theme';
+import {StateIcons} from 'assets/icons';
+
+import {styles as sharedStyles} from './styles';
+
+export const NotEnabled: FC = () => {
+  const {t} = useTranslation();
+  const nav = useNavigation();
+
+  // TODO: setup
+
+  return (
+    <Card padding={{h: 0, v: 0}}>
+      <View style={sharedStyles.cardImageWarning}>
+        <StateIcons.ErrorENS height={144} width={144} />
+      </View>
+      <Spacing s={12} />
+      <View style={sharedStyles.messageWrapper}>
+        <Text style={text.defaultBold}>
+          {t('closenessSensing:notEnabled:title')}
+        </Text>
+        <Spacing s={20} />
+        <Text style={text.default}>
+          {t('closenessSensing:notEnabled:text')}
+        </Text>
+        <Spacing s={24} />
+        <View style={sharedStyles.buttonsWrapper}>
+          <Button
+            onPress={() =>
+              nav.navigate('contactTracingInformation', {embedded: true})
+            }>
+            {t('closenessSensing:notEnabled:button')}
+          </Button>
+        </View>
+      </View>
+    </Card>
+  );
+};
