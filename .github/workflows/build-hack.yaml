@@ -159,7 +159,7 @@ jobs:
         run: |
           echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
           uuid=`grep UUID -A1 -a "ios/COVID_Proximity_Tracing.mobileprovision" | grep -io "[-A-F0-9]\{36\}"`
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp "ios/COVID_Proximity_Tracing.mobileprovision"  ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
           chmod a+rw ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
           echo "~/Library"
