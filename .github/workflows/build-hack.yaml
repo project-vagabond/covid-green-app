@@ -161,6 +161,7 @@ jobs:
           uuid=`grep UUID -A1 -a "ios/COVID_Proximity_Tracing.mobileprovision" | grep -io "[-A-F0-9]\{36\}"`
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
           cp "ios/COVID_Proximity_Tracing.mobileprovision"  ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          chmod a+rw ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
