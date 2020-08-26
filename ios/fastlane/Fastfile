@@ -18,7 +18,7 @@ default_platform(:ios)
 platform :ios do
   desc "Setup Github Actions Environment"
   lane :gha_setup do
-    keychain_password = SecureRandom.uuidkeychain_password = SecureRandom.uuid
+    keychain_password = SecureRandom.uuid
     create_keychain(
       name: "ios-build.keychain",
       password: keychain_password,

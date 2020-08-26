@@ -79,7 +79,6 @@ jobs:
               "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
             }
-      - run: cat ios/firebase/development/GoogleService-Info.plist
 
 
       - name: Generate Android env.default
