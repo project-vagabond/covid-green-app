@@ -155,8 +155,12 @@ jobs:
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
-      - name: Generate iOS mobile provisioning profile
-        run: echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
+      - name: Generate iOS mobile provisioning profile        
+        run: |
+          echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
+          uuid=`grep UUID -A1 -a "ios/COVID_Proximity_Tracing.mobileprovision" | grep -io "[-A-F0-9]\{36\}"`
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          cp "ios/COVID_Proximity_Tracing.mobileprovision"  ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
