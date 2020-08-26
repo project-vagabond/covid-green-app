@@ -30,60 +30,12 @@ jobs:
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
             }
 
-      - name: Generate iOS AuthKey
-        run: echo "${{ secrets.IOS_AUTH_KEY }}" > "ios/AuthKey_${{ secrets.IOS_AUTH_KEY_ID }}.p8"
-
-      - name: Generate iOS Signing Key
-        run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
-
       - name: Generate Android API Key file
         run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d -o "android/android-api-key.json"
 
       - name: Generate Android Upload Keystore
         run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"        
 
-
-      - name: Generate iOS firebase config DEV
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/ios/firebase/development/GoogleService-Info.plist.template
-          output: ios/firebase/development/GoogleService-Info.plist
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
-            }
-
-      - name: Generate iOS firebase config PROD
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/ios/firebase/production/GoogleService-Info.plist.template
-          output: ios/firebase/production/GoogleService-Info.plist
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
-            }
 
       - name: Generate Android firebase config DEV
         uses: project-vagabond/template-action@v1
@@ -106,7 +58,7 @@ jobs:
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
             }
 
-      - name: Generate iOS firebase config PROD
+      - name: Generate Android firebase config PROD
         uses: project-vagabond/template-action@v1
         with:
           template: .templates/android/app/src/release/google-services.json.template
@@ -143,22 +95,6 @@ jobs:
               "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
               "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}"
             }
-
-      - name: Generate iOS env.default
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/ios/env.default.template
-          output: ios/.env.default
-          vars: |
-            {
-              "APPLE_ID": "${{ secrets.APPLE_ID }}",
-              "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
-              "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
-              "TEAM_ID": "${{ secrets.TEAM_ID }}",
-              "API_HOST": "${{ secrets.API_HOST }}",
-              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
-            }
-
 
       - name: Running tests with node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
@@ -219,12 +155,8 @@ jobs:
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
-      - name: Generate Android API Key file
-        run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d -o "android/android-api-key.json"
-
-      - name: Generate Android Upload Keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"        
-
+      - name: Generate iOS mobile provisioning profile
+        run: echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
 
       - name: Generate iOS firebase config DEV
         uses: project-vagabond/template-action@v1
@@ -266,65 +198,6 @@ jobs:
               "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
               "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
-            }
-
-      - name: Generate Android firebase config DEV
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/android/app/src/debug/google-services.json.template
-          output: android/app/src/debug/google-services.json
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
-            }
-
-      - name: Generate iOS firebase config PROD
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/android/app/src/release/google-services.json.template
-          output: android/app/src/release/google-services.json
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
-            }
-      - run: cat ios/firebase/development/GoogleService-Info.plist
-
-
-      - name: Generate Android env.default
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/android/env.default.template
-          output: android/.env.default
-          vars: |
-            {
-              "GITHUB_WORKSPACE": "${{ github.workspace }}",
-              "API_HOST": "${{ secrets.API_HOST }}",
-              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
-              "ANDROID_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
-              "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
-              "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}"
             }
 
       - name: Generate iOS env.default
@@ -374,9 +247,6 @@ jobs:
 
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
-
-      - name: Fastlane Setup
-        run: cd ios && . .env.default && fastlane setup --verbose
 
       - name: iOS Build
         run: cd ios && . .env.default && fastlane beta
