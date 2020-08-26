@@ -162,6 +162,11 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
           cp "ios/COVID_Proximity_Tracing.mobileprovision"  ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
           chmod a+rw ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          echo "~/Library"
+          ls -la ~/Library
+          echo "~/Library/MobileDevice"
+          ls -la ~/Library/MobileDevice
+          echo "~/Library/MobileDevice/Provisioning Profiles/"
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
 
       - name: Generate iOS firebase config DEV
