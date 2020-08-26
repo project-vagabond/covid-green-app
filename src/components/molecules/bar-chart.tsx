@@ -7,7 +7,7 @@ import * as shape from 'd3-shape';
 
 import {text, colors} from 'theme';
 
-interface TrackerAreaChartProps {
+interface TrackerBarChartProps {
   title?: string;
   label?: string;
   hint?: string;
@@ -34,7 +34,7 @@ function formatLabel(value: number) {
   return value;
 }
 
-export const TrackerAreaChart: FC<TrackerAreaChartProps> = ({
+export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
   data,
   hint,
