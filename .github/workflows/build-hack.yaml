@@ -173,14 +173,6 @@ jobs:
       - name: Kick yarn
         run: yarn install
 
-      - name: Setup CocoaPods Cache
-        uses: actions/cache@v1
-        with:
-          path: ios/Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-
       - name: Setup Ruby 
         uses: actions/setup-ruby@v1
         env:
@@ -209,6 +201,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Install and run xcodegen
+        run: |
+          brew install xcodegen
+          xcodegen generate
 
       - name: Generate .env file
         uses: project-vagabond/template-action@v1
@@ -383,12 +380,8 @@ jobs:
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 
-      - name: iOS Build
-        run: cd ios && . .env.default && fastlane beta
-
-      - name: Install CocoaPods Dependencies
-        run: cd ios && pod install
+      - name: Fastlane Setup
+        run: cd ios && . .env.default && fastlane setup --verbose
 
       - name: iOS Build
         run: cd ios && . .env.default && fastlane beta
-
