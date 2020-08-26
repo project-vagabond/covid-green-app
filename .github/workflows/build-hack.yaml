@@ -218,6 +218,7 @@ jobs:
           output: ios/.env.default
           vars: |
             {
+              "GITHUB_WORKSPACE": "${{ github.workspace }}",
               "APPLE_ID": "${{ secrets.APPLE_ID }}",
               "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
               "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
