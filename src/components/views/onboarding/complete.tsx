@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {View} from 'react-native';
+import {View, Platform} from 'react-native';
 import {
   useExposure,
   StatusState,
@@ -38,23 +38,37 @@ export const Completion: FC<any> = () => {
       <ClosenessSensing.Supported />
     );
   } else {
-    if (isAuthorised === AuthorisedStatus.blocked) {
-      statusKey = 'notEnabled';
-      closenessSensingStatusCard = <ClosenessSensing.NotEnabled />;
-    } else if (status.state === StatusState.active && enabled) {
+    if (status.state === StatusState.active && enabled) {
       statusKey = 'active';
-      closenessSensingStatusCard = <ClosenessSensing.Active share />;
-    } else {
-      statusKey = 'notActive';
-      const type = status.type || [];
-      closenessSensingStatusCard = (
-        <ClosenessSensing.NotActive
-          exposureOff={type.indexOf(StatusType.exposure) !== -1}
-          bluetoothOff={type.indexOf(StatusType.bluetooth) !== -1}
-        />
-      );
+      closenessSensingStatusCard = <ClosenessSensing.Active />;
+    } else if (Platform.OS === 'android') {
+      statusKey = 'notAuthorized';
+      closenessSensingStatusCard = <ClosenessSensing.NotAuthorized />;
+    } else if (Platform.OS === 'ios') {
+      if (isAuthorised === AuthorisedStatus.unknown) {
+        statusKey = 'notAuthorized';
+        closenessSensingStatusCard = <ClosenessSensing.NotAuthorized />;
+      } else if (isAuthorised === AuthorisedStatus.blocked) {
+        statusKey = 'notEnabledIOS';
+        closenessSensingStatusCard = <ClosenessSensing.NotEnabledIOS />;
+      } else {
+        statusKey = 'notActiveIOS';
+        const type = status.type || [];
+        closenessSensingStatusCard = (
+          <ClosenessSensing.NotActiveIOS
+            exposureOff={type.indexOf(StatusType.exposure) !== -1}
+            bluetoothOff={type.indexOf(StatusType.bluetooth) !== -1}
+          />
+        );
+      }
     }
   }
+
+  console.log('---');
+  console.log('status', status);
+  console.log('enabled', enabled);
+  console.log('isAuthorised', isAuthorised);
+  console.log('---');
 
   return (
     <Scrollable>

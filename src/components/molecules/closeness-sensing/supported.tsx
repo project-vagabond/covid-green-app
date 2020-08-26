@@ -37,11 +37,11 @@ export const Supported: FC = () => {
       <Spacing s={12} />
       <View style={sharedStyles.messageWrapper}>
         <Text style={text.defaultBold}>
-          {t(`closenessSensing:supported:title:${Platform.OS}`)}
+          {t(`closenessSensing:supported:${Platform.OS}:title`)}
         </Text>
         <Spacing s={20} />
         <Text style={text.default}>
-          {t(`closenessSensing:supported:text:${Platform.OS}`)}
+          {t(`closenessSensing:supported:${Platform.OS}:text`)}
         </Text>
         <Spacing s={24} />
         <View style={sharedStyles.buttonsWrapper}>

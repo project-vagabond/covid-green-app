@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import {View, Text, Platform} from 'react-native';
-import {useExposure} from 'react-native-exposure-notification-service';
+import {View, Text, Linking} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {Button} from 'components/atoms/button';
@@ -12,13 +11,8 @@ import {StateIcons} from 'assets/icons';
 
 import {styles as sharedStyles} from './styles';
 
-export const NotAuthorized: FC = () => {
+export const NotEnabledIOS: FC = () => {
   const {t} = useTranslation();
-  const exposure = useExposure();
-
-  const onSetup = async () => {
-    await exposure.askPermissions();
-  };
 
   return (
     <Card padding={{h: 0, v: 0}}>
@@ -28,16 +22,16 @@ export const NotAuthorized: FC = () => {
       <Spacing s={12} />
       <View style={sharedStyles.messageWrapper}>
         <Text style={text.defaultBold}>
-          {t(`closenessSensing:notAuthorised:${Platform.OS}:title`)}
+          {t('closenessSensing:notEnabledIOS:title')}
         </Text>
         <Spacing s={20} />
         <Text style={text.default}>
-          {t(`closenessSensing:notAuthorised:${Platform.OS}:text`)}
+          {t('closenessSensing:notEnabledIOS:text')}
         </Text>
         <Spacing s={24} />
         <View style={sharedStyles.buttonsWrapper}>
-          <Button onPress={onSetup}>
-            {t(`closenessSensing:notAuthorised:${Platform.OS}:setup`)}
+          <Button onPress={() => Linking.openURL('app-settings:')}>
+            {t('closenessSensing:notEnabledIOS:gotoSettings')}
           </Button>
         </View>
       </View>
