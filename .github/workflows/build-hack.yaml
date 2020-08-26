@@ -197,6 +197,7 @@ jobs:
   android-build:
     name: Android Build
     runs-on: macos-latest 
+    needs: setup-env
     strategy:
       fail-fast: false
       matrix:
@@ -219,6 +220,7 @@ jobs:
   ios-build:
     name: iOS Build
     runs-on: macos-latest 
+    needs: setup-env
     strategy:
       fail-fast: false
       matrix:
