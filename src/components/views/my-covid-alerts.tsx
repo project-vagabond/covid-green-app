@@ -81,12 +81,6 @@ export const MyCovidAlerts = () => {
     }
   }
 
-  console.log('---');
-  console.log('status', status);
-  console.log('enabled', enabled);
-  console.log('isAuthorised', isAuthorised);
-  console.log('---');
-
   const hasCloseContact = exposure.contacts && exposure.contacts.length > 0;
 
   return (

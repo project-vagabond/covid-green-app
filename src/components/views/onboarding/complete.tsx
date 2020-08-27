@@ -4,22 +4,31 @@ import {
   useExposure,
   StatusState,
   AuthorisedStatus,
-  StatusType
+  StatusType,
+  PermissionStatus
 } from 'react-native-exposure-notification-service';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
 import {Button} from 'components/atoms/button';
 import {Spacing} from 'components/atoms/layout';
-import {Scrollable} from 'components/templates/scrollable';
-import {styles} from './styles';
-
 import {ClosenessSensing} from 'components/molecules/closeness-sensing';
+import {NotificationsDisabledCard} from 'components/molecules/notifications-disabled-card';
+import {Scrollable} from 'components/templates/scrollable';
+
+import {styles} from './styles';
 
 export const Completion: FC<any> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
-  const {supported, canSupport, status, enabled, isAuthorised} = useExposure();
+  const {
+    permissions,
+    supported,
+    canSupport,
+    status,
+    enabled,
+    isAuthorised
+  } = useExposure();
 
   const gotoDashboard = () =>
     nav.reset({
@@ -40,7 +49,12 @@ export const Completion: FC<any> = () => {
   } else {
     if (status.state === StatusState.active && enabled) {
       statusKey = 'active';
-      closenessSensingStatusCard = <ClosenessSensing.Active />;
+      closenessSensingStatusCard =
+        permissions.notifications.status !== PermissionStatus.Allowed ? (
+          <NotificationsDisabledCard />
+        ) : (
+          <ClosenessSensing.Active />
+        );
     } else if (Platform.OS === 'android') {
       statusKey = 'notAuthorized';
       closenessSensingStatusCard = <ClosenessSensing.NotAuthorized />;
@@ -63,12 +77,6 @@ export const Completion: FC<any> = () => {
       }
     }
   }
-
-  console.log('---');
-  console.log('status', status);
-  console.log('enabled', enabled);
-  console.log('isAuthorised', isAuthorised);
-  console.log('---');
 
   return (
     <Scrollable>
