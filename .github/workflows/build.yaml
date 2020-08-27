@@ -80,6 +80,8 @@ jobs:
               "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
             }
 
+      - run: cat android/app/src/release/google-services.json |base64
+
 
       - name: Generate Android env.default
         uses: project-vagabond/template-action@v1
@@ -114,7 +116,7 @@ jobs:
         env:
           BUNDLE_GEMFILE: "${{ github.workspace }}/ios/Gemfile"
         with:
-          ruby-version: '2.6' # Version range or exact version of a Ruby version to use, using semvers version range syntax.
+          ruby-version: '2.6'
           bundler-cache: true
 
       - name: Printenv
@@ -268,4 +270,7 @@ jobs:
         run: cd ios && . .env.default && fastlane gha_setup
 
       - name: iOS Build
+        env:
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
         run: cd ios && . .env.default && fastlane beta
