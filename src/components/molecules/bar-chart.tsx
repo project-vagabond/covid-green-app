@@ -1,11 +1,13 @@
 import React, {FC} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Path, Defs, LinearGradient, Stop} from 'react-native-svg';
-import {AreaChart, YAxis, Grid} from 'react-native-svg-charts';
-import {differenceInDays, format} from 'date-fns';
-import * as shape from 'd3-shape';
+import Svg, {Line} from 'react-native-svg';
+import {YAxis, XAxis} from 'react-native-svg-charts';
+import {useTranslation} from 'react-i18next';
+import {format, sub} from 'date-fns';
 
 import {text, colors} from 'theme';
+import {BarChartContent} from 'components/atoms/bar-chart-content';
+import {Spacing} from 'components/atoms/spacing';
 
 interface TrackerBarChartProps {
   title?: string;
@@ -13,12 +15,17 @@ interface TrackerBarChartProps {
   hint?: string;
   yesterday?: string;
   data: any;
+  days?: number;
   intervalsCount?: number;
-  gradientStart?: string;
-  gradientEnd?: string;
-  lineColor?: string;
+  backgroundColor?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
   quantityKey: string;
 }
+
+const rolling = 7;
+const legendLineSize = 24;
+const nbsp = ' ';
 
 function formatLabel(value: number) {
   if (value > 1000000) {
@@ -34,17 +41,40 @@ function formatLabel(value: number) {
   return value;
 }
 
+function trimData(chartData: any[], days: number) {
+  // REMOVE this is to get 30 values before the API is updated
+  while (chartData.length < days + rolling) {
+    chartData = [...chartData.map((d) => d * Math.random()), ...chartData];
+  }
+  if (chartData.length > days + rolling) {
+    chartData = chartData.slice(0, days + 1);
+  }
+  return chartData;
+}
+
+function trimAxisData(axisData: any[], days: number) {
+  const lastDate = axisData[axisData.length - 1];
+  return Array(days + 1)
+    .fill('')
+    .map((_, index) => {
+      return sub(new Date(lastDate), {days: days - index - 1});
+    });
+}
+
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
   data,
   hint,
   yesterday,
-  intervalsCount = 5,
-  gradientStart = colors.orange,
-  gradientEnd = colors.white,
-  lineColor = colors.orange,
+  days = 30,
+  intervalsCount = 6,
+  primaryColor,
+  backgroundColor,
+  secondaryColor,
   quantityKey
 }) => {
+  const {t} = useTranslation();
+
   if (!data) {
     return null;
   }
@@ -79,36 +109,38 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     });
   }
 
-  const totalDays = differenceInDays(
-    axisData[axisData.length - 1],
-    axisData[0]
-  );
+  chartData = trimData(chartData, days);
+  axisData = trimAxisData(axisData, days);
 
-  const interval = Math.floor(totalDays / intervalsCount);
-
-  const visibleAxisData = Array.from(new Array(7), (_, i) => i).map(
-    (i) => axisData[Math.min(i * interval, axisData.length - 1)]
-  );
-
-  const ChartLine = ({line}: {line?: string}) => (
-    <Path key="line" d={line} stroke={lineColor} strokeWidth={3} fill="none" />
-  );
-
-  const Gradient = () => (
-    <Defs key={'gradient'}>
-      <LinearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <Stop offset="0%" stopColor={gradientStart} />
-        <Stop offset="100%" stopColor={gradientEnd} />
-      </LinearGradient>
-    </Defs>
-  );
+  if (!chartData.length || !axisData.length) {
+    return null;
+  }
 
   const last = chartData[chartData.length - 1];
   const labelString = `${last} ${yesterday}`;
 
+  // Give x and y axis label text space to not get cropped
+  const insetY = 6;
+  const insetX = insetY + styles.chart.marginHorizontal;
+  const contentInset = {
+    top: insetY,
+    bottom: insetY,
+    left: insetX,
+    right: insetX
+  };
+
+  // Where numbers are very small, don't labels like "0.5", or make one case look huge
+  const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
+  const yMax = maxValue < 5 ? 5 : undefined;
+
   return (
     <>
-      {title && <Text style={styles.title}>{title}</Text>}
+      {title && (
+        <>
+          <Text style={styles.title}>{title}</Text>
+          <Spacing s={16} />
+        </>
+      )}
       <View
         style={styles.chartingRow}
         accessible
@@ -118,64 +150,75 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           style={styles.yAxis}
           data={chartData}
           numberOfTicks={3}
-          contentInset={{top: 16, bottom: 4}}
+          contentInset={contentInset}
           svg={{fontSize: 12, fill: colors.text}}
           formatLabel={formatLabel}
+          max={yMax}
+          min={0}
         />
         <View style={styles.chartingCol}>
-          <AreaChart
+          <BarChartContent
+            chartData={chartData}
+            cornerRoundness={2}
+            contentInset={contentInset}
             style={styles.chart}
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}
+            backgroundColor={backgroundColor}
+            rollingAverage={rolling}
+            yMax={yMax}
+          />
+          <XAxis
             data={chartData}
-            numberOfTicks={3}
-            contentInset={{top: 16, bottom: 4}}
-            curve={shape.curveNatural}
-            svg={{strokeWidth: 1, stroke: colors.gray, fill: 'url(#gradient)'}}>
-            <Grid
-              svg={{
-                strokeWidth: 1,
-                stroke: colors.dot,
-                strokeDasharray: [5, 3],
-                strokeDashoffset: 0
-              }}
-            />
-            <ChartLine />
-            <Gradient />
-          </AreaChart>
-          <View style={styles.xAxis}>
-            {axisData.map((date, index) => {
-              const visibleIndex = visibleAxisData.indexOf(date);
-              if (visibleIndex === -1) {
-                return null;
+            contentInset={contentInset}
+            svg={{...xAxisSvg, y: 3}}
+            formatLabel={(_, index) => {
+              console.log(index, 'xAxisDates[index]', axisData[index]);
+              if (index % intervalsCount) {
+                return '';
               }
-
-              const prevDate =
-                visibleIndex > 0 && visibleAxisData[visibleIndex - 1];
-
-              const month = format(new Date(date), 'MMM');
-              const prevMonth = prevDate && format(new Date(prevDate), 'MMM');
-
-              const monthText =
-                prevMonth !== month || index === axisData.length - 1
-                  ? `\n${month}`
-                  : '';
-
-              return (
-                <Text
-                  key={`axis-${visibleIndex}`}
-                  style={[
-                    styles.date,
-                    index === 0 && styles.leftAlign,
-                    index === axisData.length - 1 && styles.rightAlign
-                  ]}>
-                  {`${date.getDate()}${monthText}`}
-                </Text>
-              );
-            })}
-          </View>
+              const date = new Date(axisData[index]);
+              return `${format(date, 'dd')}`;
+            }}
+          />
+          <XAxis
+            data={chartData}
+            contentInset={contentInset}
+            svg={xAxisSvg}
+            formatLabel={(_, index) => {
+              console.log(index, 'xAxisDates[index]', axisData[index]);
+              if (index % intervalsCount) {
+                return '';
+              }
+              const date = new Date(axisData[index]);
+              return `${index === 0 ? nbsp : ''}${format(
+                date,
+                'MMM'
+              ).toUpperCase()}${index === axisData.length - 1 ? nbsp : ''}`;
+            }}
+          />
         </View>
+      </View>
+      <Spacing s={16} />
+      <View style={styles.legend}>
+        <Svg height={legendLineSize} width={legendLineSize}>
+          <Line
+            x1={0}
+            x2={legendLineSize}
+            y={legendLineSize / 2}
+            strokeWidth={3}
+            stroke={colors.orange}
+          />
+        </Svg>
+        <Text style={styles.legendLabel}>{t('charts:legend:averageLine')}</Text>
       </View>
     </>
   );
+};
+
+const xAxisSvg = {
+  ...text.xsmallBold,
+  fill: colors.text
 };
 
 const styles = StyleSheet.create({
@@ -185,7 +228,6 @@ const styles = StyleSheet.create({
   },
   chartingRow: {
     flex: 1,
-    height: 188,
     flexDirection: 'row',
     backgroundColor: colors.white
   },
@@ -200,25 +242,22 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     height: 144,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.dot
-  },
-  xAxis: {
-    height: 36,
-    paddingTop: 4,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start'
-  },
-  date: {
-    ...text.xsmallBold,
-    textAlign: 'center',
-    textTransform: 'uppercase'
+    marginHorizontal: 4
   },
   leftAlign: {
     textAlign: 'left'
   },
   rightAlign: {
     textAlign: 'right'
+  },
+  legend: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  legendLabel: {
+    textAlign: 'left',
+    marginLeft: 16
   }
 });
