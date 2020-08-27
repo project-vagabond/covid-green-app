@@ -37,51 +37,11 @@ jobs:
       - name: Generate Android Upload Keystore
         run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"        
 
-
       - name: Generate Android firebase config DEV
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/android/app/src/debug/google-services.json.template
-          output: android/app/src/debug/google-services.json
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
-            }
+        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_DEV }}" | base64 -d -o "android/app/src/debug/google-services.json"        
 
       - name: Generate Android firebase config PROD
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/android/app/src/release/google-services.json.template
-          output: android/app/src/release/google-services.json
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
-            }
-
-      - run: cat android/app/src/release/google-services.json |base64
-
+        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_PROD }}" | base64 -d -o "android/app/src/release/google-services.json"        
 
       - name: Generate Android env.default
         uses: project-vagabond/template-action@v1
@@ -172,46 +132,11 @@ jobs:
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
 
       - name: Generate iOS firebase config DEV
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/ios/firebase/development/GoogleService-Info.plist.template
-          output: ios/firebase/development/GoogleService-Info.plist
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_DEV}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_DEV}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_DEV}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_DEV}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_DEV}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_DEV}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_DEV}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_DEV}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_DEV}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_DEV}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_DEV}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_DEV}}"
-            }
+        run: echo "${{ secrets.FIREBASE_CFG_IOS_DEV }}" | base64 -d -o "ios/firebase/development/GoogleService-Info.plist"        
 
       - name: Generate iOS firebase config PROD
-        uses: project-vagabond/template-action@v1
-        with:
-          template: .templates/ios/firebase/production/GoogleService-Info.plist.template
-          output: ios/firebase/production/GoogleService-Info.plist
-          vars: |
-            {
-              "IOS_CLIENT_ID": "${{ secrets.PROX_IOS_CLIENT_ID_PROD}}",
-              "IOS_CLIENT_ID_REV": "${{ secrets.PROX_IOS_CLIENT_ID_REV_PROD}}",
-              "IOS_API_KEY": "${{ secrets.PROX_IOS_API_KEY_PROD}}",
-              "ANDROID_CLIENT_ID": "${{ secrets.PROX_ANDROID_CLIENT_ID_PROD}}",
-              "ANDROID_API_KEY": "${{ secrets.PROX_ANDROID_API_KEY_PROD}}",
-              "GCM_SENDER_ID": "${{ secrets.PROX_GCM_SENDER_ID_PROD}}",
-              "BUNDLE_ID": "${{ secrets.PROX_BUNDLE_ID_PROD}}",
-              "PROJECT_ID": "${{ secrets.PROX_PROJECT_ID_PROD}}",
-              "STORAGE_BUCKET": "${{ secrets.PROX_STORAGE_BUCKET_PROD}}",
-              "IOS_GOOGLE_APP_ID": "${{ secrets.PROX_IOS_GOOGLE_APP_ID_PROD}}",
-              "ANDROID_GOOGLE_APP_ID": "${{ secrets.PROX_ANDROID_GOOGLE_APP_ID_PROD}}",
-              "DATABASE_URL": "${{ secrets.PROX_DATABASE_URL_PROD}}"
-            }
+        run: echo "${{ secrets.FIREBASE_CFG_IOS_PROD }}" | base64 -d -o "ios/firebase/production/GoogleService-Info.plist"        
+            
 
       - name: Generate iOS env.default
         uses: project-vagabond/template-action@v1
