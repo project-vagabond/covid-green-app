@@ -101,9 +101,10 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
       chartData.push(record[quantityKey]);
     });
   }
+  const daysLimit = Math.min(days, chartData.length);
 
-  chartData = trimData(chartData, days, rollingAverage);
-  axisData = trimAxisData(axisData, days);
+  chartData = trimData(chartData, daysLimit, rollingAverage);
+  axisData = trimAxisData(axisData, daysLimit);
 
   if (!chartData.length || !axisData.length) {
     return null;
@@ -152,6 +153,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
         <View style={styles.chartingCol}>
           <BarChartContent
             chartData={chartData}
+            days={daysLimit}
             cornerRoundness={2}
             contentInset={contentInset}
             style={styles.chart}
@@ -166,7 +168,6 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             contentInset={contentInset}
             svg={{...xAxisSvg, y: 3}}
             formatLabel={(_, index) => {
-              console.log(index, 'xAxisDates[index]', axisData[index]);
               if (index % intervalsCount) {
                 return '';
               }
@@ -179,7 +180,6 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             contentInset={contentInset}
             svg={xAxisSvg}
             formatLabel={(_, index) => {
-              console.log(index, 'xAxisDates[index]', axisData[index]);
               if (index % intervalsCount) {
                 return '';
               }

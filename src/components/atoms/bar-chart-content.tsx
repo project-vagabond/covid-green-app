@@ -9,6 +9,7 @@ interface BarChartContentProps {
   chartData: number[];
   contentInset: {top: number; bottom: number};
   rollingAverage?: number;
+  days?: number;
   primaryColor?: string;
   backgroundColor?: string;
   secondaryColor?: string;
@@ -38,6 +39,10 @@ export const BarChartContent: FC<BarChartContentProps> = ({
   style,
   yMax
 }) => {
+  const rollingOffset = Math.max(0, rollingAverage - 1);
+  const startPoint = Math.max(0, chartData.length - (days + rollingOffset));
+  const visibleChartData = chartData.slice(startPoint);
+
   const RoundedBarToppers: FC<BarChildProps> = (props) => {
     const {x, y, bandwidth, data} = props;
     return (
@@ -60,22 +65,14 @@ export const BarChartContent: FC<BarChartContentProps> = ({
 
   const TrendLine: FC<BarChildProps> = (props) => {
     const {x, y, bandwidth} = props;
-    const rollingOffset = Math.max(
-      0,
-      chartData.length - (days + rollingAverage - 1)
-    );
-    const shownValues = chartData.slice(rollingOffset);
     const rollingData = rollingAverage
-      ? shownValues.map((_, index) => {
-          const startPoint =
+      ? visibleChartData.map((_, index) => {
+          const avStart =
             rollingAverage + index > chartData.length
               ? Math.max(0, index - rollingAverage)
               : index;
-          const endPoint = Math.min(
-            rollingAverage + index,
-            chartData.length - 1
-          );
-          const avValues = chartData.slice(startPoint, endPoint);
+          const avEnd = Math.min(rollingAverage + index, chartData.length - 1);
+          const avValues = chartData.slice(avStart, avEnd);
           const total = avValues.reduce((sum, num) => sum + num, 0);
           return total / avValues.length;
         })
@@ -114,13 +111,10 @@ export const BarChartContent: FC<BarChartContentProps> = ({
     );
   };
 
-  const rollingOffset = Math.max(0, rollingAverage - 1);
-  const startPoint = Math.max(0, days - chartData.length + rollingOffset);
-
   return (
     <BarChart
       style={style}
-      data={chartData.slice(startPoint)}
+      data={visibleChartData}
       gridMin={0}
       numberOfTicks={3}
       spacingInner={gapPercent / 100}
