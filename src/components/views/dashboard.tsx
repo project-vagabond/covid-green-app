@@ -13,7 +13,7 @@ import {Scrollable} from 'components/templates/scrollable';
 import {Spacing} from 'components/atoms/spacing';
 import {Toast} from 'components/atoms/toast';
 import {TracingAvailable} from 'components/molecules/tracing-available';
-import {TrackerBarChart} from 'src/components/molecules/bar-chart';
+import {TrackerBarChart} from 'components/molecules/bar-chart';
 import {useApplication} from 'providers/context';
 import {useAppState} from 'hooks/app-state';
 import {useSymptomChecker} from 'hooks/symptom-checker';
