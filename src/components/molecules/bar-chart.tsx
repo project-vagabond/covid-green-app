@@ -16,6 +16,7 @@ interface TrackerBarChartProps {
   yesterday?: string;
   data: any;
   days?: number;
+  rollingAverage?: number;
   intervalsCount?: number;
   backgroundColor?: string;
   primaryColor?: string;
@@ -23,7 +24,6 @@ interface TrackerBarChartProps {
   quantityKey: string;
 }
 
-const rolling = 7;
 const legendLineSize = 24;
 const nbsp = ' ';
 
@@ -41,24 +41,16 @@ function formatLabel(value: number) {
   return value;
 }
 
-function trimData(chartData: any[], days: number) {
-  // REMOVE this is to get 30 values before the API is updated
-  while (chartData.length < days + rolling) {
-    chartData = [...chartData.map((d) => d * Math.random()), ...chartData];
-  }
-  if (chartData.length > days + rolling) {
-    chartData = chartData.slice(0, days + 1);
-  }
-  return chartData;
+function trimData(data: any[], days: number, rolling: number) {
+  const rollingOffset = Math.max(0, rolling - 1);
+  const trimLength = days + rollingOffset;
+  const excessLength = data.length - trimLength;
+  return excessLength > 0 ? data.slice(excessLength) : data;
 }
 
 function trimAxisData(axisData: any[], days: number) {
-  const lastDate = axisData[axisData.length - 1];
-  return Array(days + 1)
-    .fill('')
-    .map((_, index) => {
-      return sub(new Date(lastDate), {days: days - index - 1});
-    });
+  const excessLength = axisData.length - days;
+  return excessLength > 0 ? axisData.slice(excessLength) : axisData;
 }
 
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
@@ -66,6 +58,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   data,
   hint,
   yesterday,
+  rollingAverage = 7,
   days = 30,
   intervalsCount = 6,
   primaryColor,
@@ -109,7 +102,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     });
   }
 
-  chartData = trimData(chartData, days);
+  chartData = trimData(chartData, days, rollingAverage);
   axisData = trimAxisData(axisData, days);
 
   if (!chartData.length || !axisData.length) {
@@ -165,7 +158,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             primaryColor={primaryColor}
             secondaryColor={secondaryColor}
             backgroundColor={backgroundColor}
-            rollingAverage={rolling}
+            rollingAverage={rollingAverage}
             yMax={yMax}
           />
           <XAxis
