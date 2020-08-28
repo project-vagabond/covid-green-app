@@ -1,11 +1,8 @@
 name: Build and Push to Fastlane
 on:
   push:
-    branches:
-      test-actions-mg
-  release:
-    types: [published]
-
+    tags:
+      - v1.*
 
 jobs:
   android-build:
@@ -200,5 +197,4 @@ jobs:
         run: |
           cd ios 
           . .env.default
-          printenv |base64
           fastlane beta
