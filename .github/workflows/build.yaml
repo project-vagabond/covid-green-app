@@ -153,7 +153,6 @@ jobs:
               "API_HOST": "${{ secrets.API_HOST }}",
               "SIGNING_KEY_P12_PASSWORD": "${{ secrets.SIGNING_KEY_P12_PASSWORD }}",
               "FASTLANE_USER": "${{ secrets.FASTLANE_USER }}",
-              "FASTLANE_SESSION": '${{ secrets.FASTLANE_SESSION }}',
               "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD": "${{ secrets.FASTLANE_PASSWORD }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"              
             }
@@ -198,4 +197,9 @@ jobs:
         run: cd ios && . .env.default && fastlane gha_setup
 
       - name: iOS Build
-        run: cd ios && . .env.default && fastlane beta
+        env:
+          FASTLANE_SESSION: '${{ secrets.FASTLANE_SESSION }}'
+        run: |
+          cd ios 
+          . .env.default
+          fastlane beta
