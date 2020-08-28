@@ -37,7 +37,7 @@ const MarkdownLink = (
   if (isHttp || isTel) {
     const handle = isTel
       ? () => {
-          const crossPlatformTarget = href.replace(/:(?=\d)/, '://');
+          const crossPlatformTarget = href.replace(/:(?=\d|\+)/, '://');
           Linking.openURL(crossPlatformTarget);
         }
       : () => {
