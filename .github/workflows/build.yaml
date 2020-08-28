@@ -146,7 +146,7 @@ jobs:
           vars: |
             {
               "GITHUB_WORKSPACE": "${{ github.workspace }}",
-              "APPLE_ID": "${{ secrets.FATLANE_USER }}",
+              "APPLE_ID": "${{ secrets.FASTLANE_USER }}",
               "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
               "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
               "TEAM_ID": "${{ secrets.TEAM_ID }}",
