@@ -190,9 +190,6 @@ jobs:
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
 
-      - name: Debug
-        run: cat ios/.env.default | base64
-
       - name: iOS Cert Setup
         run: cd ios && . .env.default && fastlane gha_setup
 
