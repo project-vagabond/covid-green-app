@@ -120,8 +120,8 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
         <>
           <Card padding={{h: 12}}>
             <TrackerBarChart
-              title={t('charts:positiveTests:title')}
-              hint={t('charts:positiveTests:hint')}
+              title={t('charts:positivityPercent:title')}
+              hint={t('charts:positivityPercent:hint')}
               axisData={percentData.axisData}
               chartData={percentData.chartData}
               yMin={0.5}
