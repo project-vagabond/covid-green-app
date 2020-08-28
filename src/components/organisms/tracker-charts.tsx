@@ -1,32 +1,29 @@
 import React, {FC} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import Svg, {Line, Rect} from 'react-native-svg';
-import {YAxis, XAxis} from 'react-native-svg-charts';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
 
-import {text, colors} from 'theme';
-import {BarChartContent} from 'components/atoms/bar-chart-content';
-
 import {Spacing} from 'components/atoms/spacing';
-import {scaleBand} from 'd3-scale';
 import {Card} from 'components/atoms/card';
 import {TrackerBarChart} from 'components/molecules/bar-chart';
 
 interface TrackerChartsProps {
   data: any;
-  county?: string;
+  county: string;
 }
 
-const chartDataIsAvailable = (data) => {
+export type AxisData = Date[];
+export type ChartData = number[];
+
+interface ExtractedData {
+  axisData: AxisData;
+  chartData: ChartData;
+}
+
+const chartDataIsAvailable = (data: ExtractedData) => {
   return !!(data.axisData?.length && data.chartData?.length);
 };
 
-const getBarchartData = (data, quantityKey) => {
-  if (!data) {
-    return null;
-  }
-
+const getBarchartData = (data: any, quantityKey: string) => {
   let axisData: Date[] = [];
   let chartData: number[] = [];
   const dataKeys = Object.keys(data);
@@ -63,11 +60,11 @@ const getBarchartData = (data, quantityKey) => {
   };
 };
 
-const getComparableDate = (date) => {
+const getComparableDate = (date: Date | string) => {
   return format(new Date(date), 'yyyy-mm-dd');
-}
+};
 
-export const TrackerCharts: FC<TrackerChartsProps> = ({data, county}) => {
+export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
   const {t} = useTranslation();
 
   const localData =
@@ -82,13 +79,13 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county}) => {
   let percentData = {
     axisData: [],
     chartData: []
-  };
+  } as ExtractedData;
 
   if (testsData.axisData.length && positivesData.axisData.length) {
     percentData = testsData.axisData.reduce((newData, date, testsIndex) => {
-      const positivesIndex = positivesData.axisData.findIndex(pDate => getComparableDate(date) === getComparableDate(pDate));
-
-      console.log('positivesIndex', positivesIndex, date, positivesData.axisData);
+      const positivesIndex = positivesData.axisData.findIndex(
+        (pDate) => getComparableDate(date) === getComparableDate(pDate)
+      );
 
       if (positivesIndex === -1) {
         return newData;
@@ -97,7 +94,9 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county}) => {
 
       const testsValue = testsData.chartData[testsIndex];
       const positivesValue = positivesData.chartData[positivesIndex];
-      newData.chartData.push( testsValue ? positivesValue / testsValue * 100 : 0);
+      newData.chartData.push(
+        testsValue ? (positivesValue / testsValue) * 100 : 0
+      );
       return {...newData};
     }, percentData);
   }

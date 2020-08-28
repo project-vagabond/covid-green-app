@@ -9,20 +9,23 @@ import {text, colors} from 'theme';
 import {BarChartContent} from 'components/atoms/bar-chart-content';
 import {Spacing} from 'components/atoms/spacing';
 import {scaleBand} from 'd3-scale';
+import {ChartData, AxisData} from '../organisms/tracker-charts';
 
 interface TrackerBarChartProps {
   title?: string;
   label?: string;
   hint?: string;
   yesterday?: string;
-  data: any;
+  chartData: ChartData;
+  axisData: AxisData;
   days?: number;
+  yMin?: number;
+  ySuffix?: string;
   rollingAverage?: number;
   intervalsCount?: number;
   backgroundColor?: string;
   primaryColor?: string;
   secondaryColor?: string;
-  quantityKey: string;
 }
 
 const legendItemSize = 16;

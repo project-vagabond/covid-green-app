@@ -5,9 +5,11 @@ import {BarChart, Grid} from 'react-native-svg-charts';
 import {colors} from 'theme';
 import {line, curveMonotoneX} from 'd3-shape';
 import {ScaleBand} from 'd3-scale';
+import {ChartData, AxisData} from 'components/organisms/tracker-charts';
 
 interface BarChartContentProps {
-  chartData: number[];
+  chartData: ChartData;
+  axisData: AxisData;
   contentInset: {top: number; bottom: number};
   rollingAverage?: number;
   days?: number;
