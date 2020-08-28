@@ -146,7 +146,7 @@ jobs:
           vars: |
             {
               "GITHUB_WORKSPACE": "${{ github.workspace }}",
-              "APPLE_ID": "${{ secrets.APPLE_ID }}",
+              "APPLE_ID": "${{ secrets.FATLANE_USER }}",
               "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
               "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
               "TEAM_ID": "${{ secrets.TEAM_ID }}",
@@ -198,4 +198,5 @@ jobs:
         env:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
         run: cd ios && . .env.default && fastlane beta
