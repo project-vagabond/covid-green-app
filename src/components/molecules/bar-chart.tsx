@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white
   },
   yAxis: {
+    width: 42,
     height: 144,
     paddingRight: 4
   },
