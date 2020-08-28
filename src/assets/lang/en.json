@@ -87,13 +87,6 @@
       "skipAction": "Skip for now",
       "continueAction": "Next"
     },
-    "completion": {
-      "title": "Closeness Sensing and COVID Alerts are now active!",
-      "text": "Thank you for doing your part to stop the spread of COVID-19.",
-      "shareText": "Share this app with friends.\nHelp keep NY Safe.",
-      "next": "Done",
-      "share": "Share"
-    },
     "tour": {
       "title": "How it works",
       "statements": [
@@ -217,7 +210,28 @@
     "metrics": "Help Improve This App",
     "metricsHint": "View or amend settings for helpinig this app",
     "leave": "Delete My Data",
-    "leaveHint": "Delete data and leave the application"
+    "leaveHint": "Delete data and leave the application",
+    "status": {
+      "title": "Status",
+      "active": "Closeness Sensing is currently active.",
+      "notActive": "Closeness Sensing is not active",
+      "intro": "To change the status, go to your phone’s settings by tapping the “Update Settings” button below.",
+      "gotoSettings": "Update settings",
+      "android": {
+        "intro": "Closeness Sensing is not currently enabled, click enable to start.",
+        "gotoSettings": "Enable"
+      }
+    },
+    "clearData": {
+      "title": "COVID Alerts",
+      "intro": "Your phone keeps a record of all the COVID Alerts you’ve received.  To delete all of your past COVID Alerts, tap the “Delete All” button below.",
+      "button": "Delete All",
+      "confirmTitle": "Delete All",
+      "confirmText": "Are you sure you want to clear all your COVID Alerts?",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "error": "There was an error clearing your COVID Alerts. Please try again."
+    }
   },
   "leave": {
     "title": "Delete My Data",
@@ -243,29 +257,6 @@
     },
     "closeContactCard": {
       "text": "What to do if you test positive for COVID-19"
-    },
-    "settings": {
-      "status": {
-        "title": "Status",
-        "active": "Closeness Sensing is currently active.",
-        "notActive": "Closeness Sensing is not active",
-        "intro": "To change the status, go to your phone’s settings by tapping the “Update Settings” button below.",
-        "gotoSettings": "Update settings",
-        "android": {
-          "intro": "Closeness Sensing is not currently enabled, click enable to start.",
-          "gotoSettings": "Enable"
-        }
-      },
-      "clearData": {
-        "title": "COVID Alerts",
-        "intro": "Your phone keeps a record of all the COVID Alerts you’ve received.  To delete all of your past COVID Alerts, tap the “Delete All” button below.",
-        "button": "Delete All",
-        "confirmTitle": "Delete All",
-        "confirmText": "Are you sure you want to clear all your COVID Alerts?",
-        "cancel": "Cancel",
-        "confirm": "Confirm",
-        "error": "There was an error clearing your COVID Alerts. Please try again."
-      }
     }
   },
   "charts": {
