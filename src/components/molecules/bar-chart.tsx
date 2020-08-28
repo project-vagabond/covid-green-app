@@ -28,7 +28,7 @@ interface TrackerBarChartProps {
 const legendItemSize = 16;
 const nbsp = ' ';
 
-function formatLabel(value: number) {
+function formatLabel(value: number, suffix: string = '') {
   if (value >= 1000000) {
     const millions = parseFloat((value / 1000000).toFixed(1));
     return `${millions}m`;
@@ -39,7 +39,7 @@ function formatLabel(value: number) {
     return `${thousands}k`;
   }
 
-  return value;
+  return value + suffix;
 }
 
 function trimData(data: any[], days: number, rolling: number) {
@@ -56,52 +56,21 @@ function trimAxisData(axisData: any[], days: number) {
 
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
-  data,
+  chartData,
+  axisData,
   hint,
   yesterday,
-  rollingAverage = 7,
+  rollingAverage = 0,
   days = 30,
+  yMin = 5,
+  ySuffix,
   intervalsCount = 6,
   primaryColor = colors.orange,
   secondaryColor = colors.tabs.highlighted,
-  backgroundColor = colors.white,
-  quantityKey
+  backgroundColor = colors.white
 }) => {
   const {t} = useTranslation();
 
-  if (!data) {
-    return null;
-  }
-
-  let axisData: Date[] = [];
-  let chartData: number[] = [];
-  const dataKeys = Object.keys(data);
-
-  if (!Array.isArray(data)) {
-    const reducedData = dataKeys.reduce(
-      (records, date: string, index: number) => {
-        const dataRecord = data[date] || data[index];
-        return {
-          axisData: [...records.axisData, new Date(date)],
-          chartData: [...records.chartData, dataRecord[quantityKey]]
-        };
-      },
-      {
-        axisData: [],
-        chartData: []
-      } as {
-        axisData: Date[];
-        chartData: number[];
-      }
-    );
-    axisData = reducedData.axisData;
-    chartData = reducedData.chartData;
-  } else {
-    data.forEach((record) => {
-      axisData.push(new Date(record.test_date || record.last_test_date));
-      chartData.push(record[quantityKey]);
-    });
-  }
   const daysLimit = Math.min(days, chartData.length);
 
   chartData = trimData(chartData, daysLimit, rollingAverage);
@@ -126,7 +95,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
 
   // Where numbers are very small, don't labels like "0.5", or make one case look huge
   const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
-  const yMax = maxValue < 5 ? 5 : undefined;
+  const yMax = maxValue < yMin ? yMin : undefined;
 
   return (
     <>
@@ -147,7 +116,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           numberOfTicks={3}
           contentInset={contentInset}
           svg={{fontSize: 12, fill: colors.text}}
-          formatLabel={formatLabel}
+          formatLabel={(d) => formatLabel(d, ySuffix)}
           max={yMax}
           min={0}
         />
@@ -196,33 +165,41 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           />
         </View>
       </View>
-      <Spacing s={16} />
-      <View style={styles.legend}>
-        <View style={styles.legend}>
-          <Svg height={legendItemSize} width={legendItemSize}>
-            <Rect
-              x={0}
-              y={0}
-              width={legendItemSize}
-              height={legendItemSize}
-              fill={secondaryColor}
-            />
-          </Svg>
-          <Text style={styles.legendLabel}>{t('charts:legend:dailyTotal')}</Text>
-        </View>
-        <View style={styles.legend}>
-          <Svg height={legendItemSize} width={legendItemSize}>
-            <Line
-              x1={0}
-              x2={legendItemSize}
-              y={legendItemSize / 2}
-              strokeWidth={3}
-              stroke={primaryColor}
-            />
-          </Svg>
-          <Text style={styles.legendLabel}>{t('charts:legend:averageLine')}</Text>
-        </View>
-       </View>
+      {!!rollingAverage && (
+        <>
+          <Spacing s={16} />
+          <View style={styles.legend}>
+            <View style={styles.legend}>
+              <Svg height={legendItemSize} width={legendItemSize}>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={legendItemSize}
+                  height={legendItemSize}
+                  fill={secondaryColor}
+                />
+              </Svg>
+              <Text style={styles.legendLabel}>
+                {t('charts:legend:dailyTotal')}
+              </Text>
+            </View>
+            <View style={styles.legend}>
+              <Svg height={legendItemSize} width={legendItemSize}>
+                <Line
+                  x1={0}
+                  x2={legendItemSize}
+                  y={legendItemSize / 2}
+                  strokeWidth={3}
+                  stroke={primaryColor}
+                />
+              </Svg>
+              <Text style={styles.legendLabel}>
+                {t('charts:legend:averageLine')}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
     </>
   );
 };

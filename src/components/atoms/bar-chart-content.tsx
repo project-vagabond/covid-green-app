@@ -145,7 +145,7 @@ export const BarChartContent: FC<BarChartContentProps> = ({
       {/* @ts-ignore: gets BarChildProps from BarChart parent */}
       <XAxisTrim />
       {/* @ts-ignore: gets BarChildProps from BarChart parent */}
-      <TrendLine />
+      {!!rollingAverage && <TrendLine />}
     </BarChart>
   );
 };
