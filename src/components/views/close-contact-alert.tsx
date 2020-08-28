@@ -63,8 +63,9 @@ export const CloseContactAlert: FC = () => {
         </View>
       </Card>
       <Spacing s={24} />
+      <Markdown style={styles.mdTop}>{t('closeContactAlert:info')}</Markdown>
       <Markdown style={styles.md} renderListBullet={renderListBullet}>
-        {t('closeContactAlert:info')}
+        {t('closeContactInfo:list')}
       </Markdown>
       <CallCard
         onPress={() => Linking.openURL('tel:18883643065')}
@@ -88,7 +89,10 @@ export const styles = StyleSheet.create({
     borderTopRightRadius: 6,
     backgroundColor: '#ecdbe4'
   },
+  mdTop: {
+    marginBottom: 0
+  },
   md: {
-    marginBottom: 24
+    marginBottom: 32
   }
 });
