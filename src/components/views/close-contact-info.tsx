@@ -18,7 +18,7 @@ const map: {[key: number]: any} = Object.entries(KeepSafeIcons).reduce(
   {}
 );
 
-function renderListBullet(index: number, _: boolean, children: any) {
+export function renderListBullet(index: number, _: boolean, children: any) {
   return (
     <View key={`list-item-${index}`} style={styles.listIcon}>
       <View style={styles.icon}>{map[index]}</View>
