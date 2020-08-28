@@ -20,8 +20,9 @@ platform :android do
   lane :internal do
     increment_version_code(
       gradle_file_path: "app/build.gradle",
+      version_number: ENV["BUILD_VERSION"]
     )
-    gradle(task: "bundle", build_type: "Release")
+    gradle(task: "assemble", build_type: "Release")
     upload_to_play_store(
       track: "internal",
       skip_upload_apk: true,
