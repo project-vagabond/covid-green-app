@@ -21,7 +21,8 @@
       "description": "Disculpe, eso no funcionó.\nRevise que esté conectado a la red e inténtelo nuevamente.",
       "timestampTitle": "Revise la hora y la fecha",
       "timestamp": "No pudimos verificar su dispositivo. Revise si su fecha y hora son correctas e inténtelo de nuevo."
-    }
+    },
+    "continue": "Continuar"
   },
   "viewNames": {
     "introduction": "Ayude a detener la propagación de la COVID-19 en su comunidad.",
