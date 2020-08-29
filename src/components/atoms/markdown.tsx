@@ -136,7 +136,7 @@ export const childrenAsText = (
         (str, child) =>
           `${str}${joiner}${
             React.isValidElement(child)
-              ? childrenAsText(child.props.children)
+              ? childrenAsText(child.props.children, joiner)
               : `${child}`
           }`,
         ''
