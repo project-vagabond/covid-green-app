@@ -102,14 +102,14 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          name: release.aab
+          name: release.apk
           path: '**/*.apk' 
 
       - name: Testflight Upload
         run: |
           cd android
           . .env.default
-          fastlane internal_release
+          fastlane internal_release 
 
   ios-build:
     name: iOS Build
@@ -242,4 +242,4 @@ jobs:
         run: |
           cd ios 
           . .env.default
-          fastlane beta_release
+          fastlane beta_release || true

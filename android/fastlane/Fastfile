@@ -21,7 +21,7 @@ platform :android do
     increment_version_code(
       gradle_file_path: "app/build.gradle",
     )
-    gradle(task: "clean bundle", build_type: "Release")
+    gradle(task: "clean bundle build", build_type: "Release")
   end
 
   desc "Deploy a new Internal Track Build to Google Play"
