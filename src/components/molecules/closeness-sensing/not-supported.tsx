@@ -46,7 +46,7 @@ export const NotSupported: FC<{onboarding?: boolean}> = ({
                 routes: [{name: 'main'}]
               })
             }>
-            {t('common:continue')}
+            {t('common:ok:label')}
           </Button>
         </>
       )}
