@@ -26,6 +26,7 @@ platform :android do
 
   desc "Deploy a new Internal Track Build to Google Play"
   lane :internal_release do
+    gradle(task: "build", build_type: "Release")
     upload_to_play_store(
       track: "internal",
       skip_upload_apk: true,
