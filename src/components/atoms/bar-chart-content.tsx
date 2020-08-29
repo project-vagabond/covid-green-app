@@ -10,6 +10,7 @@ import {ChartData, AxisData} from 'components/organisms/tracker-charts';
 interface BarChartContentProps {
   chartData: ChartData;
   axisData: AxisData;
+  averagesData?: ChartData;
   contentInset: {top: number; bottom: number};
   rollingAverage?: number;
   days?: number;
