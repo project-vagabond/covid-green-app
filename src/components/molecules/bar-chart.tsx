@@ -175,7 +175,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           />
         </View>
       </View>
-      {!!rollingAverage && (
+      {(!!rollingAverage || averagesData) && (
         <>
           <Spacing s={16} />
           <View style={styles.legend}>
