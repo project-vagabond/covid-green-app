@@ -90,8 +90,9 @@ jobs:
       - name: Android Build
         run: |
           cd android 
-          . .env.default
+          . .env.default          
           ./gradlew bundleReleaseJsAndAssets
+          ./gradlew assembleRelease || true
           ./gradlew copyReleaseBundledJs
           fastlane internal_build
 
@@ -109,7 +110,7 @@ jobs:
         run: |
           cd android
           . .env.default
-          fastlane internal_release 
+          fastlane internal_release || true 
 
   ios-build:
     name: iOS Build
