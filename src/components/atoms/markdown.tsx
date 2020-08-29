@@ -128,12 +128,13 @@ const styles = StyleSheet.create({
 });
 
 export const childrenAsText = (
-  children: React.ReactChildren | React.ReactNode | undefined
+  children: React.ReactChildren | React.ReactNode | undefined,
+  joiner: string = ''
 ): string =>
   children
     ? (React.Children.toArray(children).reduce(
         (str, child) =>
-          `${str} ${
+          `${str}${joiner}${
             React.isValidElement(child)
               ? childrenAsText(child.props.children)
               : `${child}`
