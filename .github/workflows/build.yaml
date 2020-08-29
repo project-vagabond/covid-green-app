@@ -88,7 +88,28 @@ jobs:
         run: npx jetify
 #
       - name: Android Build
-        run: cd android && . .env.default && fastlane internal
+        run: |
+          cd android 
+          . .env.default
+          ./gradlew bundleReleaseJsAndAssets
+          ./gradlew copyReleaseBundledJs
+          fastlane internal_build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: release.aab
+          path: '**/*.aab' 
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: release.aab
+          path: '**/*.apk' 
+
+      - name: Testflight Upload
+        run: |
+          cd android
+          . .env.default
+          fastlane internal_release
 
   ios-build:
     name: iOS Build
@@ -207,4 +228,18 @@ jobs:
         run: |
           cd ios 
           . .env.default
-          fastlane beta
+          fastlane beta_build
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: release.ipa
+          path: '**/*.ipa' 
+
+      - name: iOS Testflight
+        env:
+          FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
+          FASTLANE_SESSION: '${{ secrets.FASTLANE_SESSION }}'
+        run: |
+          cd ios 
+          . .env.default
+          fastlane beta_release
