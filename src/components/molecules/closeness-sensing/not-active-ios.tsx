@@ -71,7 +71,7 @@ export const NotActiveIOS: FC<NotActiveIOSProps> = ({
                 routes: [{name: 'main'}]
               })
             }>
-            {t('closenessSensing:notActiveIOS:continue')}
+            {t('common:continue')}
           </Button>
         </>
       )}
