@@ -212,11 +212,7 @@
       "active": "距离感测功能当前处于活动状态。",
       "notActive": "距离感测功能未处于活动状态",
       "intro": "若要更改状态，通过点击下方“更新设置”按钮转至您手机的设置。",
-      "gotoSettings": "更新设置",
-      "android": {
-        "intro": "距离感测功能当前没有启用，请单击启用以将它启动。",
-        "gotoSettings": "启用"
-      }
+      "gotoSettings": "更新设置"
     },
     "clearData": {
       "title": "COVID警示",

@@ -216,11 +216,7 @@
       "active": "La Detección de Proximidad se encuentra activada.",
       "notActive": "La Detección de Proximidad no está activada",
       "intro": "Para cambiar el estatus, vaya a la configuración de su teléfono y presione el botón inferior de “Actualizar las opciones de configuración”.",
-      "gotoSettings": "Actualizar la configuración",
-      "android": {
-        "intro": "La Detección de Proximidad no está habilitada, haga clic en habilitar para comenzar.",
-        "gotoSettings": "Habilitar"
-      }
+      "gotoSettings": "Actualizar la configuración"
     },
     "clearData": {
       "title": "Alertas de COVID",

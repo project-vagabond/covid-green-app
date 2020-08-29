@@ -215,13 +215,9 @@
     "status": {
       "title": "Status",
       "active": "Closeness Sensing is currently active.",
-      "notActive": "Closeness Sensing is not active",
-      "intro": "To change the status, go to your phone’s settings by tapping the “Update Settings” button below.",
-      "gotoSettings": "Update settings",
-      "android": {
-        "intro": "Closeness Sensing is not currently enabled, click enable to start.",
-        "gotoSettings": "Enable"
-      }
+      "notActive": "Closeness Sensing is currently inactive.",
+      "intro": "To change the status, tap the “Update Settings” button below to go to your phone’s settings.",
+      "gotoSettings": "Update settings"
     },
     "clearData": {
       "title": "COVID Alerts",

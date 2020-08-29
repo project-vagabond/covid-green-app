@@ -216,11 +216,7 @@
       "active": "Deteksyon Pwoksimite a aktif kounye a.",
       "notActive": "Deteksyon Pwoksimite a pa aktif",
       "intro": "Pou chanje rezilta a, ale nan paramèt telefòn ou, lè ou tape sou bouton “Mete Paramèt yo Ajou” ki pi ba a.",
-      "gotoSettings": "Mete paramèt yo ajou",
-      "android": {
-        "intro": "Deteksyon Pwoksimite pa aktive pou kounye a, klike sou aktive pou kòmanse.",
-        "gotoSettings": "Aktive"
-      }
+      "gotoSettings": "Mete paramèt yo ajou"
     },
     "clearData": {
       "title": "Alèt COVID",
