@@ -46,4 +46,3 @@ platform :ios do
     upload_to_testflight
   end
 end
-end
