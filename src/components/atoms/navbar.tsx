@@ -26,14 +26,13 @@ export const shareApp = async (t: TFunction) => {
   try {
     await Share.share(
       {
-        title: t('common:message'),
-        message:
-          Platform.OS === 'android' ? t('common:url') : t('common:message'),
-        url: t('common:url')
+        title: t('common:message'), // Android message title
+        message: Platform.OS === 'android' ? t('common:url') : undefined, // Android message content
+        url: t('common:url') // iOS message content; with message undefined, treats as url not text
       },
       {
-        subject: t('common:name'),
-        dialogTitle: t('common:name')
+        subject: t('common:message'), // iOS message subject
+        dialogTitle: t('common:name') // Android system share dialog title
       }
     );
   } catch (error) {
