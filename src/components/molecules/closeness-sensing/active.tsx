@@ -34,7 +34,7 @@ export const Active: FC<{onboarding?: boolean}> = ({onboarding = false}) => {
         {onboarding && (
           <>
             <Spacing s={20} />
-            <Markdown style={text.default}>
+            <Markdown>
               {t('closenessSensing:active:shareText')}
             </Markdown>
             <Spacing s={24} />

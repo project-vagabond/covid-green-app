@@ -37,7 +37,7 @@ export const NotAuthorized: FC<{onboarding?: boolean}> = ({
             {t(`closenessSensing:notAuthorised:${Platform.OS}:title`)}
           </Text>
           <Spacing s={20} />
-          <Markdown style={text.default}>
+          <Markdown>
             {t(`closenessSensing:notAuthorised:${Platform.OS}:text`)}
           </Markdown>
           <Spacing s={24} />
