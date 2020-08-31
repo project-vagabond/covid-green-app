@@ -63,7 +63,7 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
             }
             inChecker={true}
           />
-          <Spacing s={32} />
+          <Spacing s={20} />
         </>
       )}
       <Card>
