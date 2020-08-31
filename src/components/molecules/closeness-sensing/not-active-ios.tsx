@@ -43,7 +43,7 @@ export const NotActiveIOS: FC<NotActiveIOSProps> = ({
             {t('closenessSensing:notActiveIOS:title')}
           </Text>
           <Spacing s={20} />
-          <Markdown>
+          <Markdown style={{}}>
             {t(
               `closenessSensing:notActiveIOS:${
                 exposureOff ? 'ens' : bluetoothOff ? 'bt' : 'text'

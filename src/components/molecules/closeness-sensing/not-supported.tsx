@@ -31,7 +31,7 @@ export const NotSupported: FC<{onboarding?: boolean}> = ({
             {t('closenessSensing:notSupported:title')}
           </Text>
           <Spacing s={20} />
-          <Markdown>
+          <Markdown style={{}}>
             {t('closenessSensing:notSupported:text')}
           </Markdown>
         </View>

@@ -31,7 +31,7 @@ export const NotEnabledIOS: FC<{onboarding?: boolean}> = ({
             {t('closenessSensing:notEnabledIOS:title')}
           </Text>
           <Spacing s={20} />
-          <Markdown>
+          <Markdown style={{}}>
             {t('closenessSensing:notEnabledIOS:text')}
           </Markdown>
           <Spacing s={24} />

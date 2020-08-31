@@ -44,7 +44,7 @@ export const Supported: FC<{onboarding?: boolean}> = ({onboarding = false}) => {
             {t(`closenessSensing:supported:${Platform.OS}:title`)}
           </Text>
           <Spacing s={20} />
-          <Markdown>
+          <Markdown style={{}}>
             {t(`closenessSensing:supported:${Platform.OS}:text`)}
           </Markdown>
           <Spacing s={24} />
