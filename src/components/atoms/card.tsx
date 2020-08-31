@@ -1,8 +1,9 @@
 import React, {ReactNode, FC} from 'react';
-import {StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import {StyleSheet, Pressable, View} from 'react-native';
 
 import {colors, shadows} from 'theme';
 import {AppIcons} from 'assets/icons';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 interface CardProps {
   type?: 'warning' | 'info' | 'empty';
@@ -61,9 +62,14 @@ export const Card: FC<CardProps> = ({
     </View>
   );
   return onPress ? (
-    <TouchableWithoutFeedback accessibilityRole="button" onPress={onPress}>
+    <TouchableHighlight
+      accessibilityRole="button"
+      onPress={onPress}
+      activeOpacity={0.9}
+      underlayColor={colors.darkGray}
+      style={styles.touchable}>
       {cardContent}
-    </TouchableWithoutFeedback>
+    </TouchableHighlight>
   ) : (
     cardContent
   );
@@ -77,6 +83,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  touchable: {
+    borderRadius: shadows.default.borderRadius
   },
   cardWarning: {
     borderWidth: 2,
