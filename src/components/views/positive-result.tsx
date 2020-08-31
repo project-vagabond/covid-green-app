@@ -24,6 +24,7 @@ export const PositiveResult: FC = () => {
       backgroundColor={colors.background}
       heading={t('positiveResult:title')}>
       <Markdown>{t('positiveResult:text1')}</Markdown>
+      <Spacing s={12} />
       <Card
         icon={<BubbleIcons.Info width={56} height={56} />}
         onPress={() => navigation.navigate('closeContactInfo')}>
