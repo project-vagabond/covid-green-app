@@ -7,6 +7,7 @@ import {
   ScrollView,
   View,
   Text,
+  TouchableHighlight,
   TextInput
 } from 'react-native';
 import Modal, {ModalProps} from 'react-native-modal';
@@ -17,7 +18,7 @@ import {BasicItem} from 'providers/settings';
 import {Spacing} from 'components/atoms/layout';
 
 import {text, colors} from 'theme';
-import Icons, {AppIcons} from 'assets/icons';
+import {AppIcons} from 'assets/icons';
 
 interface DropdownModalProps extends Partial<ModalProps> {
   close?: boolean;
@@ -37,7 +38,6 @@ interface DropdownModalProps extends Partial<ModalProps> {
 }
 
 export const DropdownModal: React.FC<DropdownModalProps> = ({
-  close,
   title,
   items,
   selectedValue,
@@ -67,8 +67,10 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
     }
 
     return (
-      <TouchableWithoutFeedback
+      <TouchableHighlight
         key={`item_${index}`}
+        activeOpacity={0.9}
+        underlayColor={colors.background}
         onPress={() => onSelect(value)}>
         <View
           style={[
@@ -89,7 +91,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
             </View>
           )}
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableHighlight>
     );
   };
 
