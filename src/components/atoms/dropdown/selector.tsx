@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Text, View, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 import {AppIcons} from 'assets/icons';
 import {BasicItem} from 'providers/settings';
@@ -57,9 +58,12 @@ export const SelectorDropdown: React.FC<DropdownProps> = ({
 
   return (
     <>
-      <TouchableWithoutFeedback
+      <TouchableHighlight
         accessibilityTraits={['button']}
         accessibilityComponentType="button"
+        activeOpacity={0.9}
+        underlayColor={colors.darkGray}
+        style={styles.touchable}
         onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.content}>
@@ -69,7 +73,7 @@ export const SelectorDropdown: React.FC<DropdownProps> = ({
           </View>
           <AppIcons.Filter width={24} height={24} />
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableHighlight>
       {isModalVisible && (
         <DropdownModal
           close
@@ -88,6 +92,9 @@ export const SelectorDropdown: React.FC<DropdownProps> = ({
 };
 
 const styles = StyleSheet.create({
+  touchable: {
+    borderRadius: 4
+  },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
