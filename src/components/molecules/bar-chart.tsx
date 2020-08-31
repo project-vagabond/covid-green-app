@@ -70,8 +70,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   yMin = 5,
   ySuffix,
   intervalsCount = 6,
-  primaryColor = colors.orange,
-  secondaryColor = colors.tabs.highlighted,
+  primaryColor = '#CD4000',
+  secondaryColor = '#ACAFC4',
   backgroundColor = colors.white
 }) => {
   const {t} = useTranslation();
