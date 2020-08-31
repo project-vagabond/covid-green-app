@@ -1,9 +1,9 @@
 import React, {ReactNode, FC} from 'react';
-import {StyleSheet, Pressable, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 import {colors, shadows} from 'theme';
 import {AppIcons} from 'assets/icons';
-import {TouchableHighlight} from 'react-native-gesture-handler';
 
 interface CardProps {
   type?: 'warning' | 'info' | 'empty';
