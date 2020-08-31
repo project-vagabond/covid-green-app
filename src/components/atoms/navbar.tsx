@@ -29,33 +29,35 @@ export const shareApp = async (t: TFunction) => {
   const message = t('common:message');
 
   try {
-    await Share.open(Platform.select({
-      ios: {
-        activityItemSources: [
-          {
-            placeholderItem: {
-              type: 'url',
-              content: icon
-            },
-            item: {
-              default: {
-                type: 'text',
-                content: `${message} ${url}`
+    await Share.open(
+      Platform.select({
+        ios: {
+          activityItemSources: [
+            {
+              placeholderItem: {
+                type: 'url',
+                content: icon
               },
-            },
-            linkMetadata: {
-               title: title,
-               icon: icon
+              item: {
+                default: {
+                  type: 'text',
+                  content: `${message} ${url}`
+                }
+              },
+              linkMetadata: {
+                title: title,
+                icon: icon
+              }
             }
-          },
-        ],
-      },
-      default: {
-        title: 'abc',
-        subject: message,
-        message: `${message} ${url}`
-      },
-    }));
+          ]
+        },
+        default: {
+          title,
+          subject: message,
+          message: `${message} ${url}`
+        }
+      })
+    );
   } catch (error) {
     console.log(t('tabBar:shareError'));
   }
