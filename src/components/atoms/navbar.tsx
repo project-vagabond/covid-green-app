@@ -4,9 +4,9 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  Share,
   Platform
 } from 'react-native';
+import Share from 'react-native-share';
 import {useTranslation} from 'react-i18next';
 import {useSafeArea} from 'react-native-safe-area-context';
 
@@ -14,6 +14,7 @@ import Icons, {AppIcons} from 'assets/icons';
 import {colors, text} from 'theme';
 import {useApplication} from 'providers/context';
 import {TFunction} from 'i18next';
+import {icon} from 'assets/icons/app/logo-share.base64';
 
 interface NavBarProps {
   navigation: any;
@@ -23,19 +24,38 @@ interface NavBarProps {
 }
 
 export const shareApp = async (t: TFunction) => {
+  const title = t('common:name');
+  const url = t('common:url');
+  const message = t('common:message');
+
   try {
-    await Share.share(
-      {
-        title: t('common:message'),
-        message:
-          Platform.OS === 'android' ? t('common:url') : t('common:message'),
-        url: t('common:url')
+    await Share.open(Platform.select({
+      ios: {
+        activityItemSources: [
+          {
+            placeholderItem: {
+              type: 'url',
+              content: icon
+            },
+            item: {
+              default: {
+                type: 'text',
+                content: `${message} ${url}`
+              },
+            },
+            linkMetadata: {
+               title: title,
+               icon: icon
+            }
+          },
+        ],
       },
-      {
-        subject: t('common:name'),
-        dialogTitle: t('common:name')
-      }
-    );
+      default: {
+        title: 'abc',
+        subject: message,
+        message: `${message} ${url}`
+      },
+    }));
   } catch (error) {
     console.log(t('tabBar:shareError'));
   }
@@ -51,7 +71,6 @@ export const NavBar: FC<NavBarProps> = ({
   const {user} = useApplication();
 
   const [state, setState] = useState({back: false});
-
   useEffect(() => {
     let unsubscribeStart: (() => any) | null = null;
     let unsubscribeEnd: (() => any) | null = null;
