@@ -95,8 +95,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     if (isAxisLabelHidden(index)) {
       return summaryText;
     }
-    const stringStart = summaryText ? summaryText + ', ' : '';
-    return `${stringStart}${format(date, 'MMMM')} ${format(
+    const previousText = summaryText ? `${summaryText}, ` : '';
+    return `${previousText}${format(date, 'MMMM')} ${format(
       date,
       'do'
     )}: ${roundNumber(chartData[index])}${ySuffix}`;
