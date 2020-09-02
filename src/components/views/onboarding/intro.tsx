@@ -31,7 +31,7 @@ export const Introduction: FC<any> = () => {
     <Scrollable scrollStyle={style.page}>
       <View style={styles.fill}>
         <View style={[style.top, styles.relative, styles.index1]}>
-          <Text style={[styles.title, styles.introTitle]}>
+          <Text accessibilityRole={'header'} style={[styles.title, styles.introTitle]}>
             {content[0].title}
           </Text>
         </View>

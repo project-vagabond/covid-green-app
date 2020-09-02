@@ -53,7 +53,7 @@ export const Heading: React.FC<HeadingProps> = ({
 
   return (
     <>
-      <Text importantForAccessibility="yes" ref={ref} style={styles.heading}>
+      <Text accessibilityRole={'header'} importantForAccessibility="yes" ref={ref} style={styles.heading}>
         {text}
       </Text>
       <View style={[styles.line, !!lineWidth && {width: lineWidth}]}>
