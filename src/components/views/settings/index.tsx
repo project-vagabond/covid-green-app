@@ -15,7 +15,7 @@ import {HIDE_DEBUG} from '@env';
 import {getReadableVersion} from 'react-native-device-info';
 
 import {AppIcons} from 'assets/icons';
-import {Scrollable} from 'components/templates/scrollable';
+import {PinnedBottom} from 'components/templates/pinned';
 import {Card} from 'components/atoms/card';
 import {Spacing} from 'components/atoms/layout';
 import {colors, text, shadows} from 'theme';
@@ -139,10 +139,10 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const version = getReadableVersion();
 
   return (
-    <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA">
+    <PinnedBottom heading={t('settings:title')} style={styles.container}>
       {settings.map((settingsList, listIndex) => (
-        <>
-          {!!listIndex && <Spacing s={20} key={`spacing-${listIndex}`} />}
+        <View style={styles.shadowWrapper}>
+          {!!listIndex && <Spacing s={12} key={`spacing-${listIndex}`} />}
           <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`}>
             {settingsList.map((item, index) => {
               const {id, title, label, hint, screen} = item;
@@ -171,19 +171,25 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
               );
             })}
           </Card>
-        </>
+        </View>
       ))}
-      <View style={styles.flex} />
-      <Text style={text.default} onPress={versionPressHandler}>
+      <Text style={styles.appVersion} onPress={versionPressHandler}>
         App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version}
       </Text>
-    </Scrollable>
+    </PinnedBottom>
   );
 };
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1
+  container: {
+    flex: 1,
+    backgroundColor: colors.background
+  },
+  shadowWrapper: {
+    // Allow space so Card shadows don't get clipped
+    marginHorizontal: 3,
+    marginTop: 2,
+    marginBottom: 8
   },
   list: {
     flexGrow: 0,
@@ -209,5 +215,9 @@ const styles = StyleSheet.create({
   iconSize: {
     width: 24,
     height: 24
+  },
+  appVersion: {
+    ...text.default,
+    marginBottom: 8
   }
 });
