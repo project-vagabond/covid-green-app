@@ -13,9 +13,7 @@ import {ChartData, AxisData} from '../organisms/tracker-charts';
 
 interface TrackerBarChartProps {
   title?: string;
-  label?: string;
-  hint?: string;
-  yesterday?: string;
+  description?: string;
   chartData: ChartData;
   axisData: AxisData;
   days?: number;
@@ -32,7 +30,7 @@ interface TrackerBarChartProps {
 const legendItemSize = 16;
 const nbsp = ' ';
 
-function formatLabel(value: number, suffix: string = '') {
+function formatLabel(value: number, suffix: string) {
   if (value >= 1000000) {
     const millions = parseFloat((value / 1000000).toFixed(1));
     return `${millions}m`;
@@ -58,17 +56,20 @@ function trimAxisData(axisData: any[], days: number) {
   return excessLength > 0 ? axisData.slice(excessLength) : axisData;
 }
 
+function roundNumber(num: number, places: number = 2) {
+  return num.toFixed(Number.isInteger(num) ? 0 : places);
+}
+
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
   chartData,
   axisData,
   averagesData,
-  hint,
-  yesterday,
+  description,
   rollingAverage = 0,
   days = 30,
   yMin = 5,
-  ySuffix,
+  ySuffix = '',
   intervalsCount = 6,
   primaryColor = '#CD4000',
   secondaryColor = '#ACAFC4',
@@ -85,12 +86,25 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     return null;
   }
 
-  const last = chartData[chartData.length - 1];
-  const labelString = `${last} ${yesterday}`;
+  const isAxisLabelHidden = (index: number, showIfLessDataThan: number = 0) =>
+    chartData.length > showIfLessDataThan &&
+    index % intervalsCount &&
+    index !== axisData.length - 1;
+
+  const dataSummary = axisData.reduce((summaryText, date, index) => {
+    if (isAxisLabelHidden(index)) {
+      return summaryText;
+    }
+    const stringStart = summaryText ? summaryText + ', ' : '';
+    return `${stringStart}${format(date, 'MMMM')} ${format(
+      date,
+      'do'
+    )}: ${roundNumber(chartData[index])}${ySuffix}`;
+  }, '');
 
   // Give x and y axis label text space to not get cropped
   const insetY = 8;
-  const insetX = 8;
+  const insetX = 6;
   const contentInset = {
     top: insetY,
     bottom: insetY,
@@ -101,6 +115,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   // Where numbers are very small, don't labels like "0.5", or make one case look huge
   const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
   const yMax = maxValue < yMin ? yMin : undefined;
+
+  const showLegend = !!(rollingAverage || averagesData);
 
   return (
     <>
@@ -113,8 +129,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
       <View
         style={styles.chartingRow}
         accessible
-        accessibilityHint={hint}
-        accessibilityLabel={labelString}>
+        accessibilityLabel={description}
+        accessibilityHint={dataSummary}>
         <YAxis
           style={styles.yAxis}
           data={chartData}
@@ -146,11 +162,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             scale={scaleBand}
             svg={{...xAxisSvg, y: 3}}
             formatLabel={(_, index) => {
-              if (
-                chartData.length > 10 &&
-                index % intervalsCount &&
-                index !== axisData.length - 1
-              ) {
+              if (isAxisLabelHidden(index, 10)) {
                 return '';
               }
               const date = new Date(axisData[index]);
@@ -163,7 +175,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             scale={scaleBand}
             svg={xAxisSvg}
             formatLabel={(_, index) => {
-              if (index % intervalsCount && index !== axisData.length - 1) {
+              if (isAxisLabelHidden(index)) {
                 return '';
               }
               const date = new Date(axisData[index]);
@@ -177,7 +189,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           />
         </View>
       </View>
-      {(!!rollingAverage || averagesData) && (
+      {!!showLegend && (
         <>
           <Spacing s={16} />
           <View style={styles.legend}>
