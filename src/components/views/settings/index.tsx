@@ -5,7 +5,6 @@ import {
   View,
   ViewStyle,
   Text,
-  FlatList,
   TouchableWithoutFeedback,
   Platform
 } from 'react-native';
@@ -17,6 +16,8 @@ import {getReadableVersion} from 'react-native-device-info';
 
 import {AppIcons} from 'assets/icons';
 import {Scrollable} from 'components/templates/scrollable';
+import {Card} from 'components/atoms/card';
+import {Spacing} from 'components/atoms/layout';
 import {colors, text, shadows} from 'theme';
 import {ScreenNames} from 'navigation';
 
@@ -68,49 +69,61 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
     init();
   }, []);
 
-  const settings: SettingLineItem[] = [
-    {
-      id: 'checkIn',
-      title: t('settings:healthLog'),
-      label: t('settings:healthLog'),
-      hint: t('settings:healthLogHint'),
-      screen: ScreenNames.HealthLogSettings
-    },
-    {
-      id: 'contactTracing',
-      title: t('settings:covidAlerts'),
-      label: t('settings:covidAlerts'),
-      hint: t('settings:covidAlertsHint'),
-      screen: ScreenNames.ContactTracingSettings
-    },
-    {
-      id: 'language',
-      title: t('settings:language'),
-      label: t('settings:language'),
-      hint: t('settings:languageHint'),
-      screen: ScreenNames.LanguageSetttings
-    },
-    {
-      id: 'metrics',
-      title: t('settings:metrics'),
-      label: t('settings:metrics'),
-      hint: t('settings:metricsHint'),
-      screen: ScreenNames.UsageSettings
-    },
-    {
-      id: 'privacy',
-      title: t('settings:privacyPolicy'),
-      label: t('settings:privacyPolicy'),
-      hint: t('settings:privacyPolicyHint'),
-      screen: ScreenNames.PrivacySettings
-    },
-    {
-      id: 'leave',
-      title: t('settings:leave'),
-      label: t('settings:leave'),
-      hint: t('settings:leaveHint'),
-      screen: ScreenNames.LeaveSettings
-    }
+  const settings: SettingLineItem[][] = [
+    [
+      {
+        id: 'checkIn',
+        title: t('settings:healthLog'),
+        label: t('settings:healthLog'),
+        hint: t('settings:healthLogHint'),
+        screen: ScreenNames.HealthLogSettings
+      },
+      {
+        id: 'contactTracing',
+        title: t('settings:covidAlerts'),
+        label: t('settings:covidAlerts'),
+        hint: t('settings:covidAlertsHint'),
+        screen: ScreenNames.ContactTracingSettings
+      },
+      {
+        id: 'language',
+        title: t('settings:language'),
+        label: t('settings:language'),
+        hint: t('settings:languageHint'),
+        screen: ScreenNames.LanguageSetttings
+      },
+      {
+        id: 'metrics',
+        title: t('settings:metrics'),
+        label: t('settings:metrics'),
+        hint: t('settings:metricsHint'),
+        screen: ScreenNames.UsageSettings
+      },
+      {
+        id: 'leave',
+        title: t('settings:leave'),
+        label: t('settings:leave'),
+        hint: t('settings:leaveHint'),
+        screen: ScreenNames.LeaveSettings
+      }
+    ],
+    [
+      {
+        id: 'privacy',
+        title: t('settings:privacyPolicy'),
+        label: t('settings:privacyPolicy'),
+        hint: t('settings:privacyPolicyHint'),
+        screen: ScreenNames.PrivacySettings
+      },
+      /* TODO: how it works here */
+      {
+        id: 'privacy2',
+        title: t('settings:privacyPolicy'),
+        label: t('settings:privacyPolicy'),
+        hint: t('settings:privacyPolicyHint'),
+        screen: ScreenNames.PrivacySettings
+      }
+    ]
   ];
 
   if (HIDE_DEBUG !== 'y' && showDebug) {
@@ -127,37 +140,39 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
 
   return (
     <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA">
-      <FlatList
-        style={styles.list}
-        data={settings}
-        renderItem={({item, index}) => {
-          const {id, title, label, hint, screen} = item;
+      {settings.map((settingsList, listIndex) => (
+        <>
+          {!!listIndex && <Spacing s={20} key={`spacing-${listIndex}`} />}
+          <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`}>
+            {settingsList.map((item, index) => {
+              const {id, title, label, hint, screen} = item;
 
-          const itemStyle: StyleProp<ViewStyle> = [styles.item];
-          if (index === settings.length - 1) {
-            itemStyle.push(styles.itemLast);
-          }
+              const itemStyle: StyleProp<ViewStyle> = [styles.item];
+              if (index === settingsList.length - 1) {
+                itemStyle.push(styles.itemLast);
+              }
 
-          return (
-            <TouchableWithoutFeedback
-              key={id}
-              accessibilityLabel={label}
-              accessibilityRole="button"
-              accessibilityHint={hint}
-              onPress={() => navigation.navigate(screen)}>
-              <View style={itemStyle}>
-                <Text style={styles.text}>{title}</Text>
-                <AppIcons.ArrowRight
-                  width={24}
-                  height={24}
-                  color={colors.purple}
-                />
-              </View>
-            </TouchableWithoutFeedback>
-          );
-        }}
-        keyExtractor={({id}) => id}
-      />
+              return (
+                <TouchableWithoutFeedback
+                  key={id}
+                  accessibilityLabel={label}
+                  accessibilityRole="button"
+                  accessibilityHint={hint}
+                  onPress={() => navigation.navigate(screen)}>
+                  <View style={itemStyle}>
+                    <Text style={styles.text}>{title}</Text>
+                    <AppIcons.ArrowRight
+                      width={24}
+                      height={24}
+                      color={colors.purple}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              );
+            })}
+          </Card>
+        </>
+      ))}
       <View style={styles.flex} />
       <Text style={text.default} onPress={versionPressHandler}>
         App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version}
