@@ -107,7 +107,9 @@ export const Permissions: FC<any> = () => {
     <Scrollable>
       <Spacing s={10} />
       <View>
-        <Text accessibilityRole={'header'} style={styles.title}>{t('onboarding:permissions:title')}</Text>
+        <Text accessibilityRole="header" style={styles.title}>
+          {t('onboarding:permissions:title')}
+        </Text>
         <Text style={styles.text}>{t('onboarding:permissions:line1')}</Text>
         <Spacing s={10} />
         <View style={styles.list}>

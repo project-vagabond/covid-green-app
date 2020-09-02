@@ -54,7 +54,9 @@ const Tour: FC<any> = () => {
             </TouchableWithoutFeedback>
           </View>
           <View style={styles.headerContent}>
-            <Text accessibilityRole={'header'} style={styles.heading}>{t('onboarding:tour:title')}</Text>
+            <Text accessibilityRole="header" style={styles.heading}>
+              {t('onboarding:tour:title')}
+            </Text>
           </View>
           <View style={styles.padded} />
         </View>

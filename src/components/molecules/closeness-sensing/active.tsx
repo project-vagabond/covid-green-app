@@ -26,7 +26,7 @@ export const Active: FC<{onboarding?: boolean}> = ({onboarding = false}) => {
       </View>
       <Spacing s={12} />
       <View style={sharedStyles.messageWrapper}>
-        <Text accessibilityRole={'header'} style={text.defaultBold}>
+        <Text accessibilityRole="header" style={text.defaultBold}>
           {t('closenessSensing:active:title')}
         </Text>
         <Spacing s={20} />
