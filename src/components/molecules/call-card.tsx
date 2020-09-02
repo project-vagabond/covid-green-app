@@ -14,7 +14,9 @@ export const CallCard: FC<CallCardProps> = ({onPress, message}) => {
     <Card type="empty" padding={{h: 16, r: 16}} onPress={onPress}>
       <View style={styles.row}>
         <BubbleIcons.CallGreen height={56} width={56} />
-        <Text style={[text.largeBold, styles.text]}>{message}</Text>
+        <View style={styles.textContainer}>
+          <Text style={[text.largeBold, styles.text]}>{message}</Text>
+        </View>
       </View>
     </Card>
   );
@@ -25,8 +27,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
+  textContainer: {
+    flex: 1
+  },
   text: {
-    paddingLeft: 20,
-    maxWidth: 260
+    paddingLeft: 20
   }
 });
