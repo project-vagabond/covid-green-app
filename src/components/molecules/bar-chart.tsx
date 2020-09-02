@@ -119,7 +119,10 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const showLegend = !!(rollingAverage || averagesData);
 
   return (
-    <>
+    <View
+      accessible
+      accessibilityLabel={description}
+      accessibilityHint={dataSummary}>
       {title && (
         <>
           <Text style={styles.title}>{title}</Text>
@@ -127,10 +130,9 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
         </>
       )}
       <View
-        style={styles.chartingRow}
-        accessible
-        accessibilityLabel={description}
-        accessibilityHint={dataSummary}>
+        accessibilityElementsHidden={true}
+        importantForAccessibility="no-hide-descendants"
+        style={styles.chartingRow}>
         <YAxis
           style={styles.yAxis}
           data={chartData}
@@ -224,7 +226,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           </View>
         </>
       )}
-    </>
+    </View>
   );
 };
 
