@@ -212,6 +212,8 @@
     "metricsHint": "View or amend settings for helpinig this app",
     "leave": "Delete My Data",
     "leaveHint": "Delete data and leave the application",
+    "tour": "Learn How The App Works",
+    "tourHint": "View a guide explaining how this app produces COVID Alerts",
     "status": {
       "title": "Status",
       "active": "Closeness Sensing is currently active.",

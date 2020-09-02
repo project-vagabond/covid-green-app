@@ -115,13 +115,12 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
         hint: t('settings:privacyPolicyHint'),
         screen: ScreenNames.PrivacySettings
       },
-      /* TODO: how it works here */
       {
-        id: 'privacy2',
-        title: t('settings:privacyPolicy'),
-        label: t('settings:privacyPolicy'),
-        hint: t('settings:privacyPolicyHint'),
-        screen: ScreenNames.PrivacySettings
+        id: 'tour',
+        title: t('settings:tour'),
+        label: t('settings:tour'),
+        hint: t('settings:tourHint'),
+        screen: ScreenNames.Tour
       }
     ]
   ];
