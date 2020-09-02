@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   text: {
-    paddingLeft: 20
+    paddingLeft: 20,
+    maxWidth: 260
   }
 });
