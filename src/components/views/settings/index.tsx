@@ -138,9 +138,12 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const version = getReadableVersion();
 
   return (
-    <PinnedBottom heading={t('settings:title')} style={styles.container}>
+    <PinnedBottom
+      heading={t('settings:title')}
+      containerStyle={styles.container}
+      contentStyle={styles.shadowWrapper}>
       {settings.map((settingsList, listIndex) => (
-        <View style={styles.shadowWrapper}>
+        <>
           {!!listIndex && <Spacing s={12} key={`spacing-${listIndex}`} />}
           <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`}>
             {settingsList.map((item, index) => {
@@ -170,7 +173,7 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
               );
             })}
           </Card>
-        </View>
+        </>
       ))}
       <Text style={styles.appVersion} onPress={versionPressHandler}>
         App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version}
@@ -186,7 +189,6 @@ const styles = StyleSheet.create({
   },
   shadowWrapper: {
     // Allow space so Card shadows don't get clipped
-    marginHorizontal: 3,
     marginTop: 2,
     marginBottom: 8
   },
@@ -217,6 +219,6 @@ const styles = StyleSheet.create({
   },
   appVersion: {
     ...text.default,
-    marginBottom: 8
+    marginBottom: 12
   }
 });
