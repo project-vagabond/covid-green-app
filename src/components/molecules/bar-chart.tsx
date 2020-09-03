@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import Svg, {Line, Rect} from 'react-native-svg';
-import {YAxis, XAxis} from 'react-native-svg-charts';
+import {YAxis, XAxis, LineChart} from 'react-native-svg-charts';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
 
@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
   legendLabel: {
     ...text.small,
     textAlign: 'left',
-    marginLeft: 8
+    marginLeft: 8,
+    lineHeight: 15
   }
 });
