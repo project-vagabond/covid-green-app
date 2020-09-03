@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
   StyleSheet,
   StyleProp,
@@ -140,11 +140,14 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const version = getReadableVersion();
 
   return (
-    <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA" scrollStyle={styles.scroll}>
+    <Scrollable
+      heading={t('settings:title')}
+      backgroundColor="#FAFAFA"
+      scrollStyle={styles.scroll}>
       {settings.map((settingsList, listIndex) => (
-        <>
-          {!!listIndex && <Spacing s={20} key={`spacing-${listIndex}`} />}
-          <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`} style={styles.card}>
+        <Fragment key={`list-${listIndex}`}>
+          {!!listIndex && <Spacing s={20} />}
+          <Card padding={{h: 0, v: 4, r: 0}} style={styles.card}>
             {settingsList.map((item, index) => {
               const {id, title, label, hint, screen} = item;
 
@@ -172,7 +175,7 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
               );
             })}
           </Card>
-        </>
+        </Fragment>
       ))}
       <View style={styles.flex} />
       <Spacing s={20} />
