@@ -11,13 +11,15 @@ import {
 } from 'react-native';
 import Modal, {ModalProps} from 'react-native-modal';
 import {useSafeArea} from 'react-native-safe-area-context';
+import {useTranslation} from 'react-i18next';
 
 import {BasicItem} from 'providers/settings';
+import {useFocusRef} from 'hooks/accessibility';
 
 import {Spacing} from 'components/atoms/layout';
 
 import {text, colors} from 'theme';
-import Icons, {AppIcons} from 'assets/icons';
+import {AppIcons} from 'assets/icons';
 
 interface DropdownModalProps extends Partial<ModalProps> {
   close?: boolean;
@@ -47,20 +49,25 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   itemRenderer,
   instructions
 }) => {
+  const {t} = useTranslation();
   const insets = useSafeArea();
   const searchInputRef = useRef<TextInput>(null);
+  const ref = useFocusRef();
 
   useEffect(() => {
     searchInputRef.current?.focus();
   }, []);
 
   const renderItem = (item: BasicItem, index: number) => {
-    const {label, value} = item;
+    const {label, value, hint} = item;
     const color = value === selectedValue ? colors.purple : colors.text;
 
     if (!item.value) {
       return (
-        <View key={`item_${index}`} style={listStyles.row}>
+        <View
+          accessibilityRole="none"
+          key={`item_${index}`}
+          style={listStyles.row}>
           <Text>-</Text>
         </View>
       );
@@ -68,6 +75,9 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
 
     return (
       <TouchableWithoutFeedback
+        accessibilityRole="radio"
+        accessibilityLabel={hint || label}
+        accessibilityHint={value === selectedValue ? t('common:selected') : ''}
         key={`item_${index}`}
         onPress={() => onSelect(value)}>
         <View
@@ -130,15 +140,17 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
           <View style={styles.closeIconWrapper}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
-              accessibilityHint={`Close ${title}`}
-              accessibilityLabel={`Close ${title}`}
+              accessibilityLabel={t('accessibility:close')}
+              accessibilityHint={t('accessibility:closeHint')}
               onPress={onClose}>
               <View>
                 <AppIcons.Close width={28} height={28} color={colors.text} />
               </View>
             </TouchableWithoutFeedback>
           </View>
-          <Text style={text.small}>{title}</Text>
+          <Text ref={ref} accessibilityRole="header" style={text.small}>
+            {title}
+          </Text>
         </View>
         {search && (
           <>

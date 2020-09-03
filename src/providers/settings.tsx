@@ -24,6 +24,7 @@ export interface BasicItem {
   label: string;
   value: any;
   freeText?: boolean;
+  hint?: string;
 }
 
 export interface AppConfig {

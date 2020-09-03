@@ -24,7 +24,7 @@ export const Heading: React.FC<HeadingProps> = ({
 
   return (
     <>
-      <Text accessibilityRole="button" ref={ref} style={styles.heading}>
+      <Text accessibilityRole="header" ref={ref} style={styles.heading}>
         {text}
       </Text>
       <View style={[styles.line, !!lineWidth && {width: lineWidth}]}>
