@@ -1,6 +1,7 @@
 {
   "common": {
     "name": "COVID Alert NY",
+    "longName": "COVID Alert New York",
     "url": "https://CovidAlertNY.health.ny.gov",
     "message": "Help keep your fellow NYers safe from COVID-19 by flattening the curve. Get the COVID Alert NY app:",
     "networkError": "Connection issue. Please check your internet connection and try again.",
@@ -45,10 +46,10 @@
     "settingsLanguage": "My Language"
   },
   "navbar": {
-    "settings": "Settings",
-    "settingsHint": "View or amend application settings",
     "back": "Back",
-    "backHint": "Navigate back to previous screen"
+    "backHint": "Navigate back to previous screen",
+    "share": "Share",
+    "shareText": "Share this app with friends.\nHelp keep NY Safe."
   },
   "tabBar": {
     "updates": "NY COVID Data",
