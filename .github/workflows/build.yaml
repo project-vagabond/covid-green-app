@@ -225,6 +225,7 @@ jobs:
         env:
           FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
         run: |
+          cd ios
           . .env.default
           mkdir -p ~/.fastlane/spaceship/${FASTLANE_USER}
           echo "${{ secrets.FASTLANE_SESSION_FILE }}" | base64 -d -o ~/.fastlane/spaceship/${FASTLANE_USER}/cookie
