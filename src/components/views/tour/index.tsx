@@ -110,6 +110,7 @@ const Tour: FC<any> = () => {
               setAccessibilityFocusRef(ref);
             }}>
             <Text
+              maxFontSizeMultiplier={1.2}
               style={[
                 styles.buttonText,
                 position === 0 ? styles.hidden : styles.visible
@@ -168,6 +169,7 @@ const Tour: FC<any> = () => {
               accessibilityHint="Closes How it works"
               onPress={onClose}>
               <Text
+                maxFontSizeMultiplier={1.2}
                 style={[
                   styles.buttonText,
                   position === statements.length - 1

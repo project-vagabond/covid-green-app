@@ -17,8 +17,8 @@ interface HeadingProps {
 export const Heading: React.FC<HeadingProps> = ({
   text,
   lineWidth,
-  accessibilityFocus = false,
-  accessibilityRefocus = false
+  accessibilityFocus = true,
+  accessibilityRefocus = true
 }) => {
   const [ref] = useFocusRef({accessibilityFocus, accessibilityRefocus});
 

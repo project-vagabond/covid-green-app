@@ -77,7 +77,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
       <TouchableWithoutFeedback
         accessibilityRole="radio"
         accessibilityLabel={hint || label}
-        accessibilityHint={value === selectedValue ? t('common:selected') : ''}
+        accessibilityState={{selected: value === selectedValue}}
         key={`item_${index}`}
         onPress={() => onSelect(value)}>
         <View
