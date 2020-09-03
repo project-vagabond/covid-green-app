@@ -175,7 +175,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             data={chartData}
             contentInset={contentInset}
             scale={scaleBand}
-            svg={{...xAxisSvg}}
+            svg={xAxisSvg}
             formatLabel={(_, index) => {
               if (isAxisLabelHidden(index)) {
                 return '';
