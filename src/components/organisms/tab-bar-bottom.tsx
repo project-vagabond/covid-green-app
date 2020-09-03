@@ -98,7 +98,7 @@ export const TabBarBottom: FC<any> = ({navigation, state}) => {
     },
     {
       label: t('tabBar:symptomCheck'),
-      hint: t('tabBar:symptomCheckerHint'),
+      hint: t('tabBar:symptomCheckHint'),
       icon: {
         inactive: checkInactive,
         active: checkActive

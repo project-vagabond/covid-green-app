@@ -53,8 +53,10 @@ const Tour: FC<any> = () => {
           <View style={[styles.padded, styles.close]}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
-              accessibilityLabel="Close"
-              accessibilityHint="Closes How it works"
+              accessibilityLabel={t('common:close')}
+              accessibilityHint={`${t('common:close')} ${t(
+                'onboarding:tour:title'
+              )}`}
               onPress={onClose}
               style={styles.close}>
               <View>
@@ -104,7 +106,7 @@ const Tour: FC<any> = () => {
         <View style={styles.button}>
           <TouchableWithoutFeedback
             accessibilityRole="button"
-            accessibilityHint="Go to previous page"
+            accessibilityHint={t('onboarding:tour:previousHint')}
             onPress={() => {
               pager.current?.setPage(position - 1);
               setAccessibilityFocusRef(ref);
@@ -122,8 +124,11 @@ const Tour: FC<any> = () => {
         {/* TODO: a11y */}
         <View
           accessible
-          accessibilityLabel="Page selector"
-          accessibilityHint={`Page ${position + 1} or ${statements.length}`}
+          accessibilityLabel={t('onboarding:tour:pageSelector')}
+          accessibilityHint={t('onboarding:tour:currentPage', {
+            page: position + 1,
+            total: statements.length
+          })}
           accessibilityRole="adjustable"
           style={styles.dots}>
           {statements.map((_, index) =>
@@ -144,7 +149,7 @@ const Tour: FC<any> = () => {
           <View style={styles.button}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
-              accessibilityHint="Go to next page"
+              accessibilityHint={t('onboarding:tour:nextHint')}
               onPress={() => {
                 pager.current?.setPage(position + 1);
                 setAccessibilityFocusRef(ref);
@@ -165,8 +170,10 @@ const Tour: FC<any> = () => {
           <View style={styles.button}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
-              accessibilityLabel="Close"
-              accessibilityHint="Closes How it works"
+              accessibilityLabel={t('common:close')}
+              accessibilityHint={`${t('common:close')} ${t(
+                'onboarding:tour:title'
+              )}`}
               onPress={onClose}>
               <Text
                 maxFontSizeMultiplier={1.2}

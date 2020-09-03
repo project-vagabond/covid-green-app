@@ -23,7 +23,8 @@
       "timestampTitle": "Check Date & Time",
       "timestamp": "We couldn't verify your device. Please check it's set to the correct date and time, and try again."
     },
-    "continue": "Continue"
+    "continue": "Continue",
+    "close": "Close"
   },
   "viewNames": {
     "introduction": "Help Stop the Spread of COVID-19 in Your Community",
@@ -53,9 +54,13 @@
   },
   "tabBar": {
     "updates": "NY COVID Data",
+    "updatesHint": "NY figures",
     "symptomCheck": "My Health Log",
+    "symptomCheckHint": "Log your symptoms",
     "contactTracing": "My COVID Alerts",
-    "settings": "App\nSettings"
+    "contactTracingHint": "Closeness settinngs info",
+    "settings": "App\nSettings",
+    "settingsHint": "View or update app settigns"
   },
   "onboarding": {
     "introduction": {
@@ -98,8 +103,12 @@
         "Each day, every phone that has the app compares its own list of close contact codes to the list of \"infected\" codes.\n\nIf there's a match, the app displays a COVID Alert."
       ],
       "previous": "Previous",
+      "previousHint": "Go to previous page",
       "next": "Next",
-      "close": "Close"
+      "nextHint": "Go to next page",
+      "close": "Close",
+      "pageSelector": "Page selector",
+      "currentPage": "Page {{page}} of {{total}}"
     },
     "intro": {
       "title": "With COVID Alert NY you can do 3 things to help fight COVID-19:",
@@ -444,7 +453,7 @@
   },
   "county": {
     "label": "New York State County you live in",
-    "dropdownPlaceholder": "Select your county",
+    "dropdownPlaceholder": "Choose your county",
     "searchPlaceholder": "Search",
     "noResults": "No results found for this search.\nTry with something else.",
     "notinny": "Not in New York State"

@@ -68,7 +68,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         accessibilityLabel={
           value === '' ? label || '' : `${label || ''}::${displayValue}`
         }
-        accessibilityHint={t('accessibility:openModal')}
+        accessibilityHint={placeholder}
         onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.content}>

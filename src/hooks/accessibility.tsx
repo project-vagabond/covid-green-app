@@ -49,9 +49,7 @@ export function useFocusRef<T = any>(
 
   useFocusEffect(
     useCallback(() => {
-      console.log('here');
       if (accessibilityFocus && accessibilityRefocus && isFocused) {
-        console.log('aa');
         const firstRef = refs.find(
           (ref) => ref.current && findNodeHandle(ref.current)
         );

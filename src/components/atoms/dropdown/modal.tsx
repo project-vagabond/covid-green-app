@@ -13,6 +13,7 @@ import Modal, {ModalProps} from 'react-native-modal';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 
+import {useApplication} from 'providers/context';
 import {BasicItem} from 'providers/settings';
 import {useFocusRef} from 'hooks/accessibility';
 
@@ -51,11 +52,16 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
 }) => {
   const {t} = useTranslation();
   const insets = useSafeArea();
+  const {
+    accessibility: {screenReaderEnabled}
+  } = useApplication();
   const searchInputRef = useRef<TextInput>(null);
-  const ref = useFocusRef();
+  const [ref] = useFocusRef();
 
   useEffect(() => {
-    searchInputRef.current?.focus();
+    if (search && !screenReaderEnabled) {
+      searchInputRef.current?.focus();
+    }
   }, []);
 
   const renderItem = (item: BasicItem, index: number) => {
@@ -140,8 +146,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
           <View style={styles.closeIconWrapper}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
-              accessibilityLabel={t('accessibility:close')}
-              accessibilityHint={t('accessibility:closeHint')}
+              accessibilityLabel={`${t('common:close')} ${title}`}
               onPress={onClose}>
               <View>
                 <AppIcons.Close width={28} height={28} color={colors.text} />

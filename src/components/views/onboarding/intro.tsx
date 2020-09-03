@@ -32,7 +32,6 @@ export const Introduction: FC<any> = () => {
     returnObjects: true
   });
 
-  console.log(content[0].title);
   return (
     <Scrollable scrollStyle={style.page}>
       <View style={styles.fill}>
