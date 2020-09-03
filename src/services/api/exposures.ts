@@ -121,6 +121,11 @@ export const uploadExposureKeys = async (uploadToken: string, symptomDate: strin
     padding: RNSimpleCrypto.utils.convertArrayBufferToBase64(padding)
   };
 
+  if (!publishData.temporaryExposureKeys.length) {
+    console.log('No keys to upload, aborting upload', publishData);
+    return;
+  }
+
   console.log(`uploading keys to ${urls.keyPublish}/publish`, publishData);
 
   const resp = await fetch(`${urls.keyPublish}/publish`, {
