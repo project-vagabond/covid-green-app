@@ -225,6 +225,7 @@ jobs:
         env:
           FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
         run: |
+          mkdir -p ~/.fastlane/spaceship/${FASTLANE_USER}
           echo "${{ secrets.FASTLANE_SESSION_FILE }}" | base64 -d -o ~/.fastlane/spaceship/${FASTLANE_USER}/cookie
           fastlane spaceauth -u $FASTLANE_USER |grep export > fastlane_session.sh
           source fastlane_session.sh
