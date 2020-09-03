@@ -15,7 +15,7 @@ import {HIDE_DEBUG} from '@env';
 import {getReadableVersion} from 'react-native-device-info';
 
 import {AppIcons} from 'assets/icons';
-import {PinnedBottom} from 'components/templates/pinned';
+import {Scrollable} from 'components/templates/scrollable';
 import {Card} from 'components/atoms/card';
 import {Spacing} from 'components/atoms/layout';
 import {colors, text, shadows} from 'theme';
@@ -140,13 +140,10 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const version = getReadableVersion();
 
   return (
-    <PinnedBottom
-      heading={t('settings:title')}
-      containerStyle={styles.container}
-      contentStyle={styles.shadowWrapper}>
+    <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA">
       {settings.map((settingsList, listIndex) => (
         <>
-          {!!listIndex && <Spacing s={12} key={`spacing-${listIndex}`} />}
+          {!!listIndex && <Spacing s={20} key={`spacing-${listIndex}`} />}
           <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`}>
             {settingsList.map((item, index) => {
               const {id, title, label, hint, screen} = item;
@@ -177,22 +174,17 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
           </Card>
         </>
       ))}
-      <Text style={styles.appVersion} onPress={versionPressHandler}>
+      <View style={styles.flex} />
+      <Text style={text.default} onPress={versionPressHandler}>
         App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version}
       </Text>
-    </PinnedBottom>
+    </Scrollable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.background
-  },
-  shadowWrapper: {
-    // Allow space so Card shadows don't get clipped
-    marginTop: 2,
-    marginBottom: 8
+  flex: {
+    flex: 1
   },
   list: {
     flexGrow: 0,
@@ -218,9 +210,5 @@ const styles = StyleSheet.create({
   iconSize: {
     width: 24,
     height: 24
-  },
-  appVersion: {
-    ...text.default,
-    marginBottom: 12
   }
 });
