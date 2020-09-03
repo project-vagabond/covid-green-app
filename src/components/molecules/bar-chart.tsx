@@ -70,7 +70,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   days = 30,
   yMin = 5,
   ySuffix = '',
-  intervalsCount = 6,
+  intervalsCount = 7,
   primaryColor = '#CD4000',
   secondaryColor = '#ACAFC4',
   backgroundColor = colors.white
@@ -175,7 +175,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             data={chartData}
             contentInset={contentInset}
             scale={scaleBand}
-            svg={xAxisSvg}
+            svg={{...xAxisSvg}}
             formatLabel={(_, index) => {
               if (isAxisLabelHidden(index)) {
                 return '';
