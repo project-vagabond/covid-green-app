@@ -47,7 +47,12 @@ const Tour: FC<any> = () => {
       <View style={styles.fill}>
         <View style={[styles.header, styles.row]}>
           <View style={[styles.padded, styles.close]}>
-            <TouchableWithoutFeedback onPress={onClose} style={styles.close}>
+            <TouchableWithoutFeedback
+              onPress={onClose}
+              style={styles.close}
+              accessibilityRole="button"
+              accessibilityLabel={t('onboarding:tour:close')}
+              accessibilityHint={t('onboarding:tour:closeHint')}>
               <View>
                 <AppIcons.Close width={28} height={28} color={colors.purple} />
               </View>

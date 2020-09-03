@@ -98,7 +98,8 @@
       ],
       "previous": "Previous",
       "next": "Next",
-      "close": "Close"
+      "close": "Close How it Works",
+      "closeHint": "Close How it Works"
     },
     "intro": {
       "title": "With COVID Alert NY you can do 3 things to help fight COVID-19:",
