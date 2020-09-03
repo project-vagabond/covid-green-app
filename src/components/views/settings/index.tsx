@@ -140,11 +140,11 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
   const version = getReadableVersion();
 
   return (
-    <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA">
+    <Scrollable heading={t('settings:title')} backgroundColor="#FAFAFA" scrollStyle={styles.scroll}>
       {settings.map((settingsList, listIndex) => (
         <>
           {!!listIndex && <Spacing s={20} key={`spacing-${listIndex}`} />}
-          <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`}>
+          <Card padding={{h: 0, v: 4, r: 0}} key={`list-${listIndex}`} style={styles.card}>
             {settingsList.map((item, index) => {
               const {id, title, label, hint, screen} = item;
 
@@ -175,9 +175,11 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
         </>
       ))}
       <View style={styles.flex} />
+      <Spacing s={20} />
       <Text style={text.default} onPress={versionPressHandler}>
         App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version}
       </Text>
+      <Spacing s={8} />
     </Scrollable>
   );
 };
@@ -185,6 +187,13 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
 const styles = StyleSheet.create({
   flex: {
     flex: 1
+  },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'flex-start'
+  },
+  card: {
+    flex: 0
   },
   list: {
     flexGrow: 0,
