@@ -97,8 +97,11 @@
         "Each day, every phone that has the app compares its own list of close contact codes to the list of \"infected\" codes.\n\nIf there's a match, the app displays a COVID Alert."
       ],
       "previous": "Previous",
+      "previousHint": "Previous",
       "next": "Next",
-      "close": "Close How it Works",
+      "nextHint": "Next",
+      "close": "Close",
+      "closeLabel": "Close How it Works",
       "closeHint": "Close How it Works"
     },
     "intro": {

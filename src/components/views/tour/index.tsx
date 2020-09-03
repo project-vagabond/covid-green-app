@@ -51,7 +51,7 @@ const Tour: FC<any> = () => {
               onPress={onClose}
               style={styles.close}
               accessibilityRole="button"
-              accessibilityLabel={t('onboarding:tour:close')}
+              accessibilityLabel={t('onboarding:tour:closeLabel')}
               accessibilityHint={t('onboarding:tour:closeHint')}>
               <View>
                 <AppIcons.Close width={28} height={28} color={colors.purple} />
@@ -95,6 +95,9 @@ const Tour: FC<any> = () => {
       <View style={[styles.row, styles.controls]}>
         <View style={styles.button}>
           <TouchableWithoutFeedback
+            accessibilityRole="button"
+            accessibilityLabel={t('onboarding:tour:previous')}
+            accessibilityHint={t('onboarding:tour:previousHint')}
             onPress={() => pager.current?.setPage(position - 1)}>
             <Text
               style={[
@@ -123,6 +126,9 @@ const Tour: FC<any> = () => {
         {position < statements.length - 1 && (
           <View style={styles.button}>
             <TouchableWithoutFeedback
+              accessibilityRole="button"
+              accessibilityLabel={t('onboarding:tour:next')}
+              accessibilityHint={t('onboarding:tour:nextHint')}
               onPress={() => pager.current?.setPage(position + 1)}>
               <Text
                 style={[
@@ -138,7 +144,11 @@ const Tour: FC<any> = () => {
         )}
         {position === statements.length - 1 && (
           <View style={styles.button}>
-            <TouchableWithoutFeedback onPress={onClose}>
+            <TouchableWithoutFeedback
+              accessibilityRole="button"
+              accessibilityLabel={t('onboarding:tour:closeLabel')}
+              accessibilityHint={t('onboarding:tour:closeHint')}
+              onPress={onClose}>
               <Text
                 style={[
                   styles.buttonText,
