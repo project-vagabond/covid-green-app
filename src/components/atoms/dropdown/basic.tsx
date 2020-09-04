@@ -55,10 +55,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
   const selectedItem = (value && items.find((i) => i.value === value)) || null;
 
   let displayValue = placeholder;
+  let a11yValue = placeholder;
   if (forceDisplay) {
     displayValue = forceDisplay();
+    a11yValue = forceDisplay();
   } else if (selectedItem) {
     displayValue = (display && display(selectedItem)) || selectedItem.label;
+    a11yValue =
+      (display && display(selectedItem)) ||
+      selectedItem.hint ||
+      selectedItem.label;
   }
 
   return (
@@ -66,7 +72,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       <TouchableWithoutFeedback
         accessibilityRole="button"
         accessibilityLabel={
-          value === '' ? label || '' : `${label || ''}::${displayValue}`
+          value === '' ? label || '' : `${label || ''}, ${a11yValue}`
         }
         accessibilityHint={placeholder}
         onPress={() => setModalVisible(true)}>
@@ -92,6 +98,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       {isModalVisible && (
         <DropdownModal
           title={title || placeholder}
+          titleHint={label}
           items={items}
           selectedValue={value}
           onSelect={onItemSelected}
