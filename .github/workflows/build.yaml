@@ -186,7 +186,8 @@ jobs:
               "KEY_DOWNLOAD_HOST": "${{ secrets.KEY_DOWNLOAD_HOST }}",
               "SIGNING_KEY_P12_PASSWORD": "${{ secrets.SIGNING_KEY_P12_PASSWORD }}",
               "FASTLANE_USER": "${{ secrets.FASTLANE_USER }}",
-              "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD": "${{ secrets.FASTLANE_PASSWORD }}",
+              "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD": "${{ secrets.FASTLANE_APP_PASSWORD }}",
+              "FASTLANE_PASSWORD": "${{ secrets.FASTLANE_PASSWORD }}",
               "CODEPUSH_KEY": "${{ secrets.CODEPUSH_KEY }}",
               "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"              
             }
@@ -225,7 +226,7 @@ jobs:
         env:
           FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
           FASTLANE_PASSWORD: "${{ secrets.FASTLANE_PASSWORD }}"
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: "${{ secrets.FASTLANE_PASSWORD }}"
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: "${{ secrets.FASTLANE_APP_PASSWORD }}"
         run: |
           cd ios
           . .env.default
