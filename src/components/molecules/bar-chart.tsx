@@ -272,12 +272,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 16
+    marginHorizontal: 10
   },
   legendLabel: {
     ...text.small,
     textAlign: 'left',
-    marginLeft: 8,
-    lineHeight: 15
+    marginLeft: 8
   }
 });
