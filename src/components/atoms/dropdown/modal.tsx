@@ -120,7 +120,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
 
       if (search.term && !items.length) {
         return (
-          <View style={listStyles.contentWrapper}>
+          <View accessibilityElementsHidden style={listStyles.contentWrapper}>
             <Text style={listStyles.noResults}>{search?.noResults}</Text>
           </View>
         );
@@ -166,6 +166,12 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
             <View style={styles.search}>
               <TextInput
                 ref={searchInputRef}
+                accessibilityRole="search"
+                accessibilityLabel={
+                  search.term && !items.length
+                    ? t('county:noResultsHint')
+                    : t('county:searchHint')
+                }
                 style={[
                   styles.searchInput,
                   !!search.term && styles.searchUnderlined
