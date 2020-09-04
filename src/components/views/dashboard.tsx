@@ -7,6 +7,7 @@ import {useTranslation} from 'react-i18next';
 import {useApplication} from 'providers/context';
 import {useAppState} from 'hooks/app-state';
 import {useSymptomChecker} from 'hooks/symptom-checker';
+import {useFocusRef} from 'hooks/accessibility';
 
 import {Button} from 'components/atoms/button';
 import {Heading} from 'components/atoms/heading';
@@ -38,6 +39,10 @@ export const Dashboard: FC<any> = ({navigation}) => {
   const [appState] = useAppState();
   const isFocused = useIsFocused();
   const exposure = useExposure();
+  const [ref1, ref2, ref3, ref4] = useFocusRef(
+    {accessibilityFocus: true, accessibilityRefocus: true},
+    4
+  );
   const {getNextScreen} = useSymptomChecker();
 
   useFocusEffect(
@@ -73,25 +78,26 @@ export const Dashboard: FC<any> = ({navigation}) => {
       refresh={{refreshing, onRefresh}}>
       {exposure.tracingAvailable && (
         <>
-          <TracingAvailable />
+          <TracingAvailable ref={ref1} />
           <Spacing s={16} />
         </>
       )}
       {exposure.contacts && exposure.contacts.length > 0 && (
         <>
-          <CloseContactWarning />
+          <CloseContactWarning ref={ref2} />
           <Spacing s={16} />
         </>
       )}
       {exposure.initialised && !exposure.enabled && (
         <>
-          <AlertInformation />
+          <AlertInformation ref={ref3} />
           <Spacing s={16} />
         </>
       )}
       {!completedChecker && (
         <>
           <CheckInCard
+            ref={ref4}
             onPress={() =>
               navigation.navigate('symptoms', {screen: getNextScreen()})
             }
@@ -111,7 +117,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
       {data && (
         <>
           <Heading
-            accessibilityFocus
+            accessibilityFocus={false}
             lineWidth={75}
             text={t('dashboard:stats:title')}
           />
@@ -124,7 +130,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
           <Spacing s={20} />
           <Text style={text.defaultBold}>{t('dashboard:stats:subtitle')}</Text>
           <Spacing s={18} />
-          <TrackerCharts data={data} county={county} />
+          <TrackerCharts data={data} county={county.split('_')[0]} />
         </>
       )}
     </Scrollable>

@@ -1,23 +1,25 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Alert} from 'react-native';
 import {useExposure} from 'react-native-exposure-notification-service';
 import * as SecureStore from 'expo-secure-store';
 
-import {text, colors} from 'theme';
-
-import {Scrollable} from 'components/templates/scrollable';
-import {Button} from 'components/atoms/button';
-import {Spacing} from 'components/atoms/spacing';
-import {Markdown} from 'components/atoms/markdown';
-import {AppIcons, StateIcons} from 'assets/icons';
 import {ScreenNames} from 'navigation';
-import {useApplication} from 'providers/context';
 import {register} from 'services/api';
+import {useApplication, StorageKeys} from 'providers/context';
+import {useFocusRef} from 'hooks/accessibility';
+
+import {Button} from 'components/atoms/button';
+import {Markdown} from 'components/atoms/markdown';
+import {Spacing} from 'components/atoms/layout';
+import {Scrollable} from 'components/templates/scrollable';
+import {LearnHowItWorks} from 'components/views/tour/learn-how-it-works';
+
+import {text, colors} from 'theme';
+import {AppIcons, StateIcons} from 'assets/icons';
 
 import {styles} from './styles';
-import {LearnHowItWorks} from 'components/views/tour/learn-how-it-works';
 
 enum RegistrationError {
   'INVALID' = 'Invalid verification',
@@ -29,10 +31,17 @@ export const Permissions: FC<any> = () => {
   const nav = useNavigation();
   const app = useApplication();
   const exposure = useExposure();
+  const [ref] = useFocusRef();
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [alertInfo, setAlertInfo] = useState<{title: string; message: string}>({
+    title: t('common:tryAgain:title'),
+    message: t('common:tryAgain:description')
+  });
 
   useEffect(() => {
     if (!exposure.supported && exposure.canSupport) {
-      SecureStore.setItemAsync('supportPossible', 'true');
+      SecureStore.setItemAsync(StorageKeys.canSupportENS, 'true');
     }
   }, []);
 
@@ -44,9 +53,13 @@ export const Permissions: FC<any> = () => {
       const {token, refreshToken} = await register();
       console.log(token, refreshToken);
 
-      await SecureStore.setItemAsync('token', token);
-      await SecureStore.setItemAsync('refreshToken', refreshToken, {});
-      await SecureStore.setItemAsync('analyticsConsent', String(true), {});
+      await SecureStore.setItemAsync(StorageKeys.token, token);
+      await SecureStore.setItemAsync(
+        StorageKeys.refreshToken,
+        refreshToken,
+        {}
+      );
+      await SecureStore.setItemAsync(StorageKeys.analytics, String(true), {});
 
       await app.setContext({
         user: {
@@ -68,21 +81,15 @@ export const Permissions: FC<any> = () => {
     } catch (err) {
       app.hideActivityIndicator();
       console.log('Error registering device: ', err, err.message);
-      let title = t('common:tryAgain:title');
-      let message = t('common:tryAgain:description');
       try {
         const response = err.text && JSON.parse(await err.text());
         if (response && RegistrationError.TIMESTAMP === response.message) {
-          title = t('common:tryAgain:timestampTitle');
-          message = t('common:tryAgain:timestamp');
+          setAlertInfo({
+            title: t('common:tryAgain:timestampTitle'),
+            message: t('common:tryAgain:timestamp')
+          });
         }
-        Alert.alert(title, message, [
-          {
-            text: t('common:ok:label'),
-            style: 'default',
-            onPress: () => {}
-          }
-        ]);
+        setShowAlert(true);
         return false;
       } catch (e) {
         console.log('Error processing response');
@@ -91,10 +98,21 @@ export const Permissions: FC<any> = () => {
     }
   };
 
+  useEffect(() => {
+    if (showAlert) {
+      Alert.alert(alertInfo.title, alertInfo.message, [
+        {
+          text: t('common:ok:label'),
+          style: 'default',
+          onPress: (): void => setShowAlert(false)
+        }
+      ]);
+    }
+  }, [showAlert]);
+
   const handlePermissionsRequest = async () => {
     await exposure.askPermissions();
     const result = await handleRegistration(false);
-
     if (result) {
       nav.reset({
         index: 0,
@@ -107,7 +125,11 @@ export const Permissions: FC<any> = () => {
     <Scrollable>
       <Spacing s={10} />
       <View>
-        <Text accessibilityRole="header" style={styles.title}>
+        <Text
+          ref={ref}
+          accessible
+          accessibilityRole="header"
+          style={styles.title}>
           {t('onboarding:permissions:title')}
         </Text>
         <Text style={styles.text}>{t('onboarding:permissions:line1')}</Text>
@@ -120,7 +142,7 @@ export const Permissions: FC<any> = () => {
               color={colors.icons.gray}
             />
           </View>
-          <View style={styles.listContent}>
+          <View accessible style={styles.listContent}>
             <Markdown markdownStyles={MarkdownStyles}>
               {t('onboarding:permissions:track')}
             </Markdown>
@@ -135,7 +157,7 @@ export const Permissions: FC<any> = () => {
               color={colors.icons.gray}
             />
           </View>
-          <View style={styles.listContent}>
+          <View accessible style={styles.listContent}>
             <Markdown markdownStyles={MarkdownStyles}>
               {t('onboarding:permissions:notifications')}
             </Markdown>
