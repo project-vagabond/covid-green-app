@@ -33,16 +33,6 @@ export const Introduction: FC<any> = () => {
   });
 
   return (
-<<<<<<< HEAD
-    <Scrollable scrollStyle={style.page}>
-      <View style={styles.fill}>
-        <View style={[style.top, styles.relative, styles.index1]}>
-          <Text
-            accessibilityRole="header"
-            style={[styles.title, styles.introTitle]}>
-            {content[0].title}
-          </Text>
-=======
     <>
       {/**
        * In order to prevent scrollign the purple scollview over a gray background,
@@ -89,7 +79,6 @@ export const Introduction: FC<any> = () => {
             {t('onboarding:introduction:disclaimer')}
           </Markdown>
           <Spacing s={20} />
->>>>>>> 7fb1c37136d569599eb7599472f3b455224fd230
         </View>
         <View style={style.horizontal}>
           <Button onPress={() => nav.navigate(ScreenNames.Permissions)}>
