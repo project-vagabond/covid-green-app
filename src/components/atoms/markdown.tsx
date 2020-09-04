@@ -1,5 +1,11 @@
 import React, {ReactNode} from 'react';
-import {Text, StyleSheet, Linking} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  Linking,
+  AccessibilityInfo,
+  TouchableWithoutFeedback
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import M from 'react-native-easy-markdown';
@@ -7,6 +13,8 @@ import M from 'react-native-easy-markdown';
 import {Link} from 'components/atoms/link';
 import {markdownStyles as defaultMarkdownStyles, colors} from 'theme';
 import {WarningBullet} from './warning-bullet';
+import {useTranslation} from 'react-i18next';
+import {TFunction} from 'i18next';
 
 interface Markdown {
   style?: object;
@@ -37,12 +45,18 @@ const MarkdownLink = (
   title: string,
   children: any,
   key: string,
-  navigation: any
+  navigation: any,
+  t: TFunction
 ) => {
+  const hasScreenReader = AccessibilityInfo.isScreenReaderEnabled();
+
   const isHttp = href.startsWith('http');
   const isTel = href.startsWith('tel');
 
+  // Markdown titles like [text](http://site.com "Title here") will be override default accessibility labels
+
   if (isHttp || isTel) {
+    const linkHint = title || (isTel ? t('markdown:tel') : t('markdown:http'));
     const handle = isTel
       ? () => {
           const crossPlatformTarget = href.replace(/:(?=\d|\+)/, '://');
@@ -55,15 +69,31 @@ const MarkdownLink = (
           });
         };
 
-    return (
-      <Text key={key} onPress={handle}>
+    return hasScreenReader ? (
+      <TouchableWithoutFeedback
+        accessibilityRole="link"
+        accessibilityHint={linkHint}
+        accessibilityLabel={childrenAsText(children)}
+        onPress={handle}>
+        <Text>{children}</Text>
+      </TouchableWithoutFeedback>
+    ) : (
+      <Text
+        accessible={true}
+        accessibilityRole="link"
+        accessibilityHint={linkHint}
+        onPress={handle}>
         {children}
       </Text>
     );
   }
 
+  const navHint = title || t('markdown:navigate');
   return (
-    <Link key={key} onPress={() => navigation.navigate(href)}>
+    <Link
+      key={key}
+      onPress={() => navigation.navigate(href)}
+      a11yHint={navHint}>
       {children}
     </Link>
   );
@@ -78,9 +108,10 @@ export const Markdown: React.FC<Markdown> = ({
   children: C
 }) => {
   const navigation = useNavigation();
+  const {t} = useTranslation();
 
   const defaultRenderLink: RenderLink = (href, title, children, key) =>
-    MarkdownLink(href, title, children, key, navigation);
+    MarkdownLink(href, title, children, key, navigation, t);
 
   const combinedStyles = {
     ...defaultMarkdownStylesheet,
