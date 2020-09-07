@@ -46,7 +46,6 @@
   },
   "navbar": {
     "settings": "设置",
-    "settingsHint": "查看或修改应用设置",
     "back": "返回",
     "backHint": "返回到上一个屏幕",
     "share": "向朋友们分享此应用"
