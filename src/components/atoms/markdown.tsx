@@ -115,6 +115,7 @@ export const Markdown: React.FC<Markdown> = ({
     // Re-check state on app refocus to catch changes to device settings
     AppState.addEventListener('change', checkScreenReader);
     return () => AppState.removeEventListener('change', checkScreenReader);
+      checkScreenReader();
   }, []);
 
   const defaultRenderLink: RenderLink = (href, title, children, key) =>
