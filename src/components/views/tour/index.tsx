@@ -103,7 +103,7 @@ const Tour: FC<any> = () => {
         </ViewPager>
       </View>
       <View style={[styles.row, styles.controls]}>
-        <View style={styles.button}>
+        <View style={[styles.left, styles.button]}>
           <TouchableWithoutFeedback
             accessibilityRole="button"
             accessibilityHint={t('onboarding:tour:previousHint')}
@@ -121,16 +121,15 @@ const Tour: FC<any> = () => {
             </Text>
           </TouchableWithoutFeedback>
         </View>
-        {/* TODO: a11y */}
         <View
+          style={[styles.center, styles.dots]}
           accessible
           accessibilityLabel={t('onboarding:tour:pageSelector')}
           accessibilityHint={t('onboarding:tour:currentPage', {
             page: position + 1,
             total: statements.length
           })}
-          accessibilityRole="adjustable"
-          style={styles.dots}>
+          accessibilityRole="adjustable">
           {statements.map((_, index) =>
             position === index ? (
               <View
@@ -146,7 +145,7 @@ const Tour: FC<any> = () => {
           )}
         </View>
         {position < statements.length - 1 && (
-          <View style={styles.button}>
+          <View style={[styles.right, styles.button]}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
               accessibilityHint={t('onboarding:tour:nextHint')}
@@ -155,6 +154,7 @@ const Tour: FC<any> = () => {
                 setAccessibilityFocusRef(ref);
               }}>
               <Text
+                maxFontSizeMultiplier={1.2}
                 style={[
                   styles.buttonText,
                   position === statements.length - 1
@@ -167,7 +167,7 @@ const Tour: FC<any> = () => {
           </View>
         )}
         {position === statements.length - 1 && (
-          <View style={styles.button}>
+          <View style={[styles.right, styles.button]}>
             <TouchableWithoutFeedback
               accessibilityRole="button"
               accessibilityLabel={t('common:close')}
@@ -257,9 +257,20 @@ const styles = StyleSheet.create({
     borderColor: '#ededed',
     paddingBottom: 15
   },
+  left: {
+    width: '30%',
+    alignItems: 'flex-start'
+  },
+  center: {
+    width: '40%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  right: {
+    width: '30%',
+    alignItems: 'flex-end'
+  },
   dots: {
-    marginRight: 15,
-    flex: 10,
     flexDirection: 'row',
     justifyContent: 'center'
   },
