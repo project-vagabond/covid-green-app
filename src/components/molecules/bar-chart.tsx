@@ -205,7 +205,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
                   fill={secondaryColor}
                 />
               </Svg>
-              <Text style={styles.legendLabel}>
+              <Text maxFontSizeMultiplier={2} style={styles.legendLabel}>
                 {t('charts:legend:dailyTotal')}
               </Text>
             </View>
@@ -219,7 +219,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
                   stroke={primaryColor}
                 />
               </Svg>
-              <Text style={styles.legendLabel}>
+              <Text maxFontSizeMultiplier={2} style={styles.legendLabel}>
                 {t('charts:legend:averageLine')}
               </Text>
             </View>
