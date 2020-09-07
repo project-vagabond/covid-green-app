@@ -91,6 +91,7 @@ const MarkdownLink = (
       key={key}
       onPress={() => navigation.navigate(href)}
       a11yHint={title}
+      a11yRole="button">
       {children}
     </Link>
   );
