@@ -75,7 +75,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   backgroundColor = colors.white
 }) => {
   const {t} = useTranslation();
-  const intervalsCount = axisData.length > 30 ? 7 : 6;
+  const intervalsCount = axisData.length < 30 ? 7 : 6;
   const daysLimit = Math.min(days, chartData.length);
 
   chartData = trimData(chartData, daysLimit, rollingAverage);
