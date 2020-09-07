@@ -45,8 +45,7 @@ const MarkdownLink = (
   title: string,
   children: any,
   key: string,
-  navigation: any,
-  t: TFunction
+  navigation: any
 ) => {
   const hasScreenReader = AccessibilityInfo.isScreenReaderEnabled();
 
@@ -56,7 +55,6 @@ const MarkdownLink = (
   // Markdown titles like [text](http://site.com "Title here") will be override default accessibility labels
 
   if (isHttp || isTel) {
-    const linkHint = title || (isTel ? t('markdown:tel') : t('markdown:http'));
     const handle = isTel
       ? () => {
           const crossPlatformTarget = href.replace(/:(?=\d|\+)/, '://');
@@ -72,7 +70,7 @@ const MarkdownLink = (
     return hasScreenReader ? (
       <TouchableWithoutFeedback
         accessibilityRole="link"
-        accessibilityHint={linkHint}
+        accessibilityHint={title}
         accessibilityLabel={childrenAsText(children)}
         onPress={handle}>
         <Text>{children}</Text>
@@ -81,19 +79,18 @@ const MarkdownLink = (
       <Text
         accessible={true}
         accessibilityRole="link"
-        accessibilityHint={linkHint}
+        accessibilityHint={title}
         onPress={handle}>
         {children}
       </Text>
     );
   }
 
-  const navHint = title || t('markdown:navigate');
   return (
     <Link
       key={key}
       onPress={() => navigation.navigate(href)}
-      a11yHint={navHint}>
+      a11yHint={title}
       {children}
     </Link>
   );
@@ -108,10 +105,9 @@ export const Markdown: React.FC<Markdown> = ({
   children: C
 }) => {
   const navigation = useNavigation();
-  const {t} = useTranslation();
 
   const defaultRenderLink: RenderLink = (href, title, children, key) =>
-    MarkdownLink(href, title, children, key, navigation, t);
+    MarkdownLink(href, title, children, key, navigation);
 
   const combinedStyles = {
     ...defaultMarkdownStylesheet,

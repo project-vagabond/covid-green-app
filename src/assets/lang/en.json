@@ -550,10 +550,5 @@
     "title": "Notifications are disabled",
     "text": "You need to allow notifications so you can receive COVID alerts. We will only contact you in case of a Close Contact.",
     "gotoSettings": "Go to App Settings"
-  },
-  "markdown": {
-    "http": "Open web page",
-    "tel": "Call telephone number",
-    "navigate": "Go to app screen"
   }
 }
