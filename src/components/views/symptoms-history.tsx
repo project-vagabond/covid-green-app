@@ -18,6 +18,7 @@ import {Scrollable} from 'components/templates/scrollable';
 import {Symptom, SymptomRecord} from 'constants/symptoms';
 import {text, colors} from 'theme';
 import {BubbleIcons} from 'assets/icons';
+import {getDateLocaleOptions} from 'services/i18n/date';
 
 interface SymptomListItem {
   value: Symptom;
@@ -25,7 +26,7 @@ interface SymptomListItem {
 }
 
 export const SymptomsHistory: FC<any> = ({navigation}) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const isFocused = useIsFocused();
   const [appState] = useAppState();
   const {getNextScreen} = useSymptomChecker();
@@ -44,12 +45,13 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
     }, [isFocused, appState, verifyCheckerStatus])
   );
 
+  const dateLocale = getDateLocaleOptions(i18n);
+
   return (
     <Scrollable
       headingShort
       safeArea={false}
       backgroundColor={colors.background}>
-      <Spacing s={20} />
       <Heading text={t('symptomsHistory:title')} />
       {!completedChecker && (
         <>
@@ -110,7 +112,11 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
                 </SingleRow>
                 <View style={styles.date}>
                   <Text style={text.default}>
-                    {format(new Date(Number(check.timestamp)), 'MMM dd')}
+                    {format(
+                      new Date(Number(check.timestamp)),
+                      'MMM dd',
+                      dateLocale
+                    )}
                   </Text>
                 </View>
               </View>

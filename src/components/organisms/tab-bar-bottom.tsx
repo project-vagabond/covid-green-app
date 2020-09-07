@@ -46,6 +46,7 @@ const ctOffUnselected = (
     color={colors.darkGray}
   />
 );
+
 const ctOnSelected = (
   <TabBarIcons.ContactTracing.On width={32} height={24} color={colors.purple} />
 );
@@ -53,15 +54,22 @@ const ctOffSelected = (
   <TabBarIcons.ContactTracing.Off
     width={32}
     height={24}
-    color={colors.darkGray}
+    color={colors.purple}
   />
 );
 
-const ctUnknown = (
-  <TabBarIcons.ContactTracing.Unknown
+const ctAlertUnselected = (
+  <TabBarIcons.ContactTracing.Alert
     width={32}
     height={24}
     color={colors.darkGray}
+  />
+);
+const ctAlertSelected = (
+  <TabBarIcons.ContactTracing.Alert
+    width={32}
+    height={24}
+    color={colors.warning}
   />
 );
 
@@ -85,12 +93,13 @@ const checkActive = (
  */
 export const TabBarBottom: FC<any> = ({navigation, state}) => {
   const {t} = useTranslation();
-  const {status, enabled} = useExposure();
+  const {status, enabled, contacts} = useExposure();
+
+  const hasAlerts = contacts && contacts.length > 0;
 
   const tabItems = [
     {
       label: t('tabBar:updates'),
-      hint: t('tabBar:updatesHint'),
       icon: {
         inactive: barChartInactive,
         active: barChartActive
@@ -98,7 +107,6 @@ export const TabBarBottom: FC<any> = ({navigation, state}) => {
     },
     {
       label: t('tabBar:symptomCheck'),
-      hint: t('tabBar:symptomCheckHint'),
       icon: {
         inactive: checkInactive,
         active: checkActive
@@ -106,22 +114,21 @@ export const TabBarBottom: FC<any> = ({navigation, state}) => {
     },
     {
       label: t('tabBar:contactTracing'),
-      hint: t('tabBar:contactTracingHint'),
       icon: {
-        inactive:
-          status.state === StatusState.active && enabled
-            ? ctOnUnselected
-            : ctOffUnselected,
-        active:
-          status.state === StatusState.active && enabled
-            ? ctOnSelected
-            : ctOffSelected,
-        unknown: ctUnknown
+        inactive: hasAlerts
+          ? ctAlertUnselected
+          : status.state === StatusState.active && enabled
+          ? ctOnUnselected
+          : ctOffUnselected,
+        active: hasAlerts
+          ? ctAlertSelected
+          : status.state === StatusState.active && enabled
+          ? ctOnSelected
+          : ctOffSelected
       }
     },
     {
       label: t('tabBar:settings'),
-      hint: t('tabBar:settingsHint'),
       icon: {
         active: (
           <TabBarIcons.Settings width={32} height={24} color={colors.purple} />

@@ -88,7 +88,9 @@ export const NavBar: FC<NavBarProps> = ({
               accessibilityRole="button"
               accessibilityHint={t('navbar:backHint')}
               onPress={() => navigation.goBack()}>
-              <View style={styles.back}>
+              <View
+                hitSlop={{left: 12, right: 12, top: 8, bottom: 8}}
+                style={styles.back}>
                 {!modal && (
                   <>
                     <AppIcons.Back
@@ -115,7 +117,6 @@ export const NavBar: FC<NavBarProps> = ({
           <TouchableWithoutFeedback
             accessibilityRole="button"
             accessibilityLabel={t('navbar:share')}
-            accessibilityHint={t('navbar:shareText')}
             onPress={() => shareApp(t)}>
             <View style={styles.settings}>
               <AppIcons.Share width={24} height={24} color={colors.white} />

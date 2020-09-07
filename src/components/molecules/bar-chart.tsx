@@ -5,6 +5,7 @@ import {YAxis, XAxis} from 'react-native-svg-charts';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
 
+import {dateFnsLocales, getDateLocaleOptions} from 'services/i18n/date';
 import {text, colors} from 'theme';
 import {BarChartContent} from 'components/atoms/bar-chart-content';
 import {Spacing} from 'components/atoms/spacing';
@@ -74,8 +75,11 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   secondaryColor = '#ACAFC4',
   backgroundColor = colors.white
 }) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
+  const dateLocale = getDateLocaleOptions(i18n);
+  const wideMonthLocales = ['bn'];
   const intervalsCount = axisData.length < 30 ? 7 : 6;
+
   const daysLimit = Math.min(days, chartData.length);
 
   chartData = trimData(chartData, daysLimit, rollingAverage);
@@ -97,7 +101,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     const previousText = summaryText ? `${summaryText}, ` : '';
     return `${previousText}${format(date, 'MMMM')} ${format(
       date,
-      'do'
+      'do',
+      dateLocale
     )}: ${roundNumber(chartData[index])}${ySuffix}`;
   }, '');
 
@@ -182,7 +187,8 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
               const date = new Date(axisData[index]);
               return `${index === 0 ? nbsp + nbsp : ''}${format(
                 date,
-                'MMM'
+                wideMonthLocales.includes(i18n.language) ? 'Mo' : 'MMM',
+                dateLocale
               ).toUpperCase()}${
                 index === axisData.length - 1 ? nbsp + nbsp : ''
               }`;
@@ -204,7 +210,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
                   fill={secondaryColor}
                 />
               </Svg>
-              <Text style={styles.legendLabel}>
+              <Text maxFontSizeMultiplier={2} style={styles.legendLabel}>
                 {t('charts:legend:dailyTotal')}
               </Text>
             </View>
@@ -218,7 +224,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
                   stroke={primaryColor}
                 />
               </Svg>
-              <Text style={styles.legendLabel}>
+              <Text maxFontSizeMultiplier={2} style={styles.legendLabel}>
                 {t('charts:legend:averageLine')}
               </Text>
             </View>
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: 16
+    marginHorizontal: 10
   },
   legendLabel: {
     ...text.small,
