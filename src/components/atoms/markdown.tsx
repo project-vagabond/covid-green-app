@@ -1,10 +1,11 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
   Linking,
   AccessibilityInfo,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  AppState
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
@@ -13,8 +14,6 @@ import M from 'react-native-easy-markdown';
 import {Link} from 'components/atoms/link';
 import {markdownStyles as defaultMarkdownStyles, colors} from 'theme';
 import {WarningBullet} from './warning-bullet';
-import {useTranslation} from 'react-i18next';
-import {TFunction} from 'i18next';
 
 interface Markdown {
   style?: object;
@@ -45,10 +44,9 @@ const MarkdownLink = (
   title: string,
   children: any,
   key: string,
-  navigation: any
+  navigation: any,
+  screenReaderEnabled: boolean
 ) => {
-  const hasScreenReader = AccessibilityInfo.isScreenReaderEnabled();
-
   const isHttp = href.startsWith('http');
   const isTel = href.startsWith('tel');
 
@@ -67,7 +65,7 @@ const MarkdownLink = (
           });
         };
 
-    return hasScreenReader ? (
+    return screenReaderEnabled ? (
       <TouchableWithoutFeedback
         accessibilityRole="link"
         accessibilityHint={title}
@@ -107,8 +105,20 @@ export const Markdown: React.FC<Markdown> = ({
 }) => {
   const navigation = useNavigation();
 
+  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
+
+  useEffect(() => {
+    const checkScreenReader = () =>
+      AccessibilityInfo.isScreenReaderEnabled().then((enabled) =>
+        setScreenReaderEnabled(enabled)
+      );
+    // Re-check state on app refocus to catch changes to device settings
+    AppState.addEventListener('change', checkScreenReader);
+    return () => AppState.removeEventListener('change', checkScreenReader);
+  }, []);
+
   const defaultRenderLink: RenderLink = (href, title, children, key) =>
-    MarkdownLink(href, title, children, key, navigation);
+    MarkdownLink(href, title, children, key, navigation, screenReaderEnabled);
 
   const combinedStyles = {
     ...defaultMarkdownStylesheet,
