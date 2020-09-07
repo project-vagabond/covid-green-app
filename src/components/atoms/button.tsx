@@ -60,13 +60,17 @@ export const Button: React.FC<ButtonProps> = ({
       textColor = '#6E6E6E';
     }
   }
+  console.log('---Î');
 
   const pressHandlers = disabled
     ? {}
     : {
         onPressIn: () => setPressed(true),
         onPressOut: () => setPressed(false),
-        onPress
+        onPress: () => {
+          setPressed(false);
+          onPress();
+        }
       };
 
   return (
