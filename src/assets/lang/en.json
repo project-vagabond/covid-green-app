@@ -49,8 +49,7 @@
   "navbar": {
     "back": "Back",
     "backHint": "Navigate back to previous screen",
-    "share": "Share",
-    "shareText": "Share this app with friends.\nHelp keep NY Safe."
+    "share": "Share this app with friends."
   },
   "tabBar": {
     "updates": "NY COVID Data",
