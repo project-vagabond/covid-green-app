@@ -68,6 +68,7 @@ const MarkdownLink = (
 
     return androidScreenReaderEnabled ? (
       <TouchableWithoutFeedback
+        key={key}
         accessibilityRole="link"
         accessibilityHint={title}
         accessibilityLabel={childrenAsText(children)}
@@ -76,6 +77,7 @@ const MarkdownLink = (
       </TouchableWithoutFeedback>
     ) : (
       <Text
+        key={key}
         accessible={true}
         accessibilityRole="link"
         accessibilityHint={title}
