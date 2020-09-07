@@ -26,7 +26,7 @@ import {styles} from './styles';
 export const Introduction: FC<any> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
-  const [ref] = useFocusRef();
+  const [ref] = useFocusRef({accessibilityRefocus: true});
 
   const content: Content[] = t('onboarding:introduction:blocks', {
     returnObjects: true
