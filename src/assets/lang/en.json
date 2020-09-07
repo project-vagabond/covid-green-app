@@ -107,7 +107,6 @@
       "next": "Next",
       "nextHint": "Go to next page",
       "close": "Close",
-      "pageSelector": "Page selector",
       "currentPage": "Page {{page}} of {{total}}"
     },
     "intro": {

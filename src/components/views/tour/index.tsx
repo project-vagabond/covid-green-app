@@ -68,6 +68,11 @@ const Tour: FC<any> = () => {
             ref={ref}
             accessible
             accessibilityRole="header"
+            accessibilityLabel={t('onboarding:tour:title')}
+            accessibilityHint={t('onboarding:tour:currentPage', {
+              page: position + 1,
+              total: statements.length
+            })}
             style={styles.headerContent}>
             <Text style={styles.heading}>{t('onboarding:tour:title')}</Text>
           </View>
@@ -124,12 +129,10 @@ const Tour: FC<any> = () => {
         <View
           style={[styles.center, styles.dots]}
           accessible
-          accessibilityLabel={t('onboarding:tour:pageSelector')}
-          accessibilityHint={t('onboarding:tour:currentPage', {
+          accessibilityLabel={t('onboarding:tour:currentPage', {
             page: position + 1,
             total: statements.length
-          })}
-          accessibilityRole="adjustable">
+          })}>
           {statements.map((_, index) =>
             position === index ? (
               <View
