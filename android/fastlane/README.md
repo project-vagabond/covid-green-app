@@ -16,9 +16,19 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
-### android internal
+### android internal_build
 ```
-fastlane android internal
+fastlane android internal_build
+```
+Create new Internal Track Build
+### android detox_build
+```
+fastlane android detox_build
+```
+Create new Detox Test Build
+### android internal_release
+```
+fastlane android internal_release
 ```
 Deploy a new Internal Track Build to Google Play
 

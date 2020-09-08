@@ -1,0 +1,243 @@
+name: Build and Test with Detox
+on:
+  # We will likely need to restrict Detox builds to a schedule or a specific release candidate tag/branch format.
+  push:
+    branches: [nys]
+  pull_request:
+    branches: [nys]
+
+jobs:
+  android-build:
+    name: Android Build
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Generate .env file
+        uses: project-vagabond/template-action@v1
+        with:
+          template: .templates/.env.template
+          output: .env
+          vars: |
+            {
+              "API_HOST": "${{ secrets.API_HOST }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
+              "KEY_PUBLISH_HOST": "${{ secrets.KEY_PUBLISH_HOST }}",
+              "KEY_DOWNLOAD_HOST": "${{ secrets.KEY_DOWNLOAD_HOST }}"
+            }
+
+      - name: Generate Android API Key file
+        run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d -o "android/android-api-key.json"
+
+      - name: Generate Android Upload Keystore
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"
+
+      - name: Generate Android firebase config DEV
+        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_DEV }}" | base64 -d -o "android/app/src/debug/google-services.json"
+
+      - name: Generate Android firebase config PROD
+        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_PROD }}" | base64 -d -o "android/app/src/release/google-services.json"
+
+      - name: Generate Android env.default
+        uses: project-vagabond/template-action@v1
+        with:
+          template: .templates/android/env.default.template
+          output: android/.env.default
+          vars: |
+            {
+              "GITHUB_WORKSPACE": "${{ github.workspace }}",
+              "API_HOST": "${{ secrets.API_HOST }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
+              "ANDROID_KEYSTORE_PASSWORD": "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}",
+              "ANDROID_KEY_PASSWORD": "${{ secrets.ANDROID_KEY_PASSWORD }}",
+              "KEY_PUBLISH_HOST": "${{ secrets.KEY_PUBLISH_HOST }}",
+              "KEY_DOWNLOAD_HOST": "${{ secrets.KEY_DOWNLOAD_HOST }}",
+              "CODEPUSH_KEY": "${{ secrets.CODEPUSH_KEY }}",
+              "PACKAGE_NAME": "${{ secrets.PROX_BUNDLE_ID_PROD}}"
+            }
+
+      - name: Running tests with node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Setup Yarn Cache
+        uses: bahmutov/npm-install@v1.4.3
+        with:
+          useLockFile: false
+
+      - name: Kick yarn
+        run: yarn install --network-timeout 100000
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: '${{ github.workspace }}/ios/Gemfile'
+        with:
+          ruby-version: '2.6'
+          bundler-cache: true
+
+      - name: Setup Version variable
+        run: |
+          export BUILD_VERSION=${GITHUB_REF#refs/tags/}
+          echo "##[set-env name=BUILD_VERSION;]$BUILD_VERSION"
+
+      - name: Printenv
+        run: printenv && npx react-native info
+
+      - name: Android Emulator
+        run: |
+          $ANDROID_HOME/tools/bin/sdkmanager --install emulator
+          $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-29;default;x86_64"
+          $ANDROID_HOME/tools/bin/avdmanager create avd -n Pixel_API_29_AOSP -d pixel --package "system-images;android-29;default;x86_64"
+          $ANDROID_HOME/emulator/emulator -verbose -no-window -no-audio -gpu swiftshader_indirect @Pixel_API_29_AOSP &
+
+      - name: Android Jetify
+        run: npx jetify
+
+      - name: Android Detox Build
+        run: yarn pre:test:android
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: detox_release.apk
+          path: '**/*.apk'
+
+  ios-build:
+    name: iOS Build and Test
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Generate .env file
+        uses: project-vagabond/template-action@v1
+        with:
+          template: .templates/.env.template
+          output: .env
+          vars: |
+            {
+              "API_HOST": "${{ secrets.API_HOST }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}",
+              "KEY_PUBLISH_HOST": "${{ secrets.KEY_PUBLISH_HOST }}",
+              "KEY_DOWNLOAD_HOST": "${{ secrets.KEY_DOWNLOAD_HOST }}"
+            }
+
+      - name: Generate iOS AuthKey
+        run: echo "${{ secrets.IOS_AUTH_KEY }}" > "ios/AuthKey_${{ secrets.IOS_AUTH_KEY_ID }}.p8"
+
+      - name: Generate iOS Signing Key
+        run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
+
+      - name: Generate iOS mobile provisioning profile
+        run: |
+          echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
+          uuid=`grep UUID -A1 -a "ios/COVID_Proximity_Tracing.mobileprovision" | grep -io "[-A-F0-9]\{36\}"`
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp "ios/COVID_Proximity_Tracing.mobileprovision"  ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          chmod a+rw ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+          echo "~/Library"
+          ls -la ~/Library
+          echo "~/Library/MobileDevice"
+          ls -la ~/Library/MobileDevice
+          echo "~/Library/MobileDevice/Provisioning Profiles/"
+          ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+
+      - name: Generate iOS firebase config DEV
+        run: echo "${{ secrets.FIREBASE_CFG_IOS_DEV }}" | base64 -d -o "ios/firebase/development/GoogleService-Info.plist"
+
+      - name: Generate iOS firebase config PROD
+        run: echo "${{ secrets.FIREBASE_CFG_IOS_PROD }}" | base64 -d -o "ios/firebase/production/GoogleService-Info.plist"
+
+      - name: Generate iOS env.default
+        uses: project-vagabond/template-action@v1
+        with:
+          template: .templates/ios/env.default.template
+          output: ios/.env.default
+          vars: |
+            {
+              "GITHUB_WORKSPACE": "${{ github.workspace }}",
+              "APPLE_ID": "${{ secrets.FASTLANE_USER }}",
+              "APP_IDENTIFIER": "${{ secrets.PROX_BUNDLE_ID_PROD }}",
+              "ITC_TEAM_ID": "${{ secrets.ITC_TEAM_ID }}",
+              "TEAM_ID": "${{ secrets.TEAM_ID }}",
+              "API_HOST": "${{ secrets.API_HOST }}",
+              "KEY_PUBLISH_HOST": "${{ secrets.KEY_PUBLISH_HOST }}",
+              "KEY_DOWNLOAD_HOST": "${{ secrets.KEY_DOWNLOAD_HOST }}",
+              "SIGNING_KEY_P12_PASSWORD": "${{ secrets.SIGNING_KEY_P12_PASSWORD }}",
+              "FASTLANE_USER": "${{ secrets.FASTLANE_USER }}",
+              "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD": "${{ secrets.FASTLANE_APP_PASSWORD }}",
+              "FASTLANE_PASSWORD": "${{ secrets.FASTLANE_PASSWORD }}",
+              "CODEPUSH_KEY": "${{ secrets.CODEPUSH_KEY }}",
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"              
+            }
+
+      - name: Running tests with node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      #
+      - name: Setup Yarn Cache
+        uses: bahmutov/npm-install@v1.4.3
+        with:
+          useLockFile: false
+
+      - name: Kick yarn
+        run: yarn install --network-timeout 100000
+
+      - name: Setup CocoaPods Cache
+        uses: actions/cache@v1
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+
+      - name: Setup Brew Cache
+        uses: actions/cache@v1
+        with:
+          path: |
+            /usr/local/Cellar
+            /usr/local/bin
+          key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-brew-
+
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        env:
+          BUNDLE_GEMFILE: '${{ github.workspace }}/ios/Gemfile'
+        with:
+          ruby-version: '2.6'
+          bundler-cache: true
+
+      - name: Setup Version variable
+        run: |
+          export BUILD_VERSION=${GITHUB_REF#refs/tags/}
+          echo "##[set-env name=BUILD_VERSION;]$BUILD_VERSION"
+
+      - name: Install Homebrew Dependencies
+        run: brew update && brew bundle
+
+      - name: Install CocoaPods Dependencies
+        run: cd ios && pod install
+
+      - name: iOS Cert Setup
+        run: cd ios && . .env.default && fastlane gha_setup
+
+      - name: iOS Build for Detox
+        run: yarn pre:test:ios
+
+      - name: iOS Detox Run
+        run: yarn test:ios

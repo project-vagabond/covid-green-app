@@ -4,17 +4,18 @@
   "configurations": {
     "ios": {
       "type": "ios.simulator",
-      "binaryPath": "./ios/build/Build/Products/Debug-iphonesimulator/COVID Green.app",
-      "build": "xcodebuild -workspace ios/COVIDGreen.xcworkspace -scheme COVIDGreen -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
+      "binaryPath": "./ios/build/Build/Products/Release-iphonesimulator/COVID Alert NY.app",
+      "build": "bash scripts/buildDetoxIOS.sh",
       "device": {
         "type": "iPhone 11 Pro Max"
       }
     },
-    "android": {
+    "android.emu.release": {
       "type": "android.emulator",
-      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY",
+      "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+      "build": "bash scripts/buildDetoxAndroid.sh",
       "device": {
-        "avdName": "Pixel_2_API_29"
+        "avdName": "Pixel_API_29_AOSP"
       }
     }
   }

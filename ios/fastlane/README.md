@@ -21,9 +21,19 @@ or alternatively using `brew install fastlane`
 fastlane ios gha_setup
 ```
 Setup Github Actions Environment
-### ios beta
+### ios detox_build
 ```
-fastlane ios beta
+fastlane ios detox_build
+```
+Create a detox test build
+### ios beta_build
+```
+fastlane ios beta_build
+```
+Create a beta build
+### ios beta_release
+```
+fastlane ios beta_release
 ```
 Push a new beta build to TestFlight
 

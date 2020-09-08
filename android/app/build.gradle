@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.google.gms.google-services"
 apply plugin: "com.google.firebase.crashlytics"
+apply from: '../rninfo.gradle'
 
 
 import com.android.build.OutputFile
@@ -138,6 +139,8 @@ android {
         versionCode 52
         versionName "1.1.0"
         resConfigs "en", "es", "ht", "ru", "bn", "ko", "zh", "yi"
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     splits {
@@ -177,6 +180,8 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             useProguard enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // Detox-specific additions to pro-guard
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
         }
     }
 
@@ -223,6 +228,9 @@ dependencies {
     addUnimodulesDependencies()
 
     implementation project(':react-native-permissions')
+
+    androidTestImplementation('com.wix:detox:+')
+
 
     // debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
     //   exclude group:'com.facebook.fbjni'

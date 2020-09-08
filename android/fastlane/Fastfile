@@ -32,6 +32,11 @@ platform :android do
     gradle(task: "clean bundle build", build_type: "Release")
   end
 
+  desc "Create new Detox Test Build"
+  lane :detox_build do
+    gradle(tasks: "clean app:assembleRelease app:assembleAndroidTest", flags: "-DtestBuildType=release")
+  end
+
   desc "Deploy a new Internal Track Build to Google Play"
   lane :internal_release do
     gradle(task: "bundle", build_type: "Release")

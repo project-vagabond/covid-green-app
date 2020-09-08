@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import {text, scale, colors} from 'theme';
+import {composeInitialProps} from 'react-i18next';
 
 export type ButtonType = 'default' | 'secondary' | 'empty' | 'danger' | 'link';
 
@@ -20,6 +21,7 @@ interface ButtonProps {
   width?: number | string;
   fontSizeMultiplier?: number;
   children: React.ReactNode;
+  testID?: string;
 }
 
 const dimensions = Dimensions.get('screen');
@@ -31,7 +33,8 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   width,
   fontSizeMultiplier,
-  children
+  children,
+  testID
 }) => {
   const [pressed, setPressed] = useState(false);
 
@@ -76,6 +79,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <View
+      testID={testID}
       style={[
         styles.wrapper,
         {backgroundColor: backgroundColor},

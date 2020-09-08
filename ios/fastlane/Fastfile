@@ -35,6 +35,21 @@ platform :ios do
     )
   end
 
+  desc "Create a detox test build"
+  lane :detox_build do
+    build_app(
+      workspace: ENV['WORKSPACE'], 
+      scheme: ENV['SCHEME'],
+       sdk: "iphonesimulator", 
+       skip_archive: true, 
+       skip_package_ipa: true,
+       configuration: "Release",
+       destination: "platform=iOS Simulator,name=iPhone 11 Pro Max",
+       derived_data_path: "build",
+       clean: true
+    )
+  end
+
   desc "Create a beta build"
   lane :beta_build do
     if ENV['BUILD_VERSION']
