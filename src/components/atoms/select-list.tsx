@@ -1,9 +1,12 @@
 import React, {FC} from 'react';
 import {StyleSheet, TouchableWithoutFeedback, View, Text} from 'react-native';
+import {makeSelectable} from 'react-native-accessible-selectable';
 
 import {text, colors} from 'theme';
 
 import Icons from 'assets/icons';
+
+const AccessibleCheckbox = makeSelectable(TouchableWithoutFeedback);
 
 type Value = string | number; // May be used as object keys
 
@@ -45,11 +48,12 @@ export const SelectList: FC<SelectListProps> = ({
       Icons[multiSelect ? 'CheckMarkMultiSelect' : 'CheckMark'];
 
     return (
-      <TouchableWithoutFeedback
+      <AccessibleCheckbox
         key={`item-${index}`}
         onPress={() => onItemSelected(value)}
         accessibilityLabel={title ? `${label}, ${title}` : label}
         accessibilityRole={multiSelect ? 'checkbox' : 'radio'}
+        accessibilityLiveRegion="assertive"
         accessibilityState={{
           [multiSelect ? 'checked' : 'selected']: hasSelectedValue(value)
         }}>
@@ -66,7 +70,7 @@ export const SelectList: FC<SelectListProps> = ({
             <Text style={[text.defaultBold, {color}]}>{label}</Text>
           </View>
         </View>
-      </TouchableWithoutFeedback>
+      </AccessibleCheckbox>
     );
   };
 
