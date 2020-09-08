@@ -78,8 +78,8 @@ export const CheckInSymptoms = () => {
   const handleItemSelected = async (symptom: Symptom) => {
     const newValue = Number(!values[symptom]);
     setFieldValue(symptom, newValue, false);
-
     setSymptoms((s) => ({...s, [symptom]: newValue}));
+
     await app.setContext({
       checkerSymptoms: {
         ...app.checkerSymptoms,
