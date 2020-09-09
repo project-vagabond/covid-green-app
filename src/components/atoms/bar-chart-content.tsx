@@ -101,10 +101,9 @@ export const BarChartContent: FC<BarChartContentProps> = ({
 
   const TrendLine: FC<TrendLineProps> = (props) => {
     const {x, y, bandwidth, lineWidth, color} = props;
-    const rollingData =
-      1 && rollingAverage
-        ? calculateRollingAverages(rollingAverage, chartData, days)
-        : averagesData.slice(startPoint);
+    const rollingData = rollingAverage
+      ? calculateRollingAverages(rollingAverage, chartData, days)
+      : averagesData.slice(startPoint);
 
     const lineGenerator = line();
     lineGenerator.curve(curveMonotoneX);
