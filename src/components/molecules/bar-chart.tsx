@@ -122,7 +122,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
   const yMax = maxValue < yMin ? yMin : undefined;
 
-  const showLegend = !!(rollingAverage || averagesData);
+  const showLegend = !!(rollingAverage || averagesData.length);
 
   return (
     <View
