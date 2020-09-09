@@ -57,7 +57,7 @@ export const CheckInSymptoms = () => {
 
   const gotoResults = () => {
     try {
-      app.checkIn(app.checkerSymptoms, {feelingWell: false});
+      app.checkIn(symptoms, {feelingWell: false});
     } catch (err) {
       console.log('Check-in error', err);
     }
