@@ -103,7 +103,7 @@ export const BarChartContent: FC<BarChartContentProps> = ({
     lineGenerator.curve(curveMonotoneX);
     const pathDef = lineGenerator(
       rollingData.map((value, index) => [
-        x(index) || 0 + bandwidth / 2,
+        (x(index) || 0) + bandwidth / 2,
         y(value) || 0
       ])
     );
