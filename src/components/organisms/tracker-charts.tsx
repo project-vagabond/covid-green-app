@@ -22,6 +22,15 @@ interface ExtractedData {
   averagesData: ChartData;
 }
 
+const getEmptyExtractedData = (): ExtractedData => {
+  const emptyData = {
+    axisData: [],
+    chartData: [],
+    averagesData: []
+  } as ExtractedData;
+  return emptyData;
+};
+
 const chartDataIsAvailable = (data: ExtractedData) => {
   return !!(data.axisData?.length && data.chartData?.length);
 };
@@ -136,51 +145,53 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({
     return null;
   }
 
-  const testsData = getBarchartData(
-    localData,
-    'total_number_of_tests',
-    'average_number_of_tests',
-    days,
-    rollingAverage
-  );
-  const positivesData = getBarchartData(
-    localData,
-    'new_positives',
-    'average_new_positives',
-    days,
-    rollingAverage
-  );
+  let testsData = getEmptyExtractedData();
+  let positivesData = getEmptyExtractedData();
+  let percentData = getEmptyExtractedData();
+  try {
+    testsData = getBarchartData(
+      localData,
+      'total_number_of_tests',
+      'average_number_of_tests',
+      days,
+      rollingAverage
+    );
+    positivesData = getBarchartData(
+      localData,
+      'new_positives',
+      'average_new_positives',
+      days,
+      rollingAverage
+    );
 
-  let percentData = {
-    axisData: [],
-    chartData: [],
-    averagesData: []
-  } as ExtractedData;
+    if (testsData.axisData.length && positivesData.axisData.length) {
+      percentData = testsData.axisData.reduce((newData, date, testsIndex) => {
+        const positivesIndex = positivesData.axisData.findIndex(
+          (pDate) => getComparableDate(date) === getComparableDate(pDate)
+        );
 
-  if (testsData.axisData.length && positivesData.axisData.length) {
-    percentData = testsData.axisData.reduce((newData, date, testsIndex) => {
-      const positivesIndex = positivesData.axisData.findIndex(
-        (pDate) => getComparableDate(date) === getComparableDate(pDate)
-      );
+        if (positivesIndex === -1) {
+          return newData;
+        }
+        newData.axisData.push(date);
 
-      if (positivesIndex === -1) {
-        return newData;
-      }
-      newData.axisData.push(date);
+        const testsValue = testsData.chartData[testsIndex];
+        const positivesValue = positivesData.chartData[positivesIndex];
+        newData.chartData.push(
+          testsValue ? (positivesValue / testsValue) * 100 : 0
+        );
 
-      const testsValue = testsData.chartData[testsIndex];
-      const positivesValue = positivesData.chartData[positivesIndex];
-      newData.chartData.push(
-        testsValue ? (positivesValue / testsValue) * 100 : 0
-      );
-
-      const testsAv = testsData.averagesData[testsIndex];
-      const posAv = positivesData.averagesData[positivesIndex];
-      if (typeof testsAv === 'number' && typeof posAv === 'number') {
-        newData.averagesData.push(testsAv ? (posAv / testsAv) * 100 : 0);
-      }
-      return {...newData};
-    }, percentData);
+        const testsAv = testsData.averagesData[testsIndex];
+        const posAv = positivesData.averagesData[positivesIndex];
+        if (typeof testsAv === 'number' && typeof posAv === 'number') {
+          newData.averagesData.push(testsAv ? (posAv / testsAv) * 100 : 0);
+        }
+        return {...newData};
+      }, percentData);
+    }
+  } catch (err) {
+    console.warn('Error processing chart data: ', err);
+    return null;
   }
 
   return (
