@@ -63,7 +63,13 @@ export const MyCovidAlerts = () => {
     if (status.state === StatusState.active && enabled) {
       exposureStatusCard = <ClosenessSensing.Active />;
     } else if (Platform.OS === 'android') {
-      exposureStatusCard = <ClosenessSensing.NotAuthorized />;
+      exposureStatusCard =
+        status.state === StatusState.disabled &&
+        status.type?.indexOf(StatusType.bluetooth) !== -1 ? (
+          <ClosenessSensing.NotActive bluetoothOff />
+        ) : (
+          <ClosenessSensing.NotAuthorized />
+        );
     } else if (Platform.OS === 'ios') {
       if (isAuthorised === AuthorisedStatus.unknown) {
         exposureStatusCard = <ClosenessSensing.NotAuthorized />;
@@ -72,7 +78,7 @@ export const MyCovidAlerts = () => {
       } else {
         const type = status.type || [];
         exposureStatusCard = (
-          <ClosenessSensing.NotActiveIOS
+          <ClosenessSensing.NotActive
             exposureOff={type.indexOf(StatusType.exposure) !== -1}
             bluetoothOff={type.indexOf(StatusType.bluetooth) !== -1}
           />
