@@ -79,7 +79,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const dateLocale = getDateLocaleOptions(i18n);
   const wideMonthLocales = ['bn'];
 
-  const daysLimit = Math.min(days, rawChartData.length);
+  const daysLimit = Math.min(days, rawChartData.length, rawAxisData.length);
   const intervalsCount = daysLimit < 30 ? 7 : 6;
 
   const chartData = trimData(rawChartData, daysLimit, rollingAverage);
