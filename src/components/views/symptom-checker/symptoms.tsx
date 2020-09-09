@@ -75,18 +75,23 @@ export const CheckInSymptoms = () => {
     return values[symptom] ? [...selectedSymptoms, symptom] : selectedSymptoms;
   }, [] as Symptom[]);
 
-  const handleItemSelected = async (symptom: Symptom) => {
+  const handleItemSelected = (symptom: Symptom) => {
     const newValue = Number(!values[symptom]);
     setFieldValue(symptom, newValue, false);
     setSymptoms((s) => ({...s, [symptom]: newValue}));
 
-    await app.setContext({
-      checkerSymptoms: {
-        ...app.checkerSymptoms,
-        ...values,
-        [symptom]: newValue
-      }
-    });
+    setTimeout(
+      () =>
+        // Run this in next tick after re-render so a11y message isn't read twice
+        app.setContext({
+          checkerSymptoms: {
+            ...app.checkerSymptoms,
+            ...values,
+            [symptom]: newValue
+          }
+        }),
+      0
+    );
   };
 
   const onFeelingWell = () => {
