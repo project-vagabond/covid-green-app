@@ -194,14 +194,14 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             yMax={yMax}
           />
           <XAxis
-            data={chartData}
+            data={Array(daysLimit).fill(1)}
             contentInset={contentInset}
             scale={scaleBand}
             svg={{...xAxisSvg, y: 3}}
             formatLabel={formatXAxisDayLabel}
           />
           <XAxis
-            data={chartData}
+            data={Array(daysLimit).fill(1)}
             contentInset={contentInset}
             scale={scaleBand}
             svg={xAxisSvg}

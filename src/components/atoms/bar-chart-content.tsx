@@ -5,7 +5,11 @@ import {BarChart, Grid} from 'react-native-svg-charts';
 import {colors} from 'theme';
 import {line, curveMonotoneX} from 'd3-shape';
 import {ScaleBand} from 'd3-scale';
-import {ChartData, AxisData} from 'components/organisms/tracker-charts';
+import {
+  ChartData,
+  AxisData,
+  trimData
+} from 'components/organisms/tracker-charts';
 
 interface BarChartContentProps {
   chartData: ChartData;
@@ -13,7 +17,7 @@ interface BarChartContentProps {
   averagesData: ChartData;
   contentInset: {top: number; bottom: number};
   rollingAverage?: number;
-  days?: number;
+  days: number;
   primaryColor: string;
   backgroundColor: string;
   secondaryColor: string;
@@ -37,29 +41,33 @@ interface TrendLineProps extends BarChildProps {
 }
 
 const calculateRollingAverages = (
-  rollingAverage: number | undefined,
-  visibleChartData: ChartData,
-  chartData: ChartData
-) =>
-  rollingAverage
-    ? visibleChartData.map((_, index) => {
-        const avStart =
-          rollingAverage + index > chartData.length
-            ? Math.max(0, index - rollingAverage)
-            : index;
-        const avEnd = Math.min(rollingAverage + index, chartData.length - 1);
-        const avValues = chartData.slice(avStart, avEnd);
-        const total = avValues.reduce((sum, num) => sum + num, 0);
-        return total / avValues.length;
-      })
-    : chartData;
+  rollingAverage: number,
+  chartData: ChartData,
+  days: number
+) => {
+  const rollingOffset = Math.max(0, rollingAverage - 1);
+  return trimData(
+    rollingAverage
+      ? chartData.map((_, index) => {
+          const avStart = Math.max(0, index - rollingOffset);
+          const avEnd = index + 1;
+          console.log(index, avStart, avEnd);
+          const avValues = chartData.slice(avStart, avEnd);
+          const total = avValues.reduce((sum, num) => sum + num, 0);
+          return total / avValues.length;
+        })
+      : chartData,
+    days,
+    0
+  );
+};
 
 export const BarChartContent: FC<BarChartContentProps> = ({
   chartData,
   averagesData,
   contentInset,
   rollingAverage = 0,
-  days = chartData.length,
+  days,
   primaryColor,
   secondaryColor,
   backgroundColor,
@@ -69,8 +77,7 @@ export const BarChartContent: FC<BarChartContentProps> = ({
   scale,
   yMax
 }) => {
-  const rollingOffset = Math.max(0, rollingAverage - 1);
-  const startPoint = Math.max(0, chartData.length - (days + rollingOffset));
+  const startPoint = Math.max(0, chartData.length - days);
   const visibleChartData = chartData.slice(startPoint);
 
   const RoundedBarToppers: FC<BarChildProps> = (props) => {
@@ -95,9 +102,10 @@ export const BarChartContent: FC<BarChartContentProps> = ({
 
   const TrendLine: FC<TrendLineProps> = (props) => {
     const {x, y, bandwidth, lineWidth, color} = props;
-    const rollingData = rollingAverage
-      ? calculateRollingAverages(rollingAverage, visibleChartData, chartData)
-      : averagesData;
+    const rollingData =
+      1 && rollingAverage
+        ? calculateRollingAverages(rollingAverage, chartData, days)
+        : averagesData.slice(startPoint);
 
     const lineGenerator = line();
     lineGenerator.curve(curveMonotoneX);

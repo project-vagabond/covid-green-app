@@ -26,7 +26,7 @@ const chartDataIsAvailable = (data: ExtractedData) => {
   return !!(data.axisData?.length && data.chartData?.length);
 };
 
-function trimData(data: any[], days: number, rolling: number) {
+export function trimData(data: any[], days: number, rolling: number) {
   const rollingOffset = Math.max(0, rolling - 1);
   const trimLength = days + rollingOffset;
   const excessLength = data.length - trimLength;
@@ -97,7 +97,7 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({
   data,
   county = 'u',
   days = 30,
-  rollingAverage = 0
+  rollingAverage = 7 // If > 0, calculate in-app, don't use data from server
 }) => {
   const {t} = useTranslation();
 
