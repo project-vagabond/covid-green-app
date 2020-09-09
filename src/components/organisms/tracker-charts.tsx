@@ -9,6 +9,8 @@ import {TrackerBarChart} from 'components/molecules/bar-chart';
 interface TrackerChartsProps {
   data: any;
   county: string;
+  days?: number;
+  rollingAverage?: number;
 }
 
 export type AxisData = Date[];
@@ -24,10 +26,25 @@ const chartDataIsAvailable = (data: ExtractedData) => {
   return !!(data.axisData?.length && data.chartData?.length);
 };
 
+function trimData(data: any[], days: number, rolling: number) {
+  const rollingOffset = Math.max(0, rolling - 1);
+  const trimLength = days + rollingOffset;
+  const excessLength = data.length - trimLength;
+  const trimmedData = excessLength > 0 ? data.slice(excessLength) : data;
+  return trimmedData.map((d) => Number(d) || 0);
+}
+
+function trimAxisData(axisData: any[], days: number) {
+  const excessLength = axisData.length - days;
+  return excessLength > 0 ? axisData.slice(excessLength) : axisData;
+}
+
 const getBarchartData = (
   data: any,
   quantityKey: string,
-  averagesKey: string
+  averagesKey: string,
+  days: number,
+  rolling: number
 ) => {
   let axisData: Date[] = [];
   let chartData: number[] = [];
@@ -66,9 +83,9 @@ const getBarchartData = (
   }
 
   return {
-    chartData,
-    axisData,
-    averagesData
+    chartData: trimData(chartData, days, rolling),
+    axisData: trimAxisData(axisData, days),
+    averagesData: trimData(averagesData || [], days, rolling)
   };
 };
 
@@ -76,7 +93,12 @@ const getComparableDate = (date: Date | string) => {
   return format(new Date(date), 'yyyy-mm-dd');
 };
 
-export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
+export const TrackerCharts: FC<TrackerChartsProps> = ({
+  data,
+  county = 'u',
+  days = 30,
+  rollingAverage = 0
+}) => {
   const {t} = useTranslation();
 
   const localData =
@@ -89,13 +111,18 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
   const testsData = getBarchartData(
     localData,
     'total_number_of_tests',
-    'average_number_of_tests'
+    'average_number_of_tests',
+    days,
+    rollingAverage
   );
   const positivesData = getBarchartData(
     localData,
     'new_positives',
-    'average_new_positives'
+    'average_new_positives',
+    days,
+    rollingAverage
   );
+
   let percentData = {
     axisData: [],
     chartData: [],
@@ -139,6 +166,8 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
               axisData={testsData.axisData}
               chartData={testsData.chartData}
               averagesData={testsData.averagesData}
+              days={days}
+              rollingAverage={rollingAverage}
             />
           </Card>
           <Spacing s={20} />
@@ -155,6 +184,9 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
               averagesData={percentData.averagesData}
               yMin={0.5}
               ySuffix="%"
+              days={days}
+              rollingAverage={rollingAverage}
+
             />
           </Card>
           <Spacing s={20} />
@@ -168,6 +200,9 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({data, county = 'u'}) => {
             axisData={positivesData.axisData}
             chartData={positivesData.chartData}
             averagesData={positivesData.averagesData}
+            days={days}
+            rollingAverage={rollingAverage}
+
           />
         </Card>
       )}

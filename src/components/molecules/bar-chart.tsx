@@ -20,7 +20,7 @@ interface TrackerBarChartProps {
   days?: number;
   yMin?: number;
   ySuffix?: string;
-  averagesData?: ChartData;
+  averagesData: ChartData;
   rollingAverage?: number;
   intervalsCount?: number;
   backgroundColor?: string;
@@ -45,30 +45,17 @@ function formatLabel(value: number, suffix: string) {
   return value + suffix;
 }
 
-function trimData(data: any[], days: number, rolling: number) {
-  const rollingOffset = Math.max(0, rolling - 1);
-  const trimLength = days + rollingOffset;
-  const excessLength = data.length - trimLength;
-  const trimmedData = excessLength > 0 ? data.slice(excessLength) : data;
-  return trimmedData.map((d) => Number(d) || 0);
-}
-
-function trimAxisData(axisData: any[], days: number) {
-  const excessLength = axisData.length - days;
-  return excessLength > 0 ? axisData.slice(excessLength) : axisData;
-}
-
 function roundNumber(num: number, places: number = 2) {
   return num.toFixed(Number.isInteger(num) ? 0 : places);
 }
 
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
-  chartData: rawChartData,
-  axisData: rawAxisData,
-  averagesData: rawAveragesData = [],
+  chartData,
+  axisData,
+  averagesData,
   description,
-  rollingAverage = 0,
+  rollingAverage,
   days = 30,
   yMin = 5,
   ySuffix = '',
@@ -80,12 +67,10 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const dateLocale = getDateLocaleOptions(i18n);
   const wideMonthLocales = ['bn'];
 
-  const daysLimit = Math.min(days, rawChartData.length, rawAxisData.length);
-  const intervalsCount = daysLimit < 30 ? 7 : 6;
+  const daysLimit = Math.min(days, chartData.length);
 
-  const chartData = trimData(rawChartData, daysLimit, rollingAverage);
-  const averagesData = trimData(rawAveragesData, daysLimit, rollingAverage);
-  const axisData = trimAxisData(rawAxisData, daysLimit);
+  // Arbitrary while data source is unstable, pending chart redesign
+  const intervalsCount = daysLimit < 30 ? 7 : 6;
 
   if (!chartData.length || !axisData.length) {
     return null;

@@ -10,7 +10,7 @@ import {ChartData, AxisData} from 'components/organisms/tracker-charts';
 interface BarChartContentProps {
   chartData: ChartData;
   axisData: AxisData;
-  averagesData?: ChartData;
+  averagesData: ChartData;
   contentInset: {top: number; bottom: number};
   rollingAverage?: number;
   days?: number;
@@ -95,9 +95,9 @@ export const BarChartContent: FC<BarChartContentProps> = ({
 
   const TrendLine: FC<TrendLineProps> = (props) => {
     const {x, y, bandwidth, lineWidth, color} = props;
-    const rollingData =
-      averagesData ||
-      calculateRollingAverages(rollingAverage, visibleChartData, chartData);
+    const rollingData = rollingAverage
+      ? calculateRollingAverages(rollingAverage, visibleChartData, chartData)
+      : averagesData;
 
     const lineGenerator = line();
     lineGenerator.curve(curveMonotoneX);
