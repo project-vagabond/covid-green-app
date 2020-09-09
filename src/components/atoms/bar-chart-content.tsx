@@ -51,7 +51,6 @@ const calculateRollingAverages = (
       ? chartData.map((_, index) => {
           const avStart = Math.max(0, index - rollingOffset);
           const avEnd = index + 1;
-          console.log(index, avStart, avEnd);
           const avValues = chartData.slice(avStart, avEnd);
           const total = avValues.reduce((sum, num) => sum + num, 0);
           return total / avValues.length;
