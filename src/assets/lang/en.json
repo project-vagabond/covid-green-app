@@ -546,7 +546,7 @@
       "android": {
         "text": "You need to turn on COVID-19 Exposure Notifications and Bluetooth to enable Closeness Sensing",
         "ens": "You need to turn on COVID-19 Exposure Notifications to enable Closeness Sensing",
-        "bt": "Please turn on Bluetooth.\n\n**Note:** You can do this in in your device’s settings.",
+        "bt": "Please turn on Bluetooth. You can do this in the Bluetooth section of your device’s Settings.",
         "gotoSettings": "Go to Settings"
       },
       "next": "Set it up later and continue"
