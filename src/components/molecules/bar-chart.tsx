@@ -5,7 +5,7 @@ import {YAxis, XAxis} from 'react-native-svg-charts';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
 
-import {dateFnsLocales, getDateLocaleOptions} from 'services/i18n/date';
+import {getDateLocaleOptions} from 'services/i18n/date';
 import {text, colors} from 'theme';
 import {BarChartContent} from 'components/atoms/bar-chart-content';
 import {Spacing} from 'components/atoms/spacing';
@@ -17,11 +17,9 @@ interface TrackerBarChartProps {
   description?: string;
   chartData: ChartData;
   axisData: AxisData;
-  days?: number;
   yMin?: number;
   ySuffix?: string;
   averagesData: ChartData;
-  rollingAverage?: number;
   intervalsCount?: number;
   backgroundColor?: string;
   primaryColor?: string;
@@ -55,8 +53,6 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   axisData,
   averagesData,
   description,
-  rollingAverage,
-  days = 30,
   yMin = 5,
   ySuffix = '',
   primaryColor = '#CD4000',
@@ -67,7 +63,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const dateLocale = getDateLocaleOptions(i18n);
   const wideMonthLocales = ['bn'];
 
-  const daysLimit = Math.min(days, chartData.length);
+  const daysLimit = Math.min(axisData.length, chartData.length);
 
   // Arbitrary while data source is unstable, pending chart redesign
   const intervalsCount = daysLimit < 30 ? 7 : 6;
@@ -115,7 +111,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
   const yMax = maxValue < yMin ? yMin : undefined;
 
-  const showLegend = !!(rollingAverage || averagesData.length);
+  const showLegend = !!averagesData.length;
 
   const formatXAxisMonthLabel = (_: any, index: number) => {
     if (isAxisLabelHidden(index)) {
@@ -182,7 +178,6 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
           <BarChartContent
             chartData={chartData}
             averagesData={averagesData}
-            days={daysLimit}
             cornerRoundness={2}
             scale={scaleBand}
             contentInset={contentInset}
@@ -190,7 +185,6 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             primaryColor={primaryColor}
             secondaryColor={secondaryColor}
             backgroundColor={backgroundColor}
-            rollingAverage={rollingAverage}
             yMax={yMax}
           />
           <XAxis

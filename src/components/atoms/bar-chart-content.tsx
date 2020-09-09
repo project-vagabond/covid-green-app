@@ -5,11 +5,7 @@ import {BarChart, Grid} from 'react-native-svg-charts';
 import {colors} from 'theme';
 import {line, curveMonotoneX} from 'd3-shape';
 import {ScaleBand} from 'd3-scale';
-import {
-  ChartData,
-  AxisData,
-  trimData
-} from 'components/organisms/tracker-charts';
+import {ChartData, AxisData} from 'components/organisms/tracker-charts';
 
 interface BarChartContentProps {
   chartData: ChartData;
@@ -40,33 +36,10 @@ interface TrendLineProps extends BarChildProps {
   color: string;
 }
 
-const calculateRollingAverages = (
-  rollingAverage: number,
-  chartData: ChartData,
-  days: number
-) => {
-  const rollingOffset = Math.max(0, rollingAverage - 1);
-  return trimData(
-    rollingAverage
-      ? chartData.map((_, index) => {
-          const avStart = Math.max(0, index - rollingOffset);
-          const avEnd = index + 1;
-          const avValues = chartData.slice(avStart, avEnd);
-          const total = avValues.reduce((sum, num) => sum + num, 0);
-          return total / avValues.length;
-        })
-      : chartData,
-    days,
-    0
-  );
-};
-
 export const BarChartContent: FC<BarChartContentProps> = ({
   chartData,
   averagesData,
   contentInset,
-  rollingAverage = 0,
-  days,
   primaryColor,
   secondaryColor,
   backgroundColor,
@@ -76,9 +49,6 @@ export const BarChartContent: FC<BarChartContentProps> = ({
   scale,
   yMax
 }) => {
-  const startPoint = Math.max(0, chartData.length - days);
-  const visibleChartData = chartData.slice(startPoint);
-
   const RoundedBarToppers: FC<BarChildProps> = (props) => {
     const {x, y, bandwidth, data} = props;
     return (
@@ -101,14 +71,11 @@ export const BarChartContent: FC<BarChartContentProps> = ({
 
   const TrendLine: FC<TrendLineProps> = (props) => {
     const {x, y, bandwidth, lineWidth, color} = props;
-    const rollingData = rollingAverage
-      ? calculateRollingAverages(rollingAverage, chartData, days)
-      : averagesData.slice(startPoint);
 
     const lineGenerator = line();
     lineGenerator.curve(curveMonotoneX);
     const pathDef = lineGenerator(
-      rollingData.map((value, index) => [
+      averagesData.map((value, index) => [
         (x(index) || 0) + bandwidth / 2,
         y(value) || 0
       ])
@@ -150,12 +117,12 @@ export const BarChartContent: FC<BarChartContentProps> = ({
     );
   };
 
-  const showTrendLine = !!rollingAverage || averagesData;
+  const showTrendLine = !!averagesData.length;
 
   return (
     <BarChart
       style={style}
-      data={visibleChartData}
+      data={chartData}
       gridMin={0}
       scale={scale}
       numberOfTicks={3}

@@ -26,7 +26,7 @@ const chartDataIsAvailable = (data: ExtractedData) => {
   return !!(data.axisData?.length && data.chartData?.length);
 };
 
-export function trimData(data: any[], days: number, rolling: number) {
+export function trimData(data: any[], days: number, rolling: number = 0) {
   const rollingOffset = Math.max(0, rolling - 1);
   const trimLength = days + rollingOffset;
   const excessLength = data.length - trimLength;
@@ -39,12 +39,33 @@ function trimAxisData(axisData: any[], days: number) {
   return excessLength > 0 ? axisData.slice(excessLength) : axisData;
 }
 
+const calculateRollingAverages = (
+  rollingAverage: number,
+  chartData: ChartData,
+  days: number
+) => {
+  const rollingOffset = Math.max(0, rollingAverage - 1);
+  return trimData(
+    rollingAverage
+      ? chartData.map((_, index) => {
+          const avStart = Math.max(0, index - rollingOffset);
+          const avEnd = index + 1;
+          const avValues = chartData.slice(avStart, avEnd);
+          const total = avValues.reduce((sum, num) => sum + num, 0);
+          return total / avValues.length;
+        })
+      : chartData,
+    days,
+    0
+  );
+};
+
 const getBarchartData = (
   data: any,
   quantityKey: string,
   averagesKey: string,
   days: number,
-  rolling: number
+  rollingAverage: number
 ) => {
   let axisData: Date[] = [];
   let chartData: number[] = [];
@@ -82,10 +103,17 @@ const getBarchartData = (
     });
   }
 
+  // Calculate rolling averages here to guarentee accuracy
+  // unless the server provided insufficient data
+  const finalAveragesData =
+    rollingAverage && chartData.length >= days + rollingAverage - 1
+      ? calculateRollingAverages(rollingAverage, chartData, days)
+      : averagesData;
+
   return {
-    chartData: trimData(chartData, days, rolling),
+    chartData: trimData(chartData, days),
     axisData: trimAxisData(axisData, days),
-    averagesData: trimData(averagesData || [], days, rolling)
+    averagesData: finalAveragesData
   };
 };
 
@@ -166,8 +194,6 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({
               axisData={testsData.axisData}
               chartData={testsData.chartData}
               averagesData={testsData.averagesData}
-              days={days}
-              rollingAverage={rollingAverage}
             />
           </Card>
           <Spacing s={20} />
@@ -184,9 +210,6 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({
               averagesData={percentData.averagesData}
               yMin={0.5}
               ySuffix="%"
-              days={days}
-              rollingAverage={rollingAverage}
-
             />
           </Card>
           <Spacing s={20} />
@@ -200,9 +223,6 @@ export const TrackerCharts: FC<TrackerChartsProps> = ({
             axisData={positivesData.axisData}
             chartData={positivesData.chartData}
             averagesData={positivesData.averagesData}
-            days={days}
-            rollingAverage={rollingAverage}
-
           />
         </Card>
       )}
