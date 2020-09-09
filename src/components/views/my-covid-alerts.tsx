@@ -4,7 +4,8 @@ import {
   AuthorisedStatus,
   StatusState,
   StatusType,
-  useExposure
+  useExposure,
+  PermissionStatus
 } from 'react-native-exposure-notification-service';
 import {useTranslation} from 'react-i18next';
 import {
@@ -21,6 +22,7 @@ import {Card} from 'components/atoms/card';
 import {Spacing} from 'components/atoms/spacing';
 import {CloseContactWarning} from 'components/molecules/close-contact-warning';
 import {ClosenessSensing} from 'components/molecules/closeness-sensing';
+import {NotificationsDisabledCard} from 'components/molecules/notifications-disabled-card';
 import {Scrollable} from 'components/templates/scrollable';
 
 import {colors, text} from 'theme';
@@ -33,7 +35,14 @@ export const MyCovidAlerts = () => {
   const isFocused = useIsFocused();
   const [appState] = useAppState();
 
-  const {supported, canSupport, status, enabled, isAuthorised} = exposure;
+  const {
+    supported,
+    canSupport,
+    status,
+    enabled,
+    isAuthorised,
+    permissions
+  } = exposure;
 
   useFocusEffect(
     useCallback(() => {
@@ -61,7 +70,12 @@ export const MyCovidAlerts = () => {
     showCards = false;
   } else {
     if (status.state === StatusState.active && enabled) {
-      exposureStatusCard = <ClosenessSensing.Active />;
+      exposureStatusCard =
+        permissions.notifications.status !== PermissionStatus.Allowed ? (
+          <NotificationsDisabledCard />
+        ) : (
+          <ClosenessSensing.Active />
+        );
     } else if (Platform.OS === 'android') {
       exposureStatusCard =
         status.state === StatusState.disabled &&
