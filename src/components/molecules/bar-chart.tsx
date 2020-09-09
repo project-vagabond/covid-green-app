@@ -63,9 +63,9 @@ function roundNumber(num: number, places: number = 2) {
 
 export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   title,
-  chartData,
-  axisData,
-  averagesData,
+  chartData: rawChartData,
+  axisData: rawAxisData,
+  averagesData: rawAveragesData = [],
   description,
   rollingAverage = 0,
   days = 30,
@@ -78,13 +78,13 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const {t, i18n} = useTranslation();
   const dateLocale = getDateLocaleOptions(i18n);
   const wideMonthLocales = ['bn'];
-  const intervalsCount = axisData.length < 30 ? 7 : 6;
 
-  const daysLimit = Math.min(days, chartData.length);
+  const daysLimit = Math.min(days, rawChartData.length);
+  const intervalsCount = daysLimit < 30 ? 7 : 6;
 
-  chartData = trimData(chartData, daysLimit, rollingAverage);
-  averagesData = trimData(averagesData || [], daysLimit, rollingAverage);
-  axisData = trimAxisData(axisData, daysLimit);
+  const chartData = trimData(rawChartData, daysLimit, rollingAverage);
+  const averagesData = trimData(rawAveragesData, daysLimit, rollingAverage);
+  const axisData = trimAxisData(rawAxisData, daysLimit);
 
   if (!chartData.length || !axisData.length) {
     return null;
