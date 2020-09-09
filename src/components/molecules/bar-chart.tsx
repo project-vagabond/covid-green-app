@@ -49,7 +49,8 @@ function trimData(data: any[], days: number, rolling: number) {
   const rollingOffset = Math.max(0, rolling - 1);
   const trimLength = days + rollingOffset;
   const excessLength = data.length - trimLength;
-  return excessLength > 0 ? data.slice(excessLength) : data;
+  const trimmedData = excessLength > 0 ? data.slice(excessLength) : data;
+  return trimmedData.map((d) => Number(d) || 0);
 }
 
 function trimAxisData(axisData: any[], days: number) {
@@ -117,7 +118,7 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
     right: insetX
   };
 
-  // Where numbers are very small, don't labels like "0.5", or make one case look huge
+  // Where numbers are very small, no labels like "0.5" and don't make one case look huge
   const maxValue = chartData.reduce((max, value) => Math.max(max, value), 0);
   const yMax = maxValue < yMin ? yMin : undefined;
 
