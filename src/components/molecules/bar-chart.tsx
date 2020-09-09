@@ -101,11 +101,19 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
       return summaryText;
     }
     const previousText = summaryText ? `${summaryText}, ` : '';
-    return `${previousText}${format(date, 'MMMM')} ${format(
-      date,
-      'do',
-      dateLocale
-    )}: ${roundNumber(chartData[index])}${ySuffix}`;
+    let dateText = '';
+    try {
+      dateText = `${format(date, 'MMMM')} ${format(date, 'do', dateLocale)}`;
+    } catch (err) {
+      console.warn(
+        `Could not format axisData index ${index} as date: `,
+        axisData[index],
+        typeof axisData[index]
+      );
+    }
+    return `${previousText}${dateText}: ${roundNumber(
+      chartData[index]
+    )}${ySuffix}`;
   }, '');
 
   // Give x and y axis label text space to not get cropped
@@ -123,6 +131,42 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
   const yMax = maxValue < yMin ? yMin : undefined;
 
   const showLegend = !!(rollingAverage || averagesData.length);
+
+  const formatXAxisMonthLabel = (_: any, index: number) => {
+    if (isAxisLabelHidden(index)) {
+      return '';
+    }
+
+    let date = '';
+    try {
+      date = format(
+        new Date(axisData[index]),
+        wideMonthLocales.includes(i18n.language) ? 'Mo' : 'MMM',
+        dateLocale
+      ).toUpperCase();
+    } catch (err) {
+      // Invalid data already logged generating accessibility text
+    }
+
+    const label = `${index === 0 ? nbsp + nbsp : ''}${date}${
+      index === axisData.length - 1 ? nbsp + nbsp : ''
+    }`;
+
+    return label;
+  };
+
+  const formatXAxisDayLabel = (_: any, index: number) => {
+    if (isAxisLabelHidden(index, 10)) {
+      return '';
+    }
+    let date = '';
+    try {
+      date = format(new Date(axisData[index]), 'dd');
+    } catch (err) {
+      // Error already logged generating accessibility text
+    }
+    return date;
+  };
 
   return (
     <View
@@ -169,32 +213,14 @@ export const TrackerBarChart: FC<TrackerBarChartProps> = ({
             contentInset={contentInset}
             scale={scaleBand}
             svg={{...xAxisSvg, y: 3}}
-            formatLabel={(_, index) => {
-              if (isAxisLabelHidden(index, 10)) {
-                return '';
-              }
-              const date = new Date(axisData[index]);
-              return `${format(date, 'dd')}`;
-            }}
+            formatLabel={formatXAxisDayLabel}
           />
           <XAxis
             data={chartData}
             contentInset={contentInset}
             scale={scaleBand}
             svg={xAxisSvg}
-            formatLabel={(_, index) => {
-              if (isAxisLabelHidden(index)) {
-                return '';
-              }
-              const date = new Date(axisData[index]);
-              return `${index === 0 ? nbsp + nbsp : ''}${format(
-                date,
-                wideMonthLocales.includes(i18n.language) ? 'Mo' : 'MMM',
-                dateLocale
-              ).toUpperCase()}${
-                index === axisData.length - 1 ? nbsp + nbsp : ''
-              }`;
-            }}
+            formatLabel={formatXAxisMonthLabel}
           />
         </View>
       </View>
