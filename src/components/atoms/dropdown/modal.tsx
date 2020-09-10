@@ -34,6 +34,7 @@ interface DropdownModalProps extends Partial<ModalProps> {
     term: string;
     onChange: (value: string) => void;
     noResults: string;
+    noResultsLength: number;
   };
   itemRenderer?: (item: BasicItem) => ReactNode;
   instructions?: () => ReactNode;
@@ -59,6 +60,8 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   } = useApplication();
   const searchInputRef = useRef<TextInput>(null);
   const [ref] = useFocusRef();
+  const searchHasResults =
+    search && items.length > (search.noResultsLength || 0);
 
   useEffect(() => {
     if (search && !screenReaderEnabled) {
@@ -115,19 +118,11 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   };
 
   const renderContent = () => {
-    if (search) {
-      if (!search.term && instructions) {
-        return <View style={listStyles.contentWrapper}>{instructions()}</View>;
-      }
-
-      if (search.term && !items.length) {
-        return (
-          <View accessibilityElementsHidden style={listStyles.contentWrapper}>
-            <Text style={listStyles.noResults}>{search?.noResults}</Text>
-          </View>
-        );
-      }
+    if (search && !search.term && instructions) {
+      return <View style={listStyles.contentWrapper}>{instructions()}</View>;
     }
+
+    console.log('search', search);
 
     return (
       <KeyboardAvoidingView
@@ -137,6 +132,11 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
         enabled>
         <ScrollView keyboardShouldPersistTaps="always">
           {items.map(renderItem)}
+          {!!search?.term && !searchHasResults && (
+            <View accessibilityElementsHidden style={listStyles.contentWrapper}>
+              <Text style={listStyles.noResults}>{search?.noResults}</Text>
+            </View>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     );
@@ -175,9 +175,9 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
                 ref={searchInputRef}
                 accessibilityRole="search"
                 accessibilityLabel={
-                  search.term && !items.length
+                  (!searchHasResults
                     ? t('county:noResultsHint')
-                    : t('county:searchHint')
+                    : t('county:searchHint'))
                 }
                 style={[
                   styles.searchInput,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.dot
   },
   searchInput: {
-    ...text.default,
+    ...text.default
   },
   searchUnderlined: {
     textDecorationLine: 'underline'
