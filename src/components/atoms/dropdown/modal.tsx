@@ -122,8 +122,6 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
       return <View style={listStyles.contentWrapper}>{instructions()}</View>;
     }
 
-    console.log('search', search);
-
     return (
       <KeyboardAvoidingView
         keyboardVerticalOffset={insets.top + 12}
