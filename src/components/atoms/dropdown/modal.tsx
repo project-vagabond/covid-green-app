@@ -175,10 +175,11 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
                 accessibilityLabel={
                   // Without changing the label, it isn't read on Android on starting input
                   // https://github.com/facebook/react-native/issues/26739
-                  (search.term ? ' ' : '') +
-                  (!searchHasResults
-                    ? t('county:noResultsHint')
-                    : t('county:searchHint'))
+                  `${search.term}${search.term ? ', ' : ''}${
+                    !searchHasResults
+                      ? t('county:noResultsHint')
+                      : t('county:searchHint')
+                  }`
                 }
                 style={[
                   styles.searchInput,
