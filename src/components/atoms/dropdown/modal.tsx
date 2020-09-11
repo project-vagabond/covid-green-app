@@ -230,7 +230,8 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.dot
   },
   searchInput: {
-    ...text.default
+    ...text.default,
+    paddingLeft: 4
   },
   searchUnderlined: {
     textDecorationLine: 'underline'
