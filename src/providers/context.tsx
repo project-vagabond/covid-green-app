@@ -67,7 +67,7 @@ interface State {
 export interface ApplicationContextValue extends State {
   uploadRequired?: boolean;
   setContext: (data: any) => Promise<void>;
-  clearContext: (preservedState?: Partial<State>) => Promise<void>;
+  clearContext: () => Promise<void>;
   showActivityIndicator: (message?: string) => void;
   hideActivityIndicator: () => void;
   loadAppData: () => Promise<void>;
@@ -259,9 +259,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     }
   };
 
-  const clearContext = async (
-    preservedState: Partial<State> = {}
-  ): Promise<void> => {
+  const clearContext = async (): Promise<void> => {
     await SecureStore.deleteItemAsync(StorageKeys.refreshToken);
     await SecureStore.deleteItemAsync(StorageKeys.token);
     await SecureStore.deleteItemAsync(StorageKeys.symptomKeys);
@@ -277,8 +275,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     await SecureStore.deleteItemAsync(StorageKeys.symptomDate);
     setState(() => ({
       ...initialState,
-      initializing: false,
-      ...preservedState
+      initializing: false
     }));
   };
 
