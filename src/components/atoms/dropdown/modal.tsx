@@ -249,9 +249,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16
   },
   noPlaceholder: {
-    minWidth: 100,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.black
+    minWidth: 150,
+    borderWidth: 2,
+    borderColor: colors.dot
   }
 });
 
