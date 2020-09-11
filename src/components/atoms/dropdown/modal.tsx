@@ -130,7 +130,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
         enabled>
         <ScrollView keyboardShouldPersistTaps="always">
           {items.map(renderItem)}
-          {!!search?.term && !searchHasResults && (
+          {!!search?.term && !searchHasResults && !instructions && (
             <View accessibilityElementsHidden style={listStyles.contentWrapper}>
               <Text style={listStyles.noResults}>{search?.noResults}</Text>
             </View>
@@ -143,6 +143,12 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   // Workaround a RN bug where a placeholder prevents accessibilityLabel being read
   // on initial TextInput focus https://github.com/facebook/react-native/issues/26739
   const noPlaceholder = Platform.OS === 'android' && screenReaderEnabled;
+
+  console.log(
+    'instructions.......................',
+    typeof instructions,
+    instructions
+  );
 
   return (
     <Modal
