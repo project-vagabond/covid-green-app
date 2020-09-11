@@ -172,15 +172,18 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
               <TextInput
                 ref={searchInputRef}
                 accessibilityRole="search"
-                accessibilityLabel={
-                  // Without changing the label, it isn't read on Android on starting input
-                  // https://github.com/facebook/react-native/issues/26739
-                  `${search.term}${search.term ? ', ' : ''}${
-                    !searchHasResults
-                      ? t('county:noResultsHint')
-                      : t('county:searchHint')
-                  }`
-                }
+                accessibilityLabel={`${
+                  // On Android but not iOS, on text input, accessibilityLabel is read if it has changed
+                  // but current value is not read. This tells user the full value after they stop typing
+                  // and tells them whether there are any autocomplete suggestions.
+                  Platform.OS === 'android' && search.term
+                    ? `${search.term}, `
+                    : ''
+                }${
+                  !searchHasResults
+                    ? t('county:noResultsHint')
+                    : t('county:searchHint')
+                }`}
                 style={[
                   styles.searchInput,
                   !!search.term && styles.searchUnderlined
