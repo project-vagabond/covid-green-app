@@ -49,7 +49,7 @@ export const Permissions: FC<any> = () => {
     try {
       app.showActivityIndicator();
 
-      await app.clearContext();
+      await app.clearContext({loading: true});
       const {token, refreshToken} = await register();
       console.log(token, refreshToken);
 
