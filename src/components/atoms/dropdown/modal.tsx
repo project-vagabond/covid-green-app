@@ -140,6 +140,10 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
     );
   };
 
+  // Workaround a RN bug where a placeholder prevents accessibilityLabel being read
+  // on initial TextInput focus https://github.com/facebook/react-native/issues/26739
+  const noPlaceholder = Platform.OS === 'android' && screenReaderEnabled;
+
   return (
     <Modal
       isVisible={true}
@@ -186,10 +190,11 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
                 }`}
                 style={[
                   styles.searchInput,
-                  !!search.term && styles.searchUnderlined
+                  !!search.term && styles.searchUnderlined,
+                  noPlaceholder && styles.noPlaceholder
                 ]}
                 placeholderTextColor={colors.text}
-                placeholder={search.placeholder}
+                placeholder={noPlaceholder ? '' : search.placeholder}
                 onChangeText={search.onChange}
                 value={search.term}
               />
@@ -242,6 +247,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingHorizontal: 16
+  },
+  noPlaceholder: {
+    minWidth: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.black
   }
 });
 
