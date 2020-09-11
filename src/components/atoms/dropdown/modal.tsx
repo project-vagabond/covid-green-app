@@ -144,12 +144,6 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   // on initial TextInput focus https://github.com/facebook/react-native/issues/26739
   const noPlaceholder = Platform.OS === 'android' && screenReaderEnabled;
 
-  console.log(
-    'instructions.......................',
-    typeof instructions,
-    instructions
-  );
-
   return (
     <Modal
       isVisible={true}
