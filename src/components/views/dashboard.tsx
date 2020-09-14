@@ -3,7 +3,8 @@ import {View, StyleSheet, Text} from 'react-native';
 import {
   useExposure,
   StatusState,
-  PermissionStatus
+  PermissionStatus,
+  StatusType
 } from 'react-native-exposure-notification-service';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
@@ -76,6 +77,31 @@ export const Dashboard: FC<any> = ({navigation}) => {
     />
   );
 
+  const type = exposure.status.type ? exposure.status.type : [];
+
+  const renderAlertInfo = () => {
+    if (
+      type[0] === StatusType.starting ||
+      !exposure.initialised ||
+      exposure.status.state === StatusState.unknown
+    ) {
+      return;
+    }
+    if (
+      !exposure.enabled ||
+      exposure.status.state !== StatusState.active ||
+      exposure.permissions.notifications.status !== PermissionStatus.Allowed
+    ) {
+      return (
+        <>
+          <AlertInformation ref={ref3} />
+          <Spacing s={16} />
+        </>
+      );
+    }
+    return;
+  };
+
   return (
     <Scrollable
       safeArea={false}
@@ -94,15 +120,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
           <Spacing s={16} />
         </>
       )}
-      {(!exposure.enabled ||
-        exposure.status.state !== StatusState.active ||
-        exposure.permissions.notifications.status !==
-          PermissionStatus.Allowed) && (
-        <>
-          <AlertInformation ref={ref3} />
-          <Spacing s={16} />
-        </>
-      )}
+      {renderAlertInfo()}
       {!completedChecker && (
         <>
           <CheckInCard
