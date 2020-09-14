@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {enableScreens} from 'react-native-screens';
 import {Platform, StatusBar, Image, AppState} from 'react-native';
+import {join} from 'path';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createStackNavigator,
@@ -80,7 +81,7 @@ enableScreens();
 
 try {
   NetInfo.configure({
-    reachabilityUrl: `${API_HOST}/healthcheck`
+    reachabilityUrl: join(API_HOST, 'healthcheck')
   });
 
   NetInfo.fetch().then((state) => console.log(state));

@@ -1,5 +1,6 @@
 import {Platform} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import {join} from 'path';
 import {format} from 'date-fns';
 import {fetch} from 'react-native-ssl-pinning';
 import NetInfo from '@react-native-community/netinfo';
@@ -59,7 +60,7 @@ export const verify = async (nonce: string) => {
 
 const connected = async (retry = false): Promise<boolean> => {
   NetInfo.configure({
-    reachabilityUrl: `${API_HOST}/healthcheck`
+    reachabilityUrl: join(API_HOST, 'healthcheck')
   });
 
   const networkState = await NetInfo.fetch();
