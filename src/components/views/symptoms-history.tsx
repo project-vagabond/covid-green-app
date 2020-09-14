@@ -57,9 +57,7 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
       {!completedChecker && (
         <>
           <CheckInCard
-            onPress={() =>
-              navigation.navigate('symptoms', {screen: getNextScreen()})
-            }
+            onPress={() => navigation.navigate('checker.intro')}
             inChecker={true}
           />
           <Spacing s={20} />

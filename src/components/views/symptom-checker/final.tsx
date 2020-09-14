@@ -80,15 +80,7 @@ export const CheckInFinal: FC<any> = ({route}) => {
             buttonText={t('checker:results:viewLog')}
             markdownStyle={styles.markdown}
             onButtonPress={() =>
-              navigation.reset({
-                index: 0,
-                routes: [
-                  {
-                    name: ScreenNames.History,
-                    params: {feelingWell: true, symptoms: {}}
-                  }
-                ]
-              })
+              navigation.navigate('main', {screen: 'symptoms'})
             }
             markdownProps={{
               style: {},

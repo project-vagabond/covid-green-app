@@ -280,83 +280,39 @@ const Screens = (t: TFunction) => {
         title: t('viewNames:positiveResult'),
         ...standardProps
       }
+    },
+    {
+      name: 'checker.intro',
+      component: CheckInIntro,
+      options: {
+        title: t('viewNames:symptomchecker'),
+        ...standardProps
+      }
+    },
+    {
+      name: 'checker.symptoms.1',
+      component: CheckInSymptoms,
+      options: {
+        title: t('viewNames:symptomchecker'),
+        ...standardProps
+      }
+    },
+    {
+      name: 'checker.final',
+      component: CheckInFinal,
+      options: {
+        title: t('viewNames:symptomchecker'),
+        ...standardProps,
+        headerLeft: null
+      }
     }
   ];
 };
 
-const SymptomsStack = () => {
-  const app = useApplication();
-  const {t} = useTranslation();
-  const {getNextScreen} = useSymptomChecker();
-
-  const initialRouteName = app.checks.length
-    ? ScreenNames.History
-    : getNextScreen();
-
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        animationEnabled: true
-      }}
-      initialRouteName={initialRouteName}
-      headerMode="none">
-      <Stack.Screen
-        name={ScreenNames.History}
-        component={SymptomsHistory}
-        options={{
-          title: t('viewNames:symptomchecker'),
-          cardStyle: {
-            backgroundColor: colors.background
-          }
-        }}
-      />
-      <Stack.Screen
-        name="checker.consent"
-        component={CheckInConsent}
-        options={{
-          title: t('viewNames:symptomchecker'),
-          cardStyle: {
-            backgroundColor: colors.background
-          }
-        }}
-      />
-      <Stack.Screen
-        name="checker.intro"
-        component={CheckInIntro}
-        options={{
-          title: t('viewNames:symptomchecker'),
-          cardStyle: {
-            backgroundColor: colors.background
-          }
-        }}
-      />
-      <Stack.Screen
-        name="checker.symptoms.1"
-        component={CheckInSymptoms}
-        initialParams={{page: 1, back: true}}
-        options={{
-          title: t('viewNames:symptomchecker'),
-          cardStyle: {
-            backgroundColor: colors.background
-          }
-        }}
-      />
-      <Stack.Screen
-        name="checker.final"
-        component={CheckInFinal}
-        options={{
-          title: t('viewNames:symptomchecker'),
-          cardStyle: {
-            backgroundColor: colors.background
-          }
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
 const MainStack = () => {
   const {t} = useTranslation();
+  const app = useApplication();
+
   return (
     <Tab.Navigator
       initialRouteName="dashboard"
@@ -368,7 +324,7 @@ const MainStack = () => {
       />
       <Tab.Screen
         name="symptoms"
-        component={SymptomsStack}
+        component={app.checks.length ? SymptomsHistory : CheckInConsent}
         options={{
           title: t('viewNames:symptomchecker')
         }}
@@ -468,7 +424,8 @@ function Navigation({
               backgroundColor: colors.background
             },
             // @ts-ignore
-            showSettings: true
+            showSettings: true,
+            headerLeft: null
           }}
         />
       </Stack.Navigator>
