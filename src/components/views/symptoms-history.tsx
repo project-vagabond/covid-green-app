@@ -54,7 +54,7 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
       safeArea={false}
       backgroundColor={colors.background}>
       <Heading text={t('symptomsHistory:title')} />
-      {completedChecker && (
+      {!completedChecker && (
         <>
           <CheckInCard
             onPress={() => navigation.navigate(getNextScreen('symptoms'))}
