@@ -15,6 +15,7 @@ import {urls} from 'constants/urls';
 import {Check, StorageKeys} from 'providers/context';
 import {isMountedRef, navigationRef, ScreenNames} from 'navigation';
 import {County} from 'assets/counties';
+import {configureNetInfo, testNetinfo} from './netinfo';
 
 interface CheckIn {
   gender: string;
@@ -26,6 +27,9 @@ interface CheckIn {
 }
 
 export type UploadResponse = Response | undefined;
+
+configureNetInfo();
+testNetinfo();
 
 export const verify = async (nonce: string) => {
   if (ENV !== 'production' && TEST_TOKEN) {

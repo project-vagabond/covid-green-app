@@ -13,7 +13,6 @@ import PushNotification, {
 } from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import Spinner from 'react-native-loading-spinner-overlay';
-import NetInfo from '@react-native-community/netinfo';
 import {useTranslation} from 'react-i18next';
 import {TFunction} from 'i18next';
 import * as SecureStore from 'expo-secure-store';
@@ -83,12 +82,6 @@ import {PositiveResult} from 'components/views/positive-result';
 import {Language} from 'components/views/settings/language';
 
 enableScreens();
-
-try {
-  NetInfo.fetch().then((state) => console.log(state));
-} catch (err) {
-  console.log(err);
-}
 
 function cacheImages(images: (string | number)[]) {
   return images.map((image) => {
