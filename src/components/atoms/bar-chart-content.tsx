@@ -118,7 +118,9 @@ export const BarChartContent: FC<BarChartContentProps> = ({
           <View style={styles.triangle} />
           <View style={styles.triangle2} />
           <Text maxFontSizeMultiplier={1} style={styles.labelText}>
-            {ySuffix !== '%' ? value.value : `${value.value.toFixed(2)}%`}
+            {ySuffix !== '%'
+              ? new Intl.NumberFormat('en-US').format(value.value)
+              : `${value.value.toFixed(2)}%`}
           </Text>
         </View>
       ) : null
