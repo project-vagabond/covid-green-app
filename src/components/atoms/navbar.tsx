@@ -14,6 +14,7 @@ import Icons, {AppIcons} from 'assets/icons';
 import {colors, text} from 'theme';
 import {useApplication} from 'providers/context';
 import {TFunction} from 'i18next';
+import {useRoute, NavigationProp} from '@react-navigation/native';
 
 interface NavBarProps {
   navigation: any;
@@ -21,6 +22,11 @@ interface NavBarProps {
   placeholder?: boolean;
   modal?: boolean;
 }
+
+const getIndex = (routeKey: string, navigation: NavigationProp<any>) => {
+  const {routes} = navigation.dangerouslyGetState();
+  return routes.findIndex((route) => route.key === routeKey);
+};
 
 export const shareApp = async (t: TFunction) => {
   try {
@@ -49,15 +55,16 @@ export const NavBar: FC<NavBarProps> = ({
   const {t} = useTranslation();
   const insets = useSafeArea();
   const {user} = useApplication();
+  const {key: routeKey} = useRoute();
 
-  const [state, setState] = useState({back: false});
+  const [state, setState] = useState({back: getIndex(route, navigation) !== 0});
 
   useEffect(() => {
     let unsubscribeStart: (() => any) | null = null;
     let unsubscribeEnd: (() => any) | null = null;
     if (!placeholder) {
       unsubscribeStart = navigation.addListener('transitionStart', () => {
-        const {index} = navigation.dangerouslyGetState();
+        const index = getIndex(routeKey, navigation);
         setState((s) => ({
           ...s,
           back: index !== 0
@@ -65,7 +72,7 @@ export const NavBar: FC<NavBarProps> = ({
       });
 
       unsubscribeEnd = navigation.addListener('transitionEnd', () => {
-        const {index} = navigation.dangerouslyGetState();
+        const index = getIndex(routeKey, navigation);
         setState((s) => ({
           ...s,
           back: index > 0
@@ -77,7 +84,7 @@ export const NavBar: FC<NavBarProps> = ({
       unsubscribeStart && unsubscribeStart();
       unsubscribeEnd && unsubscribeEnd();
     };
-  }, [user, navigation, placeholder]);
+  }, [user, navigation, placeholder, routeKey]);
 
   return (
     <View style={[styles.wrapper, {paddingTop: insets.top + 2}]}>
