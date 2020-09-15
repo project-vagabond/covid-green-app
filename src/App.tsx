@@ -424,8 +424,7 @@ function Navigation({
               backgroundColor: colors.background
             },
             // @ts-ignore
-            showSettings: true,
-            headerLeft: null
+            showSettings: true
           }}
         />
       </Stack.Navigator>

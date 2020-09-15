@@ -15,7 +15,7 @@ import {Heading} from 'components/atoms/heading';
 import {ResultCard} from 'components/molecules/result-card';
 import {Scrollable} from 'components/templates/scrollable';
 
-import {SymptomRecord, SymptomsCheckResult} from 'constants/symptoms';
+import {SymptomRecord, SymptomsCheckResult, symptoms} from 'constants/symptoms';
 import {colors} from 'theme';
 import {CoronavirusCard} from 'components/molecules/coronavirus-card';
 import {ScreenNames} from 'navigation';
@@ -79,9 +79,13 @@ export const CheckInFinal: FC<any> = ({route}) => {
             }
             buttonText={t('checker:results:viewLog')}
             markdownStyle={styles.markdown}
-            onButtonPress={() =>
-              navigation.navigate('main', {screen: 'symptoms'})
-            }
+            onButtonPress={() => {
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'main'}]
+              });
+              navigation.navigate('symptoms');
+            }}
             markdownProps={{
               style: {},
               warningList: true

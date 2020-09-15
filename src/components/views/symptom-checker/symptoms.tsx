@@ -61,7 +61,10 @@ export const CheckInSymptoms = () => {
     } catch (err) {
       console.log('Check-in error', err);
     }
-    navigation.replace('checker.final');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'checker.final'}]
+    });
   };
 
   const items: SymptomListItem[] = pageSymptoms.map((symptom) => ({
@@ -103,7 +106,10 @@ export const CheckInSymptoms = () => {
     } catch (err) {
       console.log(err);
     }
-    navigation.replace('checker.final');
+    navigation.reset({
+      index: 0,
+      routes: [{name: 'checker.final'}]
+    });
   };
 
   // @ts-ignore
