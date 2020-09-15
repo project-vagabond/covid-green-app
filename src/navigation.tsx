@@ -38,7 +38,7 @@ export enum ScreenNames {
 export const covidAlertReset = {
   index: 1,
   routes: [
-    {name: ScreenNames.MyCovidAlerts},
+    {name: 'main', params: { screen: ScreenNames.MyCovidAlerts }},
     {name: ScreenNames.CloseContactAlert}
   ]
 };
