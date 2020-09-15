@@ -57,7 +57,7 @@ export const NavBar: FC<NavBarProps> = ({
   const {user} = useApplication();
   const {key: routeKey} = useRoute();
 
-  const [state, setState] = useState({back: getIndex(route, navigation) !== 0});
+  const [state, setState] = useState({back: false});
 
   useEffect(() => {
     let unsubscribeStart: (() => any) | null = null;
