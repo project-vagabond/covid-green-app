@@ -86,14 +86,8 @@ export const Dashboard: FC<any> = ({navigation}) => {
   );
 
   const renderAlertInfo = () => {
-    const type = status.type || [];
-
-    if (
-      type[0] === StatusType.starting ||
-      !initialised ||
-      status.state === StatusState.unknown
-    ) {
-      return;
+    if (!initialised) {
+      return null;
     }
     if (
       !enabled ||

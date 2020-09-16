@@ -41,7 +41,8 @@ export const MyCovidAlerts = () => {
     status,
     enabled,
     isAuthorised,
-    permissions
+    permissions,
+    initialised
   } = exposure;
 
   useFocusEffect(
@@ -61,6 +62,7 @@ export const MyCovidAlerts = () => {
 
   let showCards = true;
   let exposureStatusCard;
+
   if (!supported) {
     exposureStatusCard = !canSupport ? (
       <ClosenessSensing.NotSupported />
@@ -99,6 +101,10 @@ export const MyCovidAlerts = () => {
         );
       }
     }
+  }
+  if (!initialised) {
+    exposureStatusCard = <ClosenessSensing.Active />;
+    return;
   }
 
   const hasCloseContact = exposure.contacts && exposure.contacts.length > 0;

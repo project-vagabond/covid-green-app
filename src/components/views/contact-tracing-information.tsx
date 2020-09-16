@@ -67,7 +67,7 @@ export const ContactTracingInformation = ({navigation, route}: Props) => {
     });
   };
 
-  if (!exposure.supported && !exposure.canSupport) {
+  if (exposure.initialised && !exposure.supported && !exposure.canSupport) {
     return (
       <PinnedBottom heading={t('onboarding:information:title')}>
         <View style={notSupportedStyles.imageWrapper}>

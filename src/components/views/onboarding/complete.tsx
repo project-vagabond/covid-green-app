@@ -27,7 +27,8 @@ export const Completion: FC<any> = () => {
     status,
     enabled,
     isAuthorised,
-    readPermissions
+    readPermissions,
+    initialised
   } = useExposure();
   const [appState] = useAppState();
   const isFocused = useIsFocused();
@@ -85,6 +86,11 @@ export const Completion: FC<any> = () => {
         );
       }
     }
+  }
+  if (!initialised) {
+    closenessSensingStatusCard = (
+      <ClosenessSensing.Active ref={ref} onboarding />
+    );
   }
 
   return (
