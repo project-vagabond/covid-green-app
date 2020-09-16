@@ -13,7 +13,7 @@ export const Loading: FC = () => {
         <Icons.LogoLaunch width={242} height={242} color={colors.white} />
       </View>
       <View style={styles.stateLogo}>
-        <Icons.LogoState width={335} height={80} color={colors.white} />
+        <Icons.LogoState width={240} height={80} color={colors.white} />
       </View>
     </View>
   );
