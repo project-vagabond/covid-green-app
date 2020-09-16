@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Platform} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 
 import {colors} from 'theme';
@@ -7,13 +7,18 @@ import Icons from 'assets/icons';
 
 export const Loading: FC = () => {
   const insets = useSafeArea();
+  const logoStateHeight = Platform.OS === 'ios' ? 240 : 335;
   return (
     <View style={[styles.container, {paddingBottom: insets.bottom}]}>
       <View style={styles.appLogo}>
         <Icons.LogoLaunch width={242} height={242} color={colors.white} />
       </View>
       <View style={styles.stateLogo}>
-        <Icons.LogoState width={240} height={80} color={colors.white} />
+        <Icons.LogoState
+          width={logoStateHeight}
+          height={80}
+          color={colors.white}
+        />
       </View>
     </View>
   );
