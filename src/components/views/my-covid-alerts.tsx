@@ -42,7 +42,10 @@ export const MyCovidAlerts = () => {
     enabled,
     isAuthorised,
     permissions,
-    initialised
+    initialised,
+    contacts,
+    readPermissions,
+    getCloseContacts
   } = exposure;
 
   useFocusEffect(
@@ -52,8 +55,8 @@ export const MyCovidAlerts = () => {
       }
 
       async function onFocus() {
-        await exposure.readPermissions();
-        exposure.getCloseContacts();
+        await readPermissions();
+        getCloseContacts();
       }
 
       onFocus();
@@ -70,6 +73,8 @@ export const MyCovidAlerts = () => {
       <ClosenessSensing.Supported />
     );
     showCards = false;
+  } else if (!initialised) {
+    exposureStatusCard = <ClosenessSensing.Active />;
   } else {
     if (status.state === StatusState.active && enabled) {
       exposureStatusCard =
@@ -102,19 +107,13 @@ export const MyCovidAlerts = () => {
       }
     }
   }
-  if (!initialised) {
-    exposureStatusCard = <ClosenessSensing.Active />;
-    return;
-  }
-
-  const hasCloseContact = exposure.contacts && exposure.contacts.length > 0;
 
   return (
     <Scrollable
       safeArea={false}
       heading={t('myCovidAlerts:title')}
       backgroundColor={colors.background}>
-      {hasCloseContact && (
+      {contacts && contacts.length > 0 && (
         <>
           <CloseContactWarning />
           <Spacing s={16} />

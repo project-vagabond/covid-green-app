@@ -8,6 +8,7 @@ import {
   PermissionStatus
 } from 'react-native-exposure-notification-service';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {useAppState} from 'hooks/app-state';
 import {useFocusRef} from 'hooks/accessibility';
@@ -50,6 +51,8 @@ export const Completion: FC<any> = () => {
     ) : (
       <ClosenessSensing.Supported onboarding />
     );
+  } else if (!initialised) {
+    closenessSensingStatusCard = <Spinner animation="fade" />;
   } else {
     if (status.state === StatusState.active && enabled) {
       closenessSensingStatusCard =
@@ -86,11 +89,6 @@ export const Completion: FC<any> = () => {
         );
       }
     }
-  }
-  if (!initialised) {
-    closenessSensingStatusCard = (
-      <ClosenessSensing.Active ref={ref} onboarding />
-    );
   }
 
   return (
