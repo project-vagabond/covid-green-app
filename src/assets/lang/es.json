@@ -194,7 +194,7 @@
   },
   "welcome": {
     "title": "¡Hola! 👋",
-    "text": "Puede utilizar Mi Registro de Salud para supervisar cómo se siente diariamente y obtener consejos básicos sobre sus síntomas. Su teléfono almacena un historial, el cual puede revisar en cualquier momento.\n\nSus registros diarios y los de otros usuarios de la aplicación se comparten de forma anónima con el Departamento de Salud de NY. Los datos sobre sus síntomas los ayudan a entender cómo la COVID-19 está afectando a NY.\n\nSu identidad permanece confidencial, pero usted puede compartir datos básicos como su edad, identidad de género, raza, origen étnico y condado para que la información sea más útil para los análisis de salud pública**.\n\n**Nota:** Mi Registro de Salud es opcional. No tiene que participar en las otras funciones de esta aplicación.",
+    "text": "Puede utilizar Mi Registro de Salud para supervisar cómo se siente diariamente y obtener consejos básicos sobre sus síntomas. Su teléfono almacena un historial, el cual puede revisar en cualquier momento.\n\nSus registros diarios y los de otros usuarios de la aplicación se comparten de forma anónima con el Departamento de Salud de NYS. Los datos sobre sus síntomas los ayudan a entender cómo la COVID-19 está afectando a NYS.\n\nSu identidad permanece confidencial, pero usted puede compartir datos básicos como su edad, identidad de género, raza, origen étnico y condado para que la información sea más útil para los análisis de salud pública**.\n\n**Nota:** Mi Registro de Salud es opcional. No tiene que participar en las otras funciones de esta aplicación.",
     "action": "Sí, me gustaría comenzar mi registro",
     "letUsKnow": "Infórmenos si presenta\nsíntomas hoy"
   },
@@ -232,7 +232,7 @@
   },
   "leave": {
     "title": "Borrar mis datos",
-    "info": "Gracias por ayudarnos a luchar contra la propagación de la COVID-19 en NY. Lamentamos que se vaya, y queremos que sepa que puede dejar de usar la aplicación en cualquier momento.\n\nCuando presione el botón “Borrar mis datos” que está más adelante, eliminaremos todos los datos almacenados en su teléfono, como todas las anotaciones en su registro de salud.",
+    "info": "Gracias por ayudarnos a luchar contra la propagación de la COVID-19 en NYS. Lamentamos que se vaya, y queremos que sepa que puede dejar de usar la aplicación en cualquier momento.\n\nCuando presione el botón “Borrar mis datos” que está más adelante, eliminaremos todos los datos almacenados en su teléfono, como todas las anotaciones en su registro de salud.",
     "summary": "**Nota:**\n\nEste botón no elimina los códigos aleatorios creados o recopilados por su teléfono para la Detección de Proximidad y las Alertas de COVID.\n\nPara borrar los códigos aleatorios, vaya a Configuración del teléfono y seleccione “Servicios y Preferencias de Google”. Luego, seleccione “Notificaciones de Exposición a COVID-19” y presione el botón “Borrar los ID aleatorios”. Para dejar de almacenar nuevos códigos, debe deshabilitar “Utilizar Notificaciones de Exposición”.",
     "button": "Borrar mis datos",
     "confirmTitle": "Borrar mis datos",
