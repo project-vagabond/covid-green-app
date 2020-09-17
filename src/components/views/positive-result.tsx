@@ -31,7 +31,6 @@ export const PositiveResult: FC = () => {
       </Card>
       <Spacing s={18} />
       <Markdown>{t('positiveResult:text2')}</Markdown>
-      <Spacing s={6} />
       <Button onPress={() => navigation.navigate(ScreenNames.UploadKeys)}>
         {t('positiveResult:shareCodes')}
       </Button>
