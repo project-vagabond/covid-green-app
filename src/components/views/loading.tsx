@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import {StyleSheet, View, Platform, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 import {colors} from 'theme';
 import Icons from 'assets/icons';
 
-const HealthLogo = require('assets/images/logo/logo-health-department.png');
+const HealthLogo = require('assets/images/healthStateLogo/image.png');
 
 export const Loading: FC = () => {
   const insets = useSafeArea();
@@ -15,16 +15,7 @@ export const Loading: FC = () => {
         <Icons.LogoLaunch width={242} height={242} color={colors.white} />
       </View>
       <View style={styles.stateLogo}>
-        {/*<Icons.LogoState
-          width={logoStateHeight}
-          height={80}
-          color={colors.white}
-        />*/}
-        <Image
-          accessibilityIgnoresInvertColors
-          style={styles.stateLogoImage}
-          source={HealthLogo}
-        />
+        <Image accessibilityIgnoresInvertColors source={HealthLogo} />
       </View>
     </View>
   );
@@ -44,13 +35,9 @@ const styles = StyleSheet.create({
   },
   stateLogo: {
     position: 'absolute',
-    bottom: 55,
+    bottom: 40,
     left: 0,
     right: 0,
     alignItems: 'center'
-  },
-  stateLogoImage: {
-    height: 50,
-    width: 240
   }
 });
