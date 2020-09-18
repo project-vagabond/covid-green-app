@@ -5,8 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {getRenderListBullet, Markdown} from 'components/atoms/markdown';
 import {Scrollable} from 'components/templates/scrollable';
 import {KeepSafeIcons} from 'assets/icons';
-import {Linking} from 'react-native';
-import {CallCard} from 'components/molecules/call-card';
 
 const renderListBullet = getRenderListBullet(KeepSafeIcons);
 
@@ -18,10 +16,6 @@ export const CloseContactInfo: FC = () => {
       <Markdown style={styles.md} renderListBullet={renderListBullet}>
         {t('closeContactInfo:list')}
       </Markdown>
-      <CallCard
-        onPress={() => Linking.openURL('tel:18332084159')}
-        message={t('checker:results:callHelp')}
-      />
     </Scrollable>
   );
 };

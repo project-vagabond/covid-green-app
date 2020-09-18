@@ -132,7 +132,8 @@ export const KeepSafeIcons: Record<string, any> = {
   ChildCare,
   Wash,
   GetTested,
-  NoTouch
+  NoTouch,
+  CallHotline
 };
 
 // Maintain order = content markdown is dependant on this - needs refactoring
