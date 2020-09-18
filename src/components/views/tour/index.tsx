@@ -75,7 +75,7 @@ const Tour: FC<any> = () => {
               total: statements.length
             })}
             style={styles.headerContent}>
-            <Text maxFontSizeMultiplier={2} style={styles.heading}>
+            <Text maxFontSizeMultiplier={1.4} style={styles.heading}>
               {t('onboarding:tour:title')}
             </Text>
           </View>
