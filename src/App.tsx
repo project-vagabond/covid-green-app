@@ -394,11 +394,15 @@ const MainStack = () => {
 };
 
 const LoadingScreen = () => {
+  const app = useApplication();
+
   const nav = useNavigation();
+  const initialScreen = app.user ? 'main' : ScreenNames.Introduction;
+
   setTimeout(() => {
     nav.reset({
       index: 0,
-      routes: [{name: 'main'}]
+      routes: [{name: initialScreen}]
     });
   }, 1000);
   return <Loading />;
@@ -416,7 +420,6 @@ function Navigation({
 }) {
   const app = useApplication();
   const {t} = useTranslation();
-  const initialScreen = app.user ? 'main' : ScreenNames.Introduction;
 
   useEffect(() => {
     isMountedRef.current = true;
