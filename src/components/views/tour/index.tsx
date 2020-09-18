@@ -50,7 +50,7 @@ const Tour: FC<any> = () => {
         }
       ]}>
       <View style={[styles.header, styles.row]}>
-        <View style={[styles.padded, styles.close]}>
+        <View style={styles.close}>
           <TouchableWithoutFeedback
             accessibilityRole="button"
             accessibilityLabel={t('common:close')}
@@ -76,7 +76,6 @@ const Tour: FC<any> = () => {
           style={styles.headerContent}>
           <Text style={styles.heading}>{t('onboarding:tour:title')}</Text>
         </View>
-        <View style={styles.padded} />
       </View>
       <View style={styles.details}>
         <ViewPager
@@ -213,14 +212,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-
   row: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   header: {
-    paddingHorizontal: 10,
-    paddingVertical: 20
+    paddingVertical: 20,
+    paddingLeft: 12,
+    paddingRight: 36
   },
   headerContent: {
     flex: 1
@@ -228,12 +227,6 @@ const styles = StyleSheet.create({
   heading: {
     ...text.largeBold,
     textAlign: 'center'
-  },
-  padded: {
-    width: 24,
-    height: 24,
-    position: 'relative',
-    zIndex: 10
   },
   close: {
     marginLeft: 10
