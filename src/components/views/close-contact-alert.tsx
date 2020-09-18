@@ -1,9 +1,12 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {StyleSheet, View, Linking} from 'react-native';
-import {useExposure} from 'react-native-exposure-notification-service';
+import {
+  CloseContact,
+  useExposure
+} from 'react-native-exposure-notification-service';
 import PushNotification from 'react-native-push-notification';
 import {useTranslation} from 'react-i18next';
-import {format, subDays} from 'date-fns';
+import {format, Locale, subDays} from 'date-fns';
 
 import {Card} from 'components/atoms/card';
 import {Markdown} from 'components/atoms/markdown';
@@ -27,32 +30,48 @@ const markdownStyles = {
   }
 };
 
+interface DateLocale {
+  locale: Locale;
+}
+
+const getContactDate = (
+  contacts: CloseContact[] | undefined,
+  dateLocale: DateLocale
+): string => {
+  if (!contacts || !contacts.length) {
+    return '…';
+  }
+
+  const closeContact = contacts[0];
+
+  const exposureDate = subDays(
+    new Date(Number(closeContact.exposureAlertDate)),
+    closeContact.daysSinceLastExposure
+  );
+
+  return format(exposureDate, 'MMMM d, yyyy', dateLocale);
+};
+
 export const CloseContactAlert: FC = () => {
   const {t, i18n} = useTranslation();
-  const exposure = useExposure();
-  const [closeContactDate, setCloseContactDate] = useState<string>('');
+  const {contacts, getCloseContacts} = useExposure();
 
   useEffect(() => {
-    async function getCloseContactDate() {
-      const dateLocale = getDateLocaleOptions(i18n);
-      const contacts = await exposure.getCloseContacts();
-      console.log(contacts);
-      if (contacts && contacts.length) {
-        const exposureDate = subDays(
-          new Date(Number(contacts[0].exposureAlertDate)),
-          contacts[0].daysSinceLastExposure
-        );
-        setCloseContactDate(format(exposureDate, 'MMMM d, yyyy', dateLocale));
-      }
-    }
-    getCloseContactDate();
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [i18n]);
+    PushNotification.setApplicationIconBadgeNumber(0);
 
-  PushNotification.setApplicationIconBadgeNumber(0);
+    // Calling this asyncronously updates contacts, re-rendering if it's not up to date
+    getCloseContacts();
+
+    // Only call once as exposure context data will update each time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const closeContactDate = getContactDate(contacts, getDateLocaleOptions(i18n));
+
+  const refreshing = !contacts || !contacts.length;
 
   return (
-    <Scrollable>
+    <Scrollable refresh={{refreshing, onRefresh: getCloseContacts}}>
       <Card padding={{h: 0, v: 0}}>
         <View style={styles.cardImage}>
           <StateIcons.ErrorPhone height={144} width={144} />
