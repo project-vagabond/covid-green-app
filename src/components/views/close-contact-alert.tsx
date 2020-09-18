@@ -58,7 +58,8 @@ export const CloseContactAlert: FC = () => {
 
   PushNotification.setApplicationIconBadgeNumber(0);
 
-  // Asyncronously update contacts once, re-rendering if it wasn't not up to date
+  // getCloseContacts() asyncronously updates RNENS's contacts state.
+  // If we were showing old cached data, it'll quickly re-render showing up to date data
   useEffect(() => {
     getCloseContacts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
