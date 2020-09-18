@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {StyleSheet, View, Linking} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   CloseContact,
   useExposure
@@ -7,20 +7,35 @@ import {
 import PushNotification from 'react-native-push-notification';
 import {useTranslation} from 'react-i18next';
 import {format, Locale, subDays} from 'date-fns';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Card} from 'components/atoms/card';
 import {Markdown} from 'components/atoms/markdown';
 import {Spacing} from 'components/atoms/layout';
-import {CallCard} from 'components/molecules/call-card';
 import {Scrollable} from 'components/templates/scrollable';
 
 import {getDateLocaleOptions} from 'services/i18n/date';
 import {text, colors} from 'theme';
-import {StateIcons} from 'assets/icons';
+import {StateIcons, ExposureAlertIcons} from 'assets/icons';
 
-import {renderListBullet} from './close-contact-info';
-import { Loading } from './loading';
-import Spinner from 'react-native-loading-spinner-overlay';
+const map: {[key: number]: any} = Object.entries(ExposureAlertIcons).reduce(
+  (p, c, i) => {
+    return {
+      ...p,
+      [i]: c[1]({width: 48, height: 48})
+    };
+  },
+  {}
+);
+
+export function renderListBullet(index: number, _: boolean, children: any) {
+  return (
+    <View key={`list-item-${index}`} style={styles.listIcon}>
+      <View style={styles.icon}>{map[index]}</View>
+      <View style={styles.content}>{children}</View>
+    </View>
+  );
+}
 
 const markdownStyles = {
   text: {
@@ -89,17 +104,25 @@ export const CloseContactAlert: FC = () => {
       <Spacing s={24} />
       <Markdown style={styles.mdTop}>{t('closeContactAlert:info')}</Markdown>
       <Markdown style={styles.md} renderListBullet={renderListBullet}>
-        {t('closeContactInfo:list')}
+        {t('closeContactAlert:list')}
       </Markdown>
-      <CallCard
-        onPress={() => Linking.openURL('tel:18332084159')}
-        message={t('checker:results:callHelp')}
-      />
     </Scrollable>
   );
 };
 
 export const styles = StyleSheet.create({
+  icon: {
+    marginRight: 12
+  },
+  content: {
+    flex: 1
+  },
+  listIcon: {
+    flexDirection: 'row',
+    flex: 1,
+    marginRight: 12,
+    marginTop: 12
+  },
   messageWrapper: {
     flex: 1,
     justifyContent: 'center',
