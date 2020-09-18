@@ -120,7 +120,7 @@ export const StateIcons = {
 };
 
 // Maintain order = content markdown is dependant on this - needs refactoring
-export const KeepSafeIcons = {
+export const KeepSafeIcons: Record<string, any> = {
   StayHome,
   Call,
   Sleep,
@@ -136,7 +136,7 @@ export const KeepSafeIcons = {
 };
 
 // Maintain order = content markdown is dependant on this - needs refactoring
-export const ExposureAlertIcons = {
+export const ExposureAlertIcons: Record<string, any> = {
   GetTested,
   CallHotline,
   StayHome,

@@ -10,7 +10,7 @@ import {format, Locale, subDays} from 'date-fns';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import {Card} from 'components/atoms/card';
-import {Markdown} from 'components/atoms/markdown';
+import {getRenderListBullet, Markdown} from 'components/atoms/markdown';
 import {Spacing} from 'components/atoms/layout';
 import {Scrollable} from 'components/templates/scrollable';
 
@@ -18,24 +18,7 @@ import {getDateLocaleOptions} from 'services/i18n/date';
 import {text, colors} from 'theme';
 import {StateIcons, ExposureAlertIcons} from 'assets/icons';
 
-const map: {[key: number]: any} = Object.entries(ExposureAlertIcons).reduce(
-  (p, c, i) => {
-    return {
-      ...p,
-      [i]: c[1]({width: 48, height: 48})
-    };
-  },
-  {}
-);
-
-export function renderListBullet(index: number, _: boolean, children: any) {
-  return (
-    <View key={`list-item-${index}`} style={styles.listIcon}>
-      <View style={styles.icon}>{map[index]}</View>
-      <View style={styles.content}>{children}</View>
-    </View>
-  );
-}
+const renderListBullet = getRenderListBullet(ExposureAlertIcons);
 
 const markdownStyles = {
   text: {
@@ -111,18 +94,6 @@ export const CloseContactAlert: FC = () => {
 };
 
 export const styles = StyleSheet.create({
-  icon: {
-    marginRight: 12
-  },
-  content: {
-    flex: 1
-  },
-  listIcon: {
-    flexDirection: 'row',
-    flex: 1,
-    marginRight: 12,
-    marginTop: 12
-  },
   messageWrapper: {
     flex: 1,
     justifyContent: 'center',
