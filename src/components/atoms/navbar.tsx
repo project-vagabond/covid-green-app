@@ -53,8 +53,6 @@ export const NavBar: FC<NavBarProps> = ({
   const index = routes.findIndex((route) => route.key === routeKey);
   const hasHistory = !placeholder && index > 0;
 
-  console.log('route --- ', index, name)
-
   return (
     <View style={[styles.wrapper, {paddingTop: insets.top + 2}]}>
       <View style={styles.container}>
