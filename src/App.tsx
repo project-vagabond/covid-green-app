@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {enableScreens} from 'react-native-screens';
 import {Platform, StatusBar, Image, AppState} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {
   createStackNavigator,
   CardStyleInterpolators
@@ -65,7 +65,12 @@ import {CheckInSettings} from 'components/views/settings/check-in';
 import {Metrics} from 'components/views/settings/metrics';
 import {Leave} from 'components/views/settings/leave';
 import {Debug} from 'components/views/settings/debug';
-import {covidAlertReset, isMountedRef, navigationRef, ScreenNames} from 'navigation';
+import {
+  covidAlertReset,
+  isMountedRef,
+  navigationRef,
+  ScreenNames
+} from 'navigation';
 import {colors} from 'theme';
 import {Loading} from 'components/views/loading';
 import {useSymptomChecker} from 'hooks/symptom-checker';
@@ -388,6 +393,17 @@ const MainStack = () => {
   );
 };
 
+const LoadingScreen = () => {
+  const nav = useNavigation();
+  setTimeout(() => {
+    nav.reset({
+      index: 0,
+      routes: [{name: 'main'}]
+    });
+  }, 1000);
+  return <Loading />;
+};
+
 function Navigation({
   notification,
   exposureNotificationClicked,
@@ -436,7 +452,12 @@ function Navigation({
   if (app.initializing) {
     return <Loading />;
   }
-
+  const config = {
+    animation: 'timing',
+    config: {
+      duration: 1000
+    }
+  };
   return (
     <NavigationContainer
       ref={(e) => {
@@ -454,7 +475,7 @@ function Navigation({
           headerShown: false
         })}
         mode="modal"
-        initialRouteName={initialScreen}>
+        initialRouteName={'loading'}>
         {Screens(t).map((screen, index) => (
           // @ts-ignore
           <Stack.Screen {...screen} key={`screen-${index}`} />
@@ -470,6 +491,16 @@ function Navigation({
             },
             // @ts-ignore
             showSettings: true
+          }}
+        />
+        <Stack.Screen
+          name="loading"
+          component={LoadingScreen}
+          options={{
+            transitionSpec: {
+              open: config,
+              close: config
+            }
           }}
         />
       </Stack.Navigator>
