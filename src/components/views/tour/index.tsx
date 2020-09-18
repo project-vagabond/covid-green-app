@@ -75,7 +75,7 @@ const Tour: FC<any> = () => {
               total: statements.length
             })}
             style={styles.headerContent}>
-            <Text maxFontSizeMultiplier={1.4} style={styles.heading}>
+            <Text maxFontSizeMultiplier={2} style={styles.heading}>
               {t('onboarding:tour:title')}
             </Text>
           </View>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   fill: {
-    flex: 2
+    flex: 2.3
   },
   row: {
     flexDirection: 'row',
