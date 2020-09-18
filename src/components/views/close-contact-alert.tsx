@@ -56,22 +56,18 @@ export const CloseContactAlert: FC = () => {
   const {t, i18n} = useTranslation();
   const {contacts, getCloseContacts} = useExposure();
 
+  PushNotification.setApplicationIconBadgeNumber(0);
+
+  // Asyncronously update contacts once, re-rendering if it wasn't not up to date
   useEffect(() => {
-    PushNotification.setApplicationIconBadgeNumber(0);
-
-    // Calling this asyncronously updates contacts, re-rendering if it's not up to date
     getCloseContacts();
-
-    // Only call once as exposure context data will update each time
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const closeContactDate = getContactDate(contacts, getDateLocaleOptions(i18n));
 
-  const refreshing = !contacts || !contacts.length;
-
   return (
-    <Scrollable refresh={{refreshing, onRefresh: getCloseContacts}}>
+    <Scrollable>
       <Card padding={{h: 0, v: 0}}>
         <View style={styles.cardImage}>
           <StateIcons.ErrorPhone height={144} width={144} />
