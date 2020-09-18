@@ -19,6 +19,8 @@ import {text, colors} from 'theme';
 import {StateIcons} from 'assets/icons';
 
 import {renderListBullet} from './close-contact-info';
+import { Loading } from './loading';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const markdownStyles = {
   text: {
@@ -39,7 +41,7 @@ const getContactDate = (
   dateLocale: DateLocale
 ): string => {
   if (!contacts || !contacts.length) {
-    return '…';
+    return '';
   }
 
   const closeContact = contacts[0];
@@ -54,7 +56,7 @@ const getContactDate = (
 
 export const CloseContactAlert: FC = () => {
   const {t, i18n} = useTranslation();
-  const {contacts, getCloseContacts} = useExposure();
+  const {contacts, getCloseContacts, initialised} = useExposure();
 
   PushNotification.setApplicationIconBadgeNumber(0);
 
@@ -63,12 +65,15 @@ export const CloseContactAlert: FC = () => {
   useEffect(() => {
     getCloseContacts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialised]);
 
   const closeContactDate = getContactDate(contacts, getDateLocaleOptions(i18n));
 
+  const appIsLoading = !closeContactDate && !initialised;
+
   return (
     <Scrollable>
+      <Spinner animation="fade" visible={appIsLoading} />
       <Card padding={{h: 0, v: 0}}>
         <View style={styles.cardImage}>
           <StateIcons.ErrorPhone height={144} width={144} />
