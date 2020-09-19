@@ -11,6 +11,9 @@ jasmine.getEnv().addReporter(adapter);
 // This is strictly optional.
 jasmine.getEnv().addReporter(specReporter);
 
+// const getDetoxURLBlacklistRegexFromDomains = (domains) =>
+//   '\\(' + domains.map((domain) => `\\".*${domain}.*\\"`).join(',') + '\\)';
+
 beforeAll(async () => {
   await detox.init();
 }, 300000);
@@ -25,6 +28,7 @@ beforeEach(async () => {
     // in that emergency case and disable calling 'device', 'element', 'expect', 'by' and other Detox globals.
     // If you switch to 'jest-circus' runner, you can omit this try-catch workaround at all.
 
+    console.log('Error: ', err);
     await detox.cleanup();
     throw err;
   }

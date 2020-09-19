@@ -10,9 +10,9 @@
         "type": "iPhone 11 Pro Max"
       }
     },
-    "android.emu.release": {
+    "android.emu.debug": {
       "type": "android.emulator",
-      "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+      "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
       "build": "bash scripts/buildDetoxAndroid.sh",
       "device": {
         "avdName": "Pixel_API_29_AOSP"

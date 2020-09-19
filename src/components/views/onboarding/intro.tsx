@@ -43,6 +43,7 @@ export const Introduction: FC<any> = () => {
       <Scrollable scrollStyle={style.page}>
         <View style={styles.fill}>
           <View
+            testID="onboarding:introduction:header"
             ref={ref}
             accessible
             accessibilityRole="header"
