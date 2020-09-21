@@ -95,7 +95,7 @@ export const Introduction: FC<any> = () => {
           <Spacing s={4} />
         </View>
         <View style={style.horizontal}>
-          <Button onPress={() => nav.navigate(ScreenNames.Permissions)}>
+          <Button onPress={() => nav.navigate(ScreenNames.AgeCheck)}>
             {t('onboarding:introduction:continueAction')}
           </Button>
           <Spacing s={12} />

@@ -12,7 +12,7 @@ export const Loading: FC = () => {
   return (
     <View style={[styles.container, {paddingBottom: insets.bottom}]}>
       <View style={styles.appLogo}>
-        <Icons.LogoLaunch width={242} height={242} color={colors.white} />
+        <Icons.LogoLaunch width={242} height={242} fill={colors.white} />
       </View>
       <View style={styles.stateLogo}>
         <Image accessibilityIgnoresInvertColors source={HealthLogo} />
