@@ -565,5 +565,10 @@
     "report": "Report a Technical Issue",
     "feedback": "General Feedback",
     "submit": "Submit"
+  },
+  "ageCheck": {
+    "intro": "Are you over 18?",
+    "parentConsent": "Did your parent or guardian confirm that you can use this app?",
+    "underAge": "Sorry... You cannot use this app without parent or guardian confirmation."
   }
 }
