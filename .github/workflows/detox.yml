@@ -102,9 +102,6 @@ jobs:
       - name: Android Detox Build
         run: yarn pre:test:android
 
-      - name: Android Detox Test
-        run: yarn test:android
-
       - uses: actions/upload-artifact@v2
         with:
           name: detox_release.apk
