@@ -34,8 +34,6 @@ export enum ScreenNames {
   Dashboard = 'dashboard',
   Settings = 'settings',
   AgeCheck = 'ageCheck',
-  ParentConsent = 'parentConsent',
-  UnderAge = 'underAge'
 }
 
 // Always navigate to CloseContactAlert so that back action takes user to MyCovidAlerts

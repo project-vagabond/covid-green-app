@@ -298,20 +298,6 @@ const Screens = (t: TFunction) => {
       options: {
         ...standardProps
       }
-    },
-    {
-      name: ScreenNames.ParentConsent,
-      component: ParentConsent,
-      options: {
-        ...standardProps
-      }
-    },
-    {
-      name: ScreenNames.UnderAge,
-      component: UnderAge,
-      options: {
-        ...standardProps
-      }
     }
   ];
 };
@@ -431,7 +417,7 @@ function Navigation({
 }) {
   const app = useApplication();
   const {t} = useTranslation();
-  const initialScreen = app.user ? 'main' : ScreenNames.Introduction;
+  const initialScreen = app.user ? 'main' : ScreenNames.AgeCheck;
 
   useEffect(() => {
     isMountedRef.current = true;

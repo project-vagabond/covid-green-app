@@ -567,8 +567,7 @@
     "submit": "Submit"
   },
   "ageCheck": {
-    "intro": "Are you over 18?",
-    "parentConsent": "Did your parent or guardian confirm that you can use this app?",
-    "underAge": "Sorry... You cannot use this app without parent or guardian confirmation."
+    "intro": "I am over 18, or my parent or guardian has confirmed that I can use this app.",
+    "confirm": "I Confirm"
   }
 }
