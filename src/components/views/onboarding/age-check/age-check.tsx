@@ -2,16 +2,21 @@ import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {Button} from 'components/atoms/button';
+
 import {colors, text} from 'theme';
 import Icons from 'assets/icons';
 import {ScreenNames} from 'navigation';
+import {useFocusRef} from 'hooks/accessibility';
+
+import {Button} from 'components/atoms/button';
 import {PinnedBottom} from 'components/templates/pinned';
+
 const HealthLogo = require('assets/images/healthStateLogo/image.png');
 
 export const AgeCheck: FC<{}> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
+  const [ref] = useFocusRef();
 
   return (
     <PinnedBottom
@@ -34,6 +39,7 @@ export const AgeCheck: FC<{}> = () => {
           <Text
             accessible
             accessibilityLabel={t('ageCheck:intro')}
+            ref={ref}
             style={style.content}>
             {t('ageCheck:intro')}
           </Text>
