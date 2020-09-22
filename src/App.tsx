@@ -86,11 +86,7 @@ import {urls} from 'constants/urls';
 import {PositiveResult} from 'components/views/positive-result';
 import {Language} from 'components/views/settings/language';
 import {Feedback} from 'components/views/settings/feedback';
-import {
-  AgeCheck,
-  UnderAge,
-  ParentConsent
-} from 'components/views/onboarding/age-check';
+import {AgeCheck} from 'components/views/onboarding/age-check';
 
 enableScreens();
 
