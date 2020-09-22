@@ -21,8 +21,8 @@ export const AgeCheck: FC<{}> = () => {
         accessibilityRole="image"
         style={style.logoContainer}>
         <Icons.LogoLaunch
-          width={242}
-          height={242}
+          width={180}
+          height={180}
           stroke={colors.white}
           fill={colors.white}
         />
