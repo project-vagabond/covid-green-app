@@ -2,96 +2,82 @@ import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-import {colors, text} from 'theme';
-import Icons from 'assets/icons';
 import {ScreenNames} from 'navigation';
 import {useFocusRef} from 'hooks/accessibility';
 
 import {Button} from 'components/atoms/button';
-import {PinnedBottom} from 'components/templates/pinned';
+import {Spacing} from 'components/atoms/layout';
+
+import {colors, text} from 'theme';
+import Icons from 'assets/icons';
+import {SPACING_HORIZONTAL} from 'constants/shared';
 
 const HealthLogo = require('assets/images/healthStateLogo/image.png');
 
 export const AgeCheck: FC<{}> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
+  const insets = useSafeAreaInsets();
   const [ref] = useFocusRef();
 
   return (
-    <PinnedBottom
-      style={style.container}
-      contentContainerStyle={style.scrollContainer}>
+    <View style={[style.container, {paddingTop: insets.top}]}>
       <View style={style.page}>
         <View
+          style={style.appLogoWrapper}
           accessible
-          accessibilityLabel="Covid Alert NY logo"
           accessibilityRole="image"
-          style={style.logoContainer}>
-          <Icons.LogoLaunch
-            width={180}
-            height={180}
-            stroke={colors.white}
-            fill={colors.white}
-          />
+          accessibilityLabel={t('common:longName')}>
+          <Icons.Logo width={106} height={121} />
         </View>
-        <View style={style.bodyContainer}>
-          <Text
-            accessible
-            accessibilityLabel={t('ageCheck:intro')}
-            ref={ref}
-            style={style.content}>
+        <View style={style.contentWrapper}>
+          <Text style={style.text} maxFontSizeMultiplier={1.7} ref={ref}>
             {t('ageCheck:intro')}
           </Text>
+          <Spacing s={20} />
           <Button
             type="empty"
-            style={style.button}
+            width="100%"
+            fontSizeMultiplier={1.7}
             onPress={() => nav.navigate(ScreenNames.Introduction)}>
             {t('ageCheck:confirm')}
           </Button>
         </View>
       </View>
-      <View>
+      <View style={style.stateLogoWrapper}>
         <Image accessibilityIgnoresInvertColors source={HealthLogo} />
       </View>
-    </PinnedBottom>
+    </View>
   );
 };
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.purple,
+    paddingBottom: 20
+  },
   page: {
-    justifyContent: 'space-evenly',
     flexGrow: 1
   },
-  bodyContainer: {
+  appLogoWrapper: {
+    flex: 2,
     alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    paddingHorizontal: 25,
-    flex: 3
+    justifyContent: 'center'
   },
-  content: {
+  contentWrapper: {
+    flex: 3,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    paddingHorizontal: SPACING_HORIZONTAL
+  },
+  text: {
     ...text.xlarge,
-    textAlign: 'center',
-    marginBottom: 30,
     color: colors.white
   },
-  button: {
-    width: '100%',
-    borderColor: 'transparent',
-    backgroundColor: 'transparent'
-  },
-  container: {
-    paddingHorizontal: 0,
-    paddingTop: 40,
-    backgroundColor: colors.purple
-  },
-  logoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 2
-  },
-  scrollContainer: {
-    flexGrow: 1
+  stateLogoWrapper: {
+    alignItems: 'center'
   }
 });

@@ -38,7 +38,7 @@ export function useFocusRef<T = any>(
   useEffect(() => {
     if (accessibilityFocus) {
       const firstRefIdx = refs.findIndex(
-        (ref) => console.log('accessibilityFocus', accessibilityFocus) || ref.current && findNodeHandle(ref.current)
+        (ref) => ref.current && findNodeHandle(ref.current)
       );
       if (firstRefIdx !== -1) {
         const firstRef = refs[firstRefIdx];
