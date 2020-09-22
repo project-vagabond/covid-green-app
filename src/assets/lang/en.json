@@ -567,7 +567,7 @@
     "submit": "Submit"
   },
   "ageCheck": {
-    "intro": "I am over 18, or my parent or guardian has confirmed that I can use this app.",
+    "intro": "I am over 18, or I am the parent or guardian of a minor confirming that they can use the app.",
     "confirm": "I Confirm"
   }
 }
