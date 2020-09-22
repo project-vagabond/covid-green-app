@@ -13,9 +13,10 @@ import {Heading} from 'components/atoms/heading';
 interface LayoutProps {
   heading?: string;
   children: any;
+  style?: any;
 }
 
-export const PinnedBottom: FC<LayoutProps> = ({children, heading}) => {
+export const PinnedBottom: FC<LayoutProps> = ({children, heading, style}) => {
   const insets = useSafeArea();
   const content = React.Children.toArray(children);
   const bottom = content.pop();
@@ -24,7 +25,8 @@ export const PinnedBottom: FC<LayoutProps> = ({children, heading}) => {
     <View
       style={[
         styles.container,
-        {paddingBottom: insets.bottom + SPACING_BOTTOM}
+        {paddingBottom: insets.bottom + SPACING_BOTTOM},
+        style
       ]}>
       <ScrollView style={{flex: 1}} keyboardShouldPersistTaps="always">
         {heading && <Heading text={heading} />}
