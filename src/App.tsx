@@ -292,7 +292,8 @@ const Screens = (t: TFunction) => {
       name: ScreenNames.AgeCheck,
       component: AgeCheck,
       options: {
-        ...standardProps
+        ...standardProps,
+        headerShown: false
       }
     }
   ];
