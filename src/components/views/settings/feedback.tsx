@@ -78,6 +78,7 @@ ENS Details:
   return (
     <Scrollable heading={t('submitFeedback:title')}>
       <Markdown style={{}}>{t('submitFeedback:disclaimer')}</Markdown>
+      <Spacing s={32} />
       <Text style={styles.intro}>{t('submitFeedback:intro')}</Text>
       <Spacing s={20} />
       <Card padding={{h: 0, v: 4, r: 0}} style={styles.card}>
@@ -123,6 +124,6 @@ const styles = StyleSheet.create({
   },
   intro: {
     flex: 1,
-    ...text.default
+    ...text.defaultBold
   }
 });
