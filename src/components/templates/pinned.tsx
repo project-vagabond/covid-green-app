@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {StyleSheet, View, ScrollView} from 'react-native';
+import {StyleSheet, View, ScrollView, ViewStyle} from 'react-native';
 import {useSafeArea} from 'react-native-safe-area-context';
 
 import {
@@ -13,10 +13,16 @@ import {Heading} from 'components/atoms/heading';
 interface LayoutProps {
   heading?: string;
   children: any;
-  style?: any;
+  style?: ViewStyle;
+  contentContainerStyle?: ViewStyle;
 }
 
-export const PinnedBottom: FC<LayoutProps> = ({children, heading, style}) => {
+export const PinnedBottom: FC<LayoutProps> = ({
+  children,
+  heading,
+  style,
+  contentContainerStyle
+}) => {
   const insets = useSafeArea();
   const content = React.Children.toArray(children);
   const bottom = content.pop();
@@ -28,7 +34,10 @@ export const PinnedBottom: FC<LayoutProps> = ({children, heading, style}) => {
         {paddingBottom: insets.bottom + SPACING_BOTTOM},
         style
       ]}>
-      <ScrollView style={{flex: 1}} keyboardShouldPersistTaps="always">
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={contentContainerStyle}
+        keyboardShouldPersistTaps="always">
         {heading && <Heading text={heading} />}
         {content}
       </ScrollView>
@@ -44,5 +53,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: SPACING_TOP,
     paddingHorizontal: SPACING_HORIZONTAL
+  },
+  scroll: {
+    flex: 1
   }
 });

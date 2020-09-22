@@ -5,7 +5,6 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import {Button} from 'components/atoms/button';
 import {colors, text} from 'theme';
 import Icons from 'assets/icons';
-import {Scrollable} from 'components/templates/scrollable';
 import {ScreenNames} from 'navigation';
 import {PinnedBottom} from 'components/templates/pinned';
 const HealthLogo = require('assets/images/healthStateLogo/image.png');
@@ -15,7 +14,9 @@ export const AgeCheck: FC<{}> = () => {
   const nav = useNavigation();
 
   return (
-    <PinnedBottom style={style.container}>
+    <PinnedBottom
+      style={style.container}
+      contentContainerStyle={style.scrollContainer}>
       <View style={style.page}>
         <View
           accessible
@@ -53,14 +54,15 @@ export const AgeCheck: FC<{}> = () => {
 
 const style = StyleSheet.create({
   page: {
-    flex: 1,
-    minHeight: '100%',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly',
+    flexGrow: 1
   },
   bodyContainer: {
     alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
-    paddingHorizontal: 25
+    paddingHorizontal: 25,
+    flex: 3
   },
   content: {
     ...text.xlarge,
@@ -79,6 +81,11 @@ const style = StyleSheet.create({
     backgroundColor: colors.purple
   },
   logoContainer: {
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 2
+  },
+  scrollContainer: {
+    flexGrow: 1
   }
 });
