@@ -7,6 +7,7 @@ import {colors, text} from 'theme';
 import Icons from 'assets/icons';
 import {Scrollable} from 'components/templates/scrollable';
 import {ScreenNames} from 'navigation';
+import {PinnedBottom} from 'components/templates/pinned';
 const HealthLogo = require('assets/images/healthStateLogo/image.png');
 
 export const AgeCheck: FC<{}> = () => {
@@ -14,49 +15,46 @@ export const AgeCheck: FC<{}> = () => {
   const nav = useNavigation();
 
   return (
-    <Scrollable scrollStyle={style.page}>
-      <View
-        accessible
-        accessibilityLabel="Covid Alert NY logo"
-        accessibilityRole="image"
-        style={style.logoContainer}>
-        <Icons.LogoLaunch
-          width={180}
-          height={180}
-          stroke={colors.white}
-          fill={colors.white}
-        />
-      </View>
-      <View style={style.bodyContainer}>
-        <Text
+    <PinnedBottom style={style.container}>
+      <View style={style.page}>
+        <View
           accessible
-          accessibilityLabel={t('ageCheck:intro')}
-          style={style.content}>
-          {t('ageCheck:intro')}
-        </Text>
-        <Button
-          type="empty"
-          style={style.button}
-          onPress={() => nav.navigate(ScreenNames.Introduction)}>
-          {t('ageCheck:confirm')}
-        </Button>
+          accessibilityLabel="Covid Alert NY logo"
+          accessibilityRole="image"
+          style={style.logoContainer}>
+          <Icons.LogoLaunch
+            width={180}
+            height={180}
+            stroke={colors.white}
+            fill={colors.white}
+          />
+        </View>
+        <View style={style.bodyContainer}>
+          <Text
+            accessible
+            accessibilityLabel={t('ageCheck:intro')}
+            style={style.content}>
+            {t('ageCheck:intro')}
+          </Text>
+          <Button
+            type="empty"
+            style={style.button}
+            onPress={() => nav.navigate(ScreenNames.Introduction)}>
+            {t('ageCheck:confirm')}
+          </Button>
+        </View>
       </View>
-      <View style={style.stateLogo}>
+      <View>
         <Image accessibilityIgnoresInvertColors source={HealthLogo} />
       </View>
-    </Scrollable>
+    </PinnedBottom>
   );
 };
 
 const style = StyleSheet.create({
   page: {
-    display: 'flex',
-    alignItems: 'center',
-    backgroundColor: colors.purple,
-    height: '100%'
-  },
-  logoContainer: {
-    height: 400,
+    flex: 1,
+    minHeight: '100%',
     justifyContent: 'center'
   },
   bodyContainer: {
@@ -75,12 +73,12 @@ const style = StyleSheet.create({
     borderColor: 'transparent',
     backgroundColor: 'transparent'
   },
-
-  stateLogo: {
-    position: 'absolute',
-    bottom: 40,
-    left: 0,
-    right: 0,
+  container: {
+    paddingHorizontal: 0,
+    paddingTop: 40,
+    backgroundColor: colors.purple
+  },
+  logoContainer: {
     alignItems: 'center'
   }
 });
