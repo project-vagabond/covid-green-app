@@ -66,7 +66,7 @@ const style = StyleSheet.create({
     flexGrow: 1
   },
   appLogoWrapper: {
-    flex: 4,
+    flex: 3,
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
