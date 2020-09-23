@@ -32,6 +32,7 @@ export const AgeCheck: FC<{}> = () => {
           accessibilityLabel={t('common:longName')}>
           <Icons.Logo width={106} height={121} />
         </View>
+        <View style={style.flexSpacer} />
         <View style={style.contentWrapper}>
           <Text style={style.text} maxFontSizeMultiplier={1.4} ref={ref}>
             {t('ageCheck:intro')}
@@ -45,6 +46,7 @@ export const AgeCheck: FC<{}> = () => {
             {t('ageCheck:confirm')}
           </Button>
         </View>
+        <View style={style.flexSpacer} />
         <View style={style.flexSpacer} />
       </View>
       <View style={style.stateLogoWrapper}>
@@ -64,9 +66,9 @@ const style = StyleSheet.create({
     flexGrow: 1
   },
   appLogoWrapper: {
-    flex: 2,
+    flex: 4,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-end'
   },
   contentWrapper: {
     alignItems: 'flex-start',
