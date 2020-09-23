@@ -45,6 +45,7 @@ export const AgeCheck: FC<{}> = () => {
             {t('ageCheck:confirm')}
           </Button>
         </View>
+        <View style={style.flexSpacer} />
       </View>
       <View style={style.stateLogoWrapper}>
         <Image accessibilityIgnoresInvertColors source={HealthLogo} />
@@ -68,10 +69,12 @@ const style = StyleSheet.create({
     justifyContent: 'center'
   },
   contentWrapper: {
-    flex: 3,
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-end',
     paddingHorizontal: SPACING_HORIZONTAL
+  },
+  flexSpacer: {
+    flex: 1
   },
   text: {
     ...text.xlarge,
