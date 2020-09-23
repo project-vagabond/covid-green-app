@@ -57,7 +57,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.purple,
-    paddingBottom: 20
+    paddingBottom: 30
   },
   page: {
     flexGrow: 1

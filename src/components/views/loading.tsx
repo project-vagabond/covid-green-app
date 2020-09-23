@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import {StyleSheet, View, Image} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import {colors} from 'theme';
@@ -9,14 +8,8 @@ import Icons from 'assets/icons';
 const HealthLogo = require('assets/images/healthStateLogo/image.png');
 
 export const Loading: FC = () => {
-  const insets = useSafeAreaInsets();
-
   return (
-    <View
-      style={[
-        styles.container,
-        {paddingTop: insets.top, paddingBottom: insets.bottom}
-      ]}>
+    <View style={[styles.container]}>
       <Spinner animation="fade" overlayColor="transparent" visible />
       <View style={styles.appLogo}>
         <Icons.Logo width={173} height={198} />
@@ -42,7 +35,7 @@ const styles = StyleSheet.create({
   },
   stateLogo: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 30,
     left: 0,
     right: 0,
     alignItems: 'center'
