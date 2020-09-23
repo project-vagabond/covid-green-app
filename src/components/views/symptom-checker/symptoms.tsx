@@ -146,7 +146,7 @@ export const CheckInSymptoms = () => {
           onItemSelected={handleItemSelected}
         />
         <Spacing s={36} />
-        <Button onPress={gotoResults} disabled={!enableContinue && !saving}>
+        <Button onPress={gotoResults} disabled={saving || !enableContinue}>
           {t('checker:symptoms:nextButton')}
         </Button>
       </Card>
