@@ -24,8 +24,9 @@ export const Language = () => {
       label: langData.name
     })
   );
-
-  const currentLanguage = languages.find(({value}) => value === i18n.language);
+  const currentLanguage = languages.find(
+    ({value}) => value === i18n.language
+  ) || {value: 'en', label: 'English'};
 
   return (
     <Scrollable heading={t('languageSettings:title')}>
