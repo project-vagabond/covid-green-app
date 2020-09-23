@@ -67,7 +67,7 @@ export const CheckInSymptoms = () => {
       console.log('Check-in error', err);
       setSaving(false);
     }
-    // replace unmounts screen, resetting saving state
+    // replace unmounts screen, resetting saving state & preventing device back nav
     navigation.replace('checker.final');
   };
 
