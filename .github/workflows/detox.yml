@@ -1,8 +1,8 @@
 name: Build and Test with Detox
 on:
-  # We will likely need to restrict Detox builds to a schedule or a specific release candidate tag/branch format.
-  push:
-    branches: [nys]
+  schedule:
+    # Run at 2am UTC daily.
+    - cron: '0 2 * * *'
   pull_request:
     branches: [nys]
 
