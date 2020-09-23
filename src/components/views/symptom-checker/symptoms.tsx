@@ -127,6 +127,7 @@ export const CheckInSymptoms = () => {
           width="100%"
           type="empty"
           onPress={onFeelingWell}
+          debounceDelay={500}
           disabled={!!enableContinue}>
           {t('checker:feelingWell')}
         </Button>
@@ -139,7 +140,10 @@ export const CheckInSymptoms = () => {
           onItemSelected={handleItemSelected}
         />
         <Spacing s={36} />
-        <Button onPress={gotoResults} disabled={!enableContinue}>
+        <Button
+          onPress={gotoResults}
+          debounceDelay={500}
+          disabled={!enableContinue}>
           {t('checker:symptoms:nextButton')}
         </Button>
       </Card>

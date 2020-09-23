@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions
 } from 'react-native';
+import {debounce} from 'throttle-debounce';
 
 import {text, scale, colors} from 'theme';
 
@@ -18,6 +19,7 @@ interface ButtonProps {
   onPress: () => void;
   style?: ViewStyle;
   width?: number | string;
+  debounceDelay?: number;
   children: React.ReactNode;
 }
 
@@ -29,6 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
   onPress,
   style,
   width,
+  debounceDelay = 0,
   children
 }) => {
   const [pressed, setPressed] = useState(false);
@@ -61,15 +64,16 @@ export const Button: React.FC<ButtonProps> = ({
     }
   }
 
+  const onPressHandler = () => {
+    setPressed(false);
+    onPress();
+  };
   const pressHandlers = disabled
     ? {}
     : {
         onPressIn: () => setPressed(true),
         onPressOut: () => setPressed(false),
-        onPress: () => {
-          setPressed(false);
-          onPress();
-        }
+        onPress: !debounceDelay ? onPressHandler : debounce(500, onPressHandler)
       };
 
   return (
