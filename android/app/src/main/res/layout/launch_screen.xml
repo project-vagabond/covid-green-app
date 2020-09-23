@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="121dp"
+        android:layout_marginTop="99dp"
         android:contentDescription="@string/app_name"
         app:srcCompat="@drawable/ic_app_logo" />
 
