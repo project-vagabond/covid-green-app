@@ -43,7 +43,6 @@ export const Introduction: FC<any> = () => {
       <Scrollable scrollStyle={style.page}>
         <View style={styles.fill}>
           <View
-            testID="onboarding:introduction:header"
             ref={ref}
             accessible
             accessibilityRole="header"
@@ -96,9 +95,7 @@ export const Introduction: FC<any> = () => {
           <Spacing s={4} />
         </View>
         <View style={style.horizontal}>
-          <Button
-            testID="onboarding:introduction:button:continue"
-            onPress={() => nav.navigate(ScreenNames.Permissions)}>
+          <Button onPress={() => nav.navigate(ScreenNames.Permissions)}>
             {t('onboarding:introduction:continueAction')}
           </Button>
           <Spacing s={12} />

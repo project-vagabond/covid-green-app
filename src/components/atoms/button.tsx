@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 import {text, scale, colors} from 'theme';
-import {composeInitialProps} from 'react-i18next';
 
 export type ButtonType = 'default' | 'secondary' | 'empty' | 'danger' | 'link';
 

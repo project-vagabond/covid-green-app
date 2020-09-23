@@ -36,7 +36,11 @@ export const AgeCheck: FC<{}> = () => {
         </View>
         <View style={style.flexSpacer} />
         <View style={style.contentWrapper}>
-          <Text style={style.text} maxFontSizeMultiplier={1.3} ref={ref}>
+          <Text
+            style={style.text}
+            maxFontSizeMultiplier={1.3}
+            ref={ref}
+            testID="onboarding:age-check:description">
             {t('ageCheck:intro')}
           </Text>
           <Spacing s={20} />
@@ -44,6 +48,7 @@ export const AgeCheck: FC<{}> = () => {
             type="empty"
             width="100%"
             fontSizeMultiplier={1.3}
+            testID="onboarding:age-check:button:confirm"
             onPress={() => nav.navigate(ScreenNames.Introduction)}>
             {t('ageCheck:confirm')}
           </Button>
