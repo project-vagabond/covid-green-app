@@ -54,13 +54,20 @@ export const CheckInSymptoms = () => {
   });
 
   const [symptoms, setSymptoms] = useState<SymptomRecord>(values);
+  const [saving, setSaving] = useState(false);
 
   const gotoResults = () => {
+    if (saving) {
+      return;
+    }
+    setSaving(true);
     try {
       app.checkIn(symptoms, {feelingWell: false});
     } catch (err) {
       console.log('Check-in error', err);
+      setSaving(false);
     }
+    // replace unmounts screen, resetting saving state
     navigation.replace('checker.final');
   };
 
@@ -139,7 +146,7 @@ export const CheckInSymptoms = () => {
           onItemSelected={handleItemSelected}
         />
         <Spacing s={36} />
-        <Button onPress={gotoResults} disabled={!enableContinue}>
+        <Button onPress={gotoResults} disabled={!enableContinue && !saving}>
           {t('checker:symptoms:nextButton')}
         </Button>
       </Card>
