@@ -20,7 +20,7 @@ export const AgeCheck: FC<{}> = () => {
   const {t} = useTranslation();
   const nav = useNavigation();
   const insets = useSafeAreaInsets();
-  const [ref] = useFocusRef();
+  const [ref] = useFocusRef({accessibilityRefocus: true, timeout: 1250});
 
   return (
     <View style={[style.container, {paddingTop: insets.top}]}>
