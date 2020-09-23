@@ -33,14 +33,14 @@ export const AgeCheck: FC<{}> = () => {
           <Icons.Logo width={106} height={121} />
         </View>
         <View style={style.contentWrapper}>
-          <Text style={style.text} maxFontSizeMultiplier={1.7} ref={ref}>
+          <Text style={style.text} maxFontSizeMultiplier={1.4} ref={ref}>
             {t('ageCheck:intro')}
           </Text>
           <Spacing s={20} />
           <Button
             type="empty"
             width="100%"
-            fontSizeMultiplier={1.7}
+            fontSizeMultiplier={1.4}
             onPress={() => nav.navigate(ScreenNames.Introduction)}>
             {t('ageCheck:confirm')}
           </Button>
