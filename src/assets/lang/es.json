@@ -200,7 +200,7 @@
     "noresults": "Aún no ha probado el analizador de síntomas. Comience ahora presionando el botón que está arriba"
   },
   "welcome": {
-    "text": "Mi Registro de Salud le permite llevar un registro de su salud, ya que almacena un historial de sus síntomas.\\n\\nSus registros diarios anónimos y los de otros usuarios de la aplicación ayudan a los investigadores de salud pública a entender cómo el virus está afectando al estado de Nueva York.\\n\\n**Esto no revela su identidad.**",
+    "text": "Mi Registro de Salud le permite llevar un registro de su salud, ya que almacena un historial de sus síntomas.\n\nSus registros diarios anónimos y los de otros usuarios de la aplicación ayudan a los investigadores de salud pública a entender cómo el virus está afectando al estado de Nueva York.\n\n**Esto no revela su identidad.**",
     "action": "Comenzar",
     "letUsKnow": "Infórmenos si presenta\nsíntomas hoy"
   },
@@ -576,7 +576,7 @@
     "report": "Informar sobre un problema técnico",
     "feedback": "Comentarios generales",
     "submit": "Enviar",
-    "disclaimer": "**NOTA:** Esto es solo para comentarios técnicos y se compartirá con los desarrolladores de nuestras aplicaciones.\\n\\nSi se siente enfermo o tiene preguntas generales sobre la COVID-19, no use esta opción de comentarios y llame, en su lugar, a la línea directa de COVID Alert NY por el [1-833-227-5045] (tel.: 18332275045)."
+    "disclaimer": "**NOTA:** Esto es solo para comentarios técnicos y se compartirá con los desarrolladores de nuestras aplicaciones.\n\nSi se siente enfermo o tiene preguntas generales sobre la COVID-19, no use esta opción de comentarios y llame, en su lugar, a la línea directa de COVID Alert NY por el [1-833-227-5045](tel:18332275045)."
   },
   "ageCheck": {
     "intro": "Soy mayor de 18 años o soy el padre, la madre o el tutor de un menor y confirmo que este puede usar la aplicación.",
