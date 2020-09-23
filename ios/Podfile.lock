@@ -5,12 +5,12 @@ PODS:
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
-  - EXCrypto (8.2.1):
+  - EXCrypto (8.3.0):
     - UMCore
   - EXFileSystem (9.0.1):
     - UMCore
     - UMFileSystemInterface
-  - EXFont (8.2.2):
+  - EXFont (8.3.0):
     - UMCore
     - UMFontInterface
   - EXHaptics (8.2.1):
@@ -85,7 +85,7 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
-  - Permission-Notifications (2.2.0):
+  - Permission-Notifications (2.2.1):
     - RNPermissions
   - PromisesObjC (1.2.10)
   - RCTRequired (0.63.2)
@@ -254,13 +254,13 @@ PODS:
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
   - React-jsinspector (0.63.2)
-  - react-native-exposure-notification-service (1.1.28):
+  - react-native-exposure-notification-service (1.1.30):
     - Alamofire (~> 5.2)
     - KeychainSwift (~> 19.0)
     - React
     - SSZipArchive
-  - react-native-netinfo (5.9.6):
-    - React
+  - react-native-netinfo (5.9.7):
+    - React-Core
   - react-native-safe-area-context (3.1.4):
     - React
   - react-native-simple-crypto (0.2.14):
@@ -336,23 +336,23 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPushNotificationIOS (1.4.1):
+  - RNCPushNotificationIOS (1.5.0):
     - React
   - RNDeviceInfo (5.6.5):
     - React
-  - RNFBApp (8.4.1):
+  - RNFBApp (8.4.3):
     - Firebase/CoreOnly (~> 6.30.0)
-    - React
-  - RNFBCrashlytics (8.4.2):
+    - React-Core
+  - RNFBCrashlytics (8.4.5):
     - Firebase/Crashlytics (~> 6.30.0)
-    - React
+    - React-Core
     - RNFBApp
   - RNGestureHandler (1.8.0):
     - React
   - RNIOS11DeviceCheck (0.0.3):
     - React
-  - RNPermissions (2.2.0):
-    - React
+  - RNPermissions (2.2.1):
+    - React-Core
   - RNScreens (2.10.1):
     - React
   - RNSslPinning (1.4.9):
@@ -613,9 +613,9 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
-  EXCrypto: 867e1d45d513e39ab9d7706232435edb1cf756cd
+  EXCrypto: 80ee65669a5466a7ce9426a8ae985a50be7f3a5d
   EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
-  EXFont: e583875d5d37a9e272d1cdba7f383bd576952919
+  EXFont: a6a4353271395f3bb4ee528b52a5035b4b0e412a
   EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
   EXLocalization: b5bcfc925ed83123b585d46d3bd54d7b7118f307
@@ -635,7 +635,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   KeychainSwift: a06190cf933ad46b1e0abc3d77d29c06331715c7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
-  Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
+  Permission-Notifications: 68ed977040885caa5c9ace4812ed448c70018e8d
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
@@ -647,8 +647,8 @@ SPEC CHECKSUMS:
   React-jsi: 54245e1d5f4b690dec614a73a3795964eeef13a8
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
-  react-native-exposure-notification-service: e3b37ec81f21e4ab0d868feac3acf80a257d37ff
-  react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
+  react-native-exposure-notification-service: c6b679b6d00e9ffcc30cb930fa820133f6547e2b
+  react-native-netinfo: 250dc0ca126512f618a8a2ca6a936577e1f66586
   react-native-safe-area-context: eb91fe1fb3f7b87d9c30a7f0808407d8569d539d
   react-native-simple-crypto: 6969f86ad3e1c319a98623caa62095b29b4ebed3
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
@@ -665,13 +665,13 @@ SPEC CHECKSUMS:
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPushNotificationIOS: c145c6253ea016e5efeff604f2720736b4a596f7
+  RNCPushNotificationIOS: ef00b111c849a9bb5dbc86d40cf91acb8b262772
   RNDeviceInfo: c5f8f3a456adcbba405ace475254b08febc4c095
-  RNFBApp: 62e057b9c2003b6ba28ba9ce266f751b5fa7861b
-  RNFBCrashlytics: 31b8655cd25d955559f5f8385f8764bc7b79fa0b
+  RNFBApp: a31d47c985a7ea6108a5c487a1216fc8820b4816
+  RNFBCrashlytics: 0718c4670231d8426ed34d2306373835456a9ceb
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNIOS11DeviceCheck: a4a545fdd08230a17a8ce7608e95038ee23a32aa
-  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
+  RNPermissions: 54f83272e3d1961fcbd6aff8fd826014c37fc578
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   RNSslPinning: bd33a1849ec20d38b4c5cd67e6a52b83da0ab3bc
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
