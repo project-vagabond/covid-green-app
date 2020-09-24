@@ -204,16 +204,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Setup Brew Cache
-        uses: actions/cache@v1
-        with:
-          path: |
-            /usr/local/Cellar
-            /usr/local/bin
-          key: ${{ runner.os }}-brew-${{ hashFiles('Brewfile.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-brew-
-
       - name: Setup Ruby
         uses: actions/setup-ruby@v1
         env:

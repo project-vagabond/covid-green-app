@@ -41,7 +41,7 @@ export const Introduction: FC<any> = () => {
        */}
       <View style={style.topHalfPage} />
       <Scrollable scrollStyle={style.page}>
-        <View style={styles.fill}>
+        <View testID="onboarding:intro:container" style={styles.fill}>
           <View
             ref={ref}
             accessible
@@ -49,6 +49,7 @@ export const Introduction: FC<any> = () => {
             accessibilityLabel={`${t('common:longName')}, ${content[0].title}`}
             style={[style.top, styles.relative, styles.index1]}>
             <Text
+              testID="onboarding:intro:title"
               maxFontSizeMultiplier={1.7}
               style={[style.title, styles.introTitle]}>
               {content[0].title}
@@ -80,7 +81,10 @@ export const Introduction: FC<any> = () => {
                   ]}>
                   <View style={styles.dot} />
                   <View style={styles.listContent}>
-                    <Text maxFontSizeMultiplier={2} style={styles.text}>
+                    <Text
+                      testID={`onboarding:intro:info-${l}`}
+                      maxFontSizeMultiplier={2}
+                      style={styles.text}>
                       {item}
                     </Text>
                   </View>
@@ -95,7 +99,9 @@ export const Introduction: FC<any> = () => {
           <Spacing s={4} />
         </View>
         <View style={style.horizontal}>
-          <Button onPress={() => nav.navigate(ScreenNames.Permissions)}>
+          <Button
+            testID="onboarding:intro:button:continue"
+            onPress={() => nav.navigate(ScreenNames.Permissions)}>
             {t('onboarding:introduction:continueAction')}
           </Button>
           <Spacing s={12} />

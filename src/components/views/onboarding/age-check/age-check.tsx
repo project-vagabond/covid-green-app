@@ -28,6 +28,7 @@ export const AgeCheck: FC<{}> = () => {
     <View style={[style.container, {paddingTop: insets.top}]}>
       <View style={style.page}>
         <View
+          testID="onboarding:age-check:header-logo"
           style={style.appLogoWrapper}
           accessible
           accessibilityRole="image"
@@ -56,7 +57,9 @@ export const AgeCheck: FC<{}> = () => {
         <View style={style.flexSpacer} />
         <View style={style.flexSpacer} />
       </View>
-      <View style={style.stateLogoWrapper}>
+      <View
+        testID="onboarding:age-check:footer-logo"
+        style={style.stateLogoWrapper}>
         <Image accessibilityIgnoresInvertColors source={HealthLogo} />
       </View>
     </View>

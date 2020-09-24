@@ -21,6 +21,7 @@ interface CardProps {
   arrowColor?: string;
   style?: ViewStyle;
   children: ReactNode;
+  testID?: string;
 }
 
 export const Card = forwardRef<any, CardProps>(
@@ -32,7 +33,8 @@ export const Card = forwardRef<any, CardProps>(
       onPress,
       children,
       arrowColor,
-      style
+      style,
+      testID
     },
     ref
   ) => {
@@ -46,6 +48,7 @@ export const Card = forwardRef<any, CardProps>(
     const isEmpty = type === 'empty';
     const cardContent = (
       <View
+        testID={testID}
         style={[
           styles.card,
           isWarning && styles.cardWarning,
