@@ -66,7 +66,11 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
 
   useEffect(() => {
     if (search && !screenReaderEnabled) {
-      searchInputRef.current?.focus();
+      const focusInput = () => searchInputRef.current?.focus();
+
+      // On Android, bringing up the keyboard during render causes juddering
+      // and can cause sizes to end up incorrectly calculated
+      Platform.OS === 'android' ? setTimeout(focusInput, 400) : focusInput();
     }
   }, []);
 
