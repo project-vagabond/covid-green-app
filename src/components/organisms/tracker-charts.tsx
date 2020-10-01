@@ -31,8 +31,14 @@ const getEmptyExtractedData = (): ExtractedData => {
   return emptyData;
 };
 
+const dateIsValid = (date: Date) => !isNaN(Number(date));
+
 const chartDataIsAvailable = (data: ExtractedData) => {
-  return !!(data.axisData?.length && data.chartData?.length);
+  return !!(
+    data.axisData?.length &&
+    data.chartData?.length &&
+    data.axisData?.every(dateIsValid)
+  );
 };
 
 export function trimData(data: any[], days: number, rolling: number = 0) {
@@ -53,8 +59,8 @@ function parseDateString(dateString: string) {
   // On Android (but not iOS), west of GMT this causes formatted dates to be -1 day
   let date = parseISO(dateString);
 
-  // Don't crash if the server changes date format unexpectedly
-  if (isNaN(Number(date))) {
+  // Don't fail if the server changes date format unexpectedly
+  if (!dateIsValid(date)) {
     console.log(
       `dateString not in ISO format: "${dateString}" (${typeof dateString})`
     );
