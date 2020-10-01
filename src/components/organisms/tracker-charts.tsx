@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
-import {format, parseISO} from 'date-fns';
+import {add, format, parseISO} from 'date-fns';
 
 import {Spacing} from 'components/atoms/spacing';
 import {Card} from 'components/atoms/card';
@@ -48,6 +48,24 @@ function trimAxisData(axisData: any[], days: number) {
   return excessLength > 0 ? axisData.slice(excessLength) : axisData;
 }
 
+function parseDateString(dateString: string) {
+  // date-fns format() and parse fns use device timezone, but new Date() uses UTC
+  // On Android (but not iOS), west of GMT this causes formatted dates to be -1 day
+  let date = parseISO(dateString);
+
+  // Don't crash if the server changes date format unexpectedly
+  if (isNaN(Number(date))) {
+    console.log(
+      `dateString not in ISO format: "${dateString}" (${typeof dateString})`
+    );
+    const utcDate = new Date(dateString);
+    const offsetMinutes = utcDate.getTimezoneOffset();
+    date = add(utcDate, {minutes: offsetMinutes});
+  }
+
+  return date;
+}
+
 const calculateRollingAverages = (
   rollingAverage: number,
   chartData: ChartData
@@ -79,7 +97,7 @@ const getBarchartData = (
       (records, date: string, index: number) => {
         const dataRecord = data[date] || data[index];
         return {
-          axisData: [...records.axisData, parseISO(date.split('T')[0])],
+          axisData: [...records.axisData, parseDateString(date)],
           chartData: [...records.chartData, dataRecord[quantityKey]],
           averagesData: averagesKey
             ? [...records.averagesData, dataRecord[averagesKey]]
