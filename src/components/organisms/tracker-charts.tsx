@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
-import {format} from 'date-fns';
+import {format, parseISO} from 'date-fns';
 
 import {Spacing} from 'components/atoms/spacing';
 import {Card} from 'components/atoms/card';
@@ -79,7 +79,7 @@ const getBarchartData = (
       (records, date: string, index: number) => {
         const dataRecord = data[date] || data[index];
         return {
-          axisData: [...records.axisData, new Date(date)],
+          axisData: [...records.axisData, parseISO(date.split('T')[0])],
           chartData: [...records.chartData, dataRecord[quantityKey]],
           averagesData: averagesKey
             ? [...records.averagesData, dataRecord[averagesKey]]
