@@ -48,7 +48,8 @@ function trimAxisData(axisData: any[], days: number) {
   return excessLength > 0 ? axisData.slice(excessLength) : axisData;
 }
 
-function parseDateString(dateString: string) {
+function parseDateString(dateStr: string) {
+  const dateString = parseISO(dateStr).getTime();
   // date-fns format() and parse fns use device timezone, but new Date() uses UTC
   // On Android (but not iOS), west of GMT this causes formatted dates to be -1 day
   let date = parseISO(dateString);
