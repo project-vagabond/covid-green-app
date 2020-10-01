@@ -268,8 +268,8 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     await AsyncStorage.removeItem(StorageKeys.user);
     await AsyncStorage.removeItem(StorageKeys.checkinConsent);
     await AsyncStorage.removeItem(StorageKeys.debug);
-    await AsyncStorage.removeItem(StorageKeys.analytics);
     await AsyncStorage.removeItem(StorageKeys.county);
+    await SecureStore.deleteItemAsync(StorageKeys.analytics);
     await SecureStore.deleteItemAsync(StorageKeys.canSupportENS);
     await SecureStore.deleteItemAsync(StorageKeys.symptomDate);
     setState(() => ({
