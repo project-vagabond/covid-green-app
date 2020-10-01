@@ -115,7 +115,7 @@ const getBarchartData = (
     averagesData = reducedData.averagesData;
   } else {
     data.forEach((record) => {
-      axisData.push(new Date(record.test_date || record.last_test_date));
+      axisData.push(parseDateString(record.test_date || record.last_test_date));
       chartData.push(record[quantityKey]);
       if (averagesKey) {
         averagesData.push(record[averagesKey]);
@@ -137,8 +137,8 @@ const getBarchartData = (
   };
 };
 
-const getComparableDate = (date: Date | string) => {
-  return format(new Date(date), 'yyyy-mm-dd');
+const getComparableDate = (date: Date) => {
+  return format(date, 'yyyy-mm-dd');
 };
 
 export const TrackerCharts: FC<TrackerChartsProps> = ({
