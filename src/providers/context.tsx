@@ -53,6 +53,7 @@ interface State {
   loading: boolean | string;
   user?: User;
   data?: StatsData | null;
+  analyticsConsent: boolean;
   checkInConsent: boolean;
   completedChecker: boolean;
   completedCheckerDate: string | null;
@@ -80,6 +81,7 @@ const initialState = {
   initializing: true,
   loading: false,
   user: undefined,
+  analyticsConsent: false,
   completedChecker: false,
   completedCheckerDate: null,
   checkerSymptoms: {} as SymptomRecord,
@@ -178,6 +180,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       let checks: Check[] = [];
       let completedCheckerDate: string | null = null;
       let completedChecker = false;
+      let analyticsConsent = false;
 
       if (state.user) {
         const checksData = await SecureStore.getItemAsync(
@@ -208,10 +211,17 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       }
 
       const county = await AsyncStorage.getItem(StorageKeys.county);
+      const analyticsConsentStr = await SecureStore.getItemAsync(
+        StorageKeys.analytics
+      );
+      if (analyticsConsentStr) {
+        analyticsConsent = analyticsConsentStr === 'true';
+      }
 
       setState((s) => ({
         ...s,
         initializing: false,
+        analyticsConsent,
         completedChecker,
         completedCheckerDate,
         checks,
@@ -226,7 +236,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       console.log('App init error:', err);
       setState((s) => ({...s, initializing: false}));
     }
-  }, []);
+  }, [state.user]);
 
   const loadAppData = async () => {
     try {
@@ -254,6 +264,12 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       await SecureStore.setItemAsync(
         StorageKeys.callbackQueued,
         JSON.stringify(data.callBackQueuedTs)
+      );
+    }
+    if (data.analyticsConsent !== undefined) {
+      await SecureStore.setItemAsync(
+        StorageKeys.analytics,
+        JSON.stringify(data.analyticsConsent)
       );
     }
   };

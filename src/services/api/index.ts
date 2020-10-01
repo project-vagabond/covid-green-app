@@ -439,10 +439,10 @@ export enum METRIC_TYPES {
 
 export async function saveMetric({event = ''}) {
   try {
-    const analyticsOptin = await SecureStore.getItemAsync(
+    const analyticsConsent = await SecureStore.getItemAsync(
       StorageKeys.analytics
     );
-    if (!analyticsOptin || (analyticsOptin && analyticsOptin !== 'true')) {
+    if (!analyticsConsent || (analyticsConsent && analyticsConsent !== 'true')) {
       return false;
     }
     const os = Platform.OS;

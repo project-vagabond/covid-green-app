@@ -499,7 +499,7 @@ const ExposureApp: React.FC = ({children}) => {
   }>({authToken: '', refreshToken: ''});
 
   const settings = useSettings();
-  const app = useApplication();
+  const {analyticsConsent, user} = useApplication();
 
   useEffect(() => {
     async function getTokens() {
@@ -520,15 +520,13 @@ const ExposureApp: React.FC = ({children}) => {
     }
 
     getTokens();
-  }, [app.user]);
+  }, [user]);
 
   const version = getReadableVersion();
 
   return (
     <ExposureProvider
-      isReady={Boolean(
-        app.user?.valid && tokens.authToken && tokens.refreshToken
-      )}
+      isReady={Boolean(user?.valid && tokens.authToken && tokens.refreshToken)}
       traceConfiguration={settings.traceConfiguration}
       appVersion={version}
       serverUrl={urls.api}
@@ -538,6 +536,7 @@ const ExposureApp: React.FC = ({children}) => {
       refreshToken={tokens.refreshToken}
       notificationTitle={t('closeContactNotification:title')}
       notificationDescription={t('closeContactNotification:description')}>
+      analyticsConsent={analyticsConsent}
       {children}
     </ExposureProvider>
   );
