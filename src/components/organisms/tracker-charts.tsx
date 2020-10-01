@@ -61,9 +61,6 @@ function parseDateString(dateString: string) {
 
   // Don't fail if the server changes date format unexpectedly
   if (!dateIsValid(date)) {
-    console.log(
-      `dateString not in ISO format: "${dateString}" (${typeof dateString})`
-    );
     const utcDate = new Date(dateString);
     const offsetMinutes = utcDate.getTimezoneOffset();
     date = add(utcDate, {minutes: offsetMinutes});
