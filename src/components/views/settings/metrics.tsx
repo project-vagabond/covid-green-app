@@ -13,10 +13,10 @@ import {useApplication} from 'providers/context';
 export const Metrics = () => {
   const {t} = useTranslation();
   const {configure} = useExposure();
-  const {analyticsConsent, setContext} = useApplication();
+  const {analyticsOptIn, setContext} = useApplication();
 
   const toggleSwitch = async () => {
-    setContext({analyticsConsent: !analyticsConsent});
+    setContext({analyticsOptIn: !analyticsOptIn});
     configure();
   };
 
@@ -42,7 +42,7 @@ export const Metrics = () => {
             }}
             thumbColor={colors.white}
             onValueChange={toggleSwitch}
-            value={analyticsConsent}
+            value={analyticsOptIn}
           />
         </View>
       </View>

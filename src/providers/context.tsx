@@ -53,7 +53,7 @@ interface State {
   loading: boolean | string;
   user?: User;
   data?: StatsData | null;
-  analyticsConsent: boolean;
+  analyticsOptIn: boolean;
   checkInConsent: boolean;
   completedChecker: boolean;
   completedCheckerDate: string | null;
@@ -81,7 +81,7 @@ const initialState = {
   initializing: true,
   loading: false,
   user: undefined,
-  analyticsConsent: false,
+  analyticsOptIn: false,
   completedChecker: false,
   completedCheckerDate: null,
   checkerSymptoms: {} as SymptomRecord,
@@ -107,7 +107,7 @@ export interface API {
 }
 
 export enum StorageKeys {
-  analytics = 'analyticsConsent',
+  analytics = 'analyticsOptIn',
   canSupportENS = 'supportPossible',
   uploadToken = 'uploadToken',
   symptomDate = 'symptomDate',
@@ -180,7 +180,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       let checks: Check[] = [];
       let completedCheckerDate: string | null = null;
       let completedChecker = false;
-      let analyticsConsent = false;
+      let analyticsOptIn = false;
 
       if (state.user) {
         const checksData = await SecureStore.getItemAsync(
@@ -211,17 +211,17 @@ export const AP = ({appConfig, user, consent, children}: API) => {
       }
 
       const county = await AsyncStorage.getItem(StorageKeys.county);
-      const analyticsConsentStr = await SecureStore.getItemAsync(
+      const analyticsOptInStr = await SecureStore.getItemAsync(
         StorageKeys.analytics
       );
-      if (analyticsConsentStr) {
-        analyticsConsent = analyticsConsentStr === 'true';
+      if (analyticsOptInStr) {
+        analyticsOptIn = analyticsOptInStr === 'true';
       }
 
       setState((s) => ({
         ...s,
         initializing: false,
-        analyticsConsent,
+        analyticsOptIn,
         completedChecker,
         completedCheckerDate,
         checks,
@@ -266,10 +266,10 @@ export const AP = ({appConfig, user, consent, children}: API) => {
         JSON.stringify(data.callBackQueuedTs)
       );
     }
-    if (data.analyticsConsent !== undefined) {
+    if (data.analyticsOptIn !== undefined) {
       await SecureStore.setItemAsync(
         StorageKeys.analytics,
-        JSON.stringify(data.analyticsConsent)
+        JSON.stringify(data.analyticsOptIn)
       );
     }
   };

@@ -499,7 +499,7 @@ const ExposureApp: React.FC = ({children}) => {
   }>({authToken: '', refreshToken: ''});
 
   const settings = useSettings();
-  const {analyticsConsent, user} = useApplication();
+  const {analyticsOptIn, user} = useApplication();
 
   useEffect(() => {
     async function getTokens() {
@@ -536,7 +536,7 @@ const ExposureApp: React.FC = ({children}) => {
       refreshToken={tokens.refreshToken}
       notificationTitle={t('closeContactNotification:title')}
       notificationDescription={t('closeContactNotification:description')}
-      analyticsOptin={analyticsConsent}>
+      analyticsOptin={analyticsOptIn}>
       {children}
     </ExposureProvider>
   );
