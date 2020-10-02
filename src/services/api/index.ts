@@ -442,7 +442,7 @@ export async function saveMetric({event = ''}) {
     const analyticsOptIn = await SecureStore.getItemAsync(
       StorageKeys.analytics
     );
-    if (!analyticsOptIn || (analyticsOptIn && analyticsOptIn !== 'true')) {
+    if (analyticsOptIn !== String(true)) {
       return false;
     }
     const os = Platform.OS;

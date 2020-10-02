@@ -215,7 +215,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
         StorageKeys.analytics
       );
       if (analyticsOptInStr) {
-        analyticsOptIn = analyticsOptInStr === 'true';
+        analyticsOptIn = analyticsOptInStr === String(true);
       }
 
       setState((s) => ({
@@ -263,13 +263,13 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     if (data.callBackQueuedTs) {
       await SecureStore.setItemAsync(
         StorageKeys.callbackQueued,
-        JSON.stringify(data.callBackQueuedTs)
+        String(data.callBackQueuedTs)
       );
     }
     if (data.analyticsOptIn !== undefined) {
       await SecureStore.setItemAsync(
         StorageKeys.analytics,
-        JSON.stringify(data.analyticsOptIn)
+        String(data.analyticsOptIn)
       );
     }
   };
