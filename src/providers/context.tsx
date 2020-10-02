@@ -107,7 +107,7 @@ export interface API {
 }
 
 export enum StorageKeys {
-  analytics = 'analyticsOptIn',
+  analytics = 'analyticsConsent',
   canSupportENS = 'supportPossible',
   uploadToken = 'uploadToken',
   symptomDate = 'symptomDate',
