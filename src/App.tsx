@@ -535,8 +535,8 @@ const ExposureApp: React.FC = ({children}) => {
       authToken={tokens.authToken}
       refreshToken={tokens.refreshToken}
       notificationTitle={t('closeContactNotification:title')}
-      notificationDescription={t('closeContactNotification:description')}>
-      analyticsConsent={analyticsConsent}
+      notificationDescription={t('closeContactNotification:description')}
+      analyticsOptin={analyticsConsent}>
       {children}
     </ExposureProvider>
   );
