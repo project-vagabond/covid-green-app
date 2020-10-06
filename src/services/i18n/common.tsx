@@ -5,12 +5,21 @@ import ht from 'assets/lang/ht.json';
 import bn from 'assets/lang/bn.json';
 import ko from 'assets/lang/ko.json';
 import es from 'assets/lang/es.json';
+import ar from 'assets/lang/ar.json';
+import ur from 'assets/lang/ur.json';
+import yi from 'assets/lang/yi.json';
 
 export const fallback = 'en';
 export const defaultNamespace = 'common';
 export const namespaces = ['common'];
 
+const leftToRightMarker = '';
+
 export const supportedLocales = {
+  ar: {
+    name: `${leftToRightMarker}العربية (Arabic)`,
+    ...ar
+  },
   bn: {
     name: 'বাংলা (Bengali)',
     ...bn
@@ -38,5 +47,13 @@ export const supportedLocales = {
   es: {
     name: 'Español (Spanish)',
     ...es
+  },
+  ur: {
+    name: `${leftToRightMarker}اردو (Urdu)`,
+    ...ur
+  },
+  yi: {
+    name: `${leftToRightMarker}אידיש (Yiddish)`,
+    ...yi
   }
 };
