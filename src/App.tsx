@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {enableScreens} from 'react-native-screens';
-import {Platform, StatusBar, Image, AppState} from 'react-native';
+import {Platform, StatusBar, Image, AppState, I18nManager} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createStackNavigator,
@@ -89,6 +89,7 @@ import {Feedback} from 'components/views/settings/feedback';
 import {AgeCheck} from 'components/views/onboarding/age-check';
 
 enableScreens();
+I18nManager.forceRTL(true);
 
 function cacheImages(images: (string | number)[]) {
   return images.map((image) => {
