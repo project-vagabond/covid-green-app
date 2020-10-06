@@ -90,11 +90,13 @@
     "detox": "^16.8.1",
     "eslint": "^7.2.0",
     "eslint-plugin-react-native-a11y": "^2.0.0",
+    "exceljs": "^4.1.1",
     "jest": "^26.0.1",
     "metro-react-native-babel-preset": "^0.58.0",
     "prettier": "^2.0.4",
     "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "16.13.1",
+    "read-excel-file": "^4.0.7",
     "svgo": "^1.3.2",
     "typescript": "^3.9.7"
   },
