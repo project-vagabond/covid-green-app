@@ -2,63 +2,50 @@ const fs = require('fs');
 const _ = require('lodash');
 const readXlsxFile = require('read-excel-file/node');
 
-async function main(filename) {
-  /*
-  const enRaw = await fs.promises.readFile('../src/assets/lang/en.json');
-  const htRaw = await fs.promises.readFile('../src/assets/lang/ht.json');
-  const ruRaw = await fs.promises.readFile('../src/assets/lang/ru.json');
-  const bnRaw = await fs.promises.readFile('../src/assets/lang/bn.json');
-  const koRaw = await fs.promises.readFile('../src/assets/lang/ko.json');
-  const zhRaw = await fs.promises.readFile('../src/assets/lang/zh.json');
-  const esRaw = await fs.promises.readFile('../src/assets/lang/es.json');
-  const en = JSON.parse(enRaw);
-  const ht = JSON.parse(htRaw);
-  const ru = JSON.parse(ruRaw);
-  const bn = JSON.parse(bnRaw);
-  const ko = JSON.parse(koRaw);
-  const zh = JSON.parse(zhRaw);
-  const es = JSON.parse(esRaw);
-  */
+const langCodes = ['en', 'ht', 'ru', 'bn', 'ko', 'zh', 'es', 'ar', 'ur', 'yi'];
+const rtlCodes = ['ar', 'ur', 'yi'];
+const rtlMarkerChar = '‏';
 
-  let en = {};
-  let ar = {};
-  let ur = {};
-  let yi = {};
+async function main(filename) {
+  const langText = langCodes.map((code) =>
+    JSON.parse(fs.readFileSync(`../src/assets/lang/${code}.json`))
+  );
 
   const [, ...rows] = await readXlsxFile(filename);
-  rows.forEach((row) => {
-    const path = row[0];
-    _.set(en, path, row[1]);
-    _.set(ar, path, row[2]);
-    _.set(ur, path, row[3]);
-    _.set(yi, path, row[4]);
-    /*
-    _.set(en, path, row[1]);
-    _.set(ht, path, row[2]);
-    _.set(ru, path, row[3]);
-    _.set(bn, path, row[4]);
-    _.set(ko, path, row[5]);
-    _.set(zh, path, row[6]);
-    _.set(es, path, row[7]);
-    */
-  });
+  rows.forEach((row) => updateRow(row, langText));
 
-  return [en, ar, ur, yi]; // ht, ru, bn, ko, zh, es];
+  return langText;
 }
 
-main('input.xlsx').then(([en, ar, ur, yi]) => { // ht, ru, bn, ko, zh, es]) => {
-  //fs.writeFileSync('../src/assets/lang/en.json', JSON.stringify(en, null, 2));
+function updateRow(row, languages) {
+  const [path, ...textColumns] = row;
+  languages.forEach((lang, index) => {
+    const langCode = langCodes[index];
+    const textCell = textColumns[index];
+    const isRTL = rtlCodes.includes(langCode);
+    _.set(lang, path, fixText(textCell, isRTL));
+  });
+}
 
-  fs.writeFileSync('../src/assets/lang/ar.json', JSON.stringify(ar, null, 2));
-  fs.writeFileSync('../src/assets/lang/ur.json', JSON.stringify(ur, null, 2));
-  fs.writeFileSync('../src/assets/lang/yi.json', JSON.stringify(yi, null, 2));
+function fixText(input = '', isRTL = false) {
+  // Fix double-escaped and/or space-separated line breaks
+  let fixedText = input.replace(/(\\ *)+n/g, '\n');
+  if (isRTL) {
+    // Force RTL for lines in RTL langs starting with LTR, e.g. "COVID تنبيه NY"
+    fixedText = fixedText.replace(
+      /(?<=^|\n)(?!http)(?=[a-zA-Z])/g,
+      rtlMarkerChar
+    );
+  }
+  return fixedText;
+}
 
-  /*
-  fs.writeFileSync('../src/assets/lang/ht.json', JSON.stringify(ht, null, 2));
-  fs.writeFileSync('../src/assets/lang/ru.json', JSON.stringify(ru, null, 2));
-  fs.writeFileSync('../src/assets/lang/bn.json', JSON.stringify(bn, null, 2));
-  fs.writeFileSync('../src/assets/lang/ko.json', JSON.stringify(ko, null, 2));
-  fs.writeFileSync('../src/assets/lang/zh.json', JSON.stringify(zh, null, 2));
-  fs.writeFileSync('../src/assets/lang/es.json', JSON.stringify(es, null, 2));
-  */
+main('input.xlsx').then((langText) => {
+  langText.forEach((text, index) => {
+    const langCode = langCodes[index];
+    fs.writeFileSync(
+      `../src/assets/lang/${langCode}.json`,
+      JSON.stringify(text, null, 2)
+    );
+  });
 });
