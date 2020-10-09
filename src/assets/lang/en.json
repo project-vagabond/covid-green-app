@@ -106,26 +106,6 @@
       "close": "Close",
       "currentPage": "Page {{page}} of {{total}}"
     },
-    "intro": {
-      "title": "With COVID Alert NY you can do 3 things to help fight COVID-19:",
-      "view1": {
-        "title": "Contact Tracing",
-        "text": "Help contact tracing, protecting your privacy."
-      },
-      "view2": {
-        "title": "COVID Check-In",
-        "text": "Check your symptoms every day."
-      },
-      "view3": {
-        "title": "Updates",
-        "text": "Keep up to date on the fight against COVID-19."
-      },
-      "view4": {
-        "text": "If you tap Get started, you are accepting the",
-        "link": "Terms & Conditions"
-      },
-      "action": "Get started"
-    },
     "information": {
       "title": "Contact Tracing",
       "highlight": "Contact tracing helps prevent the spread of COVID-19.",
@@ -292,23 +272,6 @@
     "symptoms": "Symptom",
     "symptoms_plural": "Symptoms",
     "completed": "You can check symptoms again tomorrow"
-  },
-  "casesByCounty": {
-    "title": "Cases by county"
-  },
-  "sorry": {
-    "title": "Sorry to hear",
-    "info": "Unfortunately you won’t be able to use the app any further. You can rejoin at any time. Just tap the back button.",
-    "back": "Back"
-  },
-  "ageRequirement": {
-    "notice": "You must be 16 or older to use this app",
-    "over": "I am 16 or older",
-    "under": "I am under 16"
-  },
-  "underAge": {
-    "title": "Under 16",
-    "notice": "Thank you for your interest but unfortunately you are too young to participate in this initiative.\n\nKeep safe."
   },
   "followUpCall": {
     "title": "Contact Tracing follow-up call",
