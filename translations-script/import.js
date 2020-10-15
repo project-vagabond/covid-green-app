@@ -5,6 +5,7 @@ const readXlsxFile = require('read-excel-file/node');
 const langCodes = ['en', 'ht', 'ru', 'bn', 'ko', 'zh', 'es', 'ar', 'ur', 'yi'];
 const rtlCodes = ['ar', 'ur', 'yi'];
 const rtlMarkerChar = '‏';
+const ltrMarkerChar = '‎';
 
 async function main(filename) {
   const langText = langCodes.map((code) =>
@@ -28,13 +29,25 @@ function updateRow(row, languages) {
 }
 
 function fixText(input = '', isRTL = false) {
+  let fixedText = input;
+
   // Fix double-escaped and/or space-separated line breaks
-  let fixedText = input.replace(/(\\ *)+n/g, '\n');
+  fixedText = fixedText.replace(/(\\ *)+n/g, '\n');
+
+  // Fix gaps in links e.g. [Some text] (http://example.com)
+  fixedText = fixedText.replace(/(?<=\[[^\n]+\]) +(?=\(\S+?\))/g, '');
+
   if (isRTL) {
     // Force RTL for lines in RTL langs starting with LTR, e.g. "COVID تنبيه NY"
     fixedText = fixedText.replace(
-      /(?<=^|\n)(?!http)(?=[a-zA-Z])/g,
+      /(?<=^|\n)(?!http)(?=[a-zA-Z0-9[(])/g,
       rtlMarkerChar
+    );
+
+    // Use LTR in inline markdown links so [] and () segments don't get split
+    fixedText = fixedText.replace(
+      /(?<=\w )(?=\[[^\n]+\]\(\S+?\))/g,
+      ltrMarkerChar
     );
   }
   return fixedText;
