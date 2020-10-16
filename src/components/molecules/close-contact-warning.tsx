@@ -4,7 +4,7 @@ import {useExposure} from 'react-native-exposure-notification-service';
 import {useNavigation} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
-import {covidAlertReset, ScreenNames} from 'navigation';
+import {covidAlertReset} from 'navigation';
 
 import {Card} from 'components/atoms/card';
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   notice: {
     ...text.defaultBold,
     color: colors.white,
-    paddingRight: 35,
-    paddingLeft: 10
+    paddingHorizontal: 16,
+    flex: 1
   }
 });
