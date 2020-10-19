@@ -4,7 +4,6 @@ import {I18nManager, TextStyle} from 'react-native';
 const defaults: TextStyle = {
   fontFamily: 'System',
   writingDirection: I18nManager.isRTL ? 'rtl' : 'ltr', // Required for iOS
-  textAlign: 'left', // On Android RTL, stops lines starting LTR (e.g. "NY") left-aligning
   color: colors.text
 };
 
