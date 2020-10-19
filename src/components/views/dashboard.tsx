@@ -80,7 +80,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
 
   useEffect(onRefresh, []);
 
-  const errorToast = (data === null || loadError) && (
+  const errorToast = (true || (data === null || loadError)) && (
     <Toast
       type="error"
       icon={<AppIcons.ErrorWarning width={24} height={24} />}

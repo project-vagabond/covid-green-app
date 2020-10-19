@@ -161,7 +161,7 @@ export const BarChartContent: FC<BarChartContentProps> = ({
       <BarChart
         style={[
           style,
-          {marginLeft: contentInset.left - 2, marginRight: contentInset.right}
+          {marginStart: contentInset.left - 2, marginEnd: contentInset.right}
         ]}
         data={chartData.map((value: number, index: number) =>
           index === lastBarIndex(chartData)

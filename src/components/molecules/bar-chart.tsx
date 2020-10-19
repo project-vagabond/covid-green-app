@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     ...text.smallBold,
     width: 48,
     height: 184,
-    paddingRight: 4
+    marginEnd: 4
   },
   chartingCol: {
     flex: 1,
@@ -291,8 +291,8 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     height: 184,
-    marginLeft: 6,
-    marginRight: 5,
+    marginStart: 6,
+    marginEnd: 5,
     marginBottom: -10
   },
   leftAlign: {
