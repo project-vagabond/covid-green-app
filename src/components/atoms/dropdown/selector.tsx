@@ -1,5 +1,5 @@
 import React, {forwardRef, ReactNode, useState} from 'react';
-import {Text, View, TouchableWithoutFeedback, StyleSheet} from 'react-native';
+import {Text, View, TouchableWithoutFeedback, StyleSheet, I18nManager} from 'react-native';
 
 import {AppIcons} from 'assets/icons';
 import {BasicItem} from 'providers/settings';
@@ -92,7 +92,7 @@ export const SelectorDropdown = forwardRef<
               <Text
                 maxFontSizeMultiplier={1.7}
                 numberOfLines={1}
-                style={text.defaultBold}>
+                style={styles.selectedItem}>
                 {displayValue}
               </Text>
             </View>
@@ -138,5 +138,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1
+  },
+  selectedItem: {
+    ...text.defaultBold,
+    // This forces LTR text (e.g. county names) to right align when RTL language is selected
+    textAlign: 'left'
   }
 });
