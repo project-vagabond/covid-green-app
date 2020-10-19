@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingVertical: 20,
-    paddingLeft: 12,
-    paddingRight: 36
+    paddingStart: 12,
+    paddingEnd: 36
   },
   headerContent: {
     flex: 1
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   close: {
-    marginLeft: 10
+    marginStart: 10
   },
   details: {
     flex: 15
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 12,
     backgroundColor: colors.darkestGray,
-    marginRight: 8,
+    marginEnd: 8,
     justifyContent: 'center',
     alignItems: 'center'
   },

@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     backgroundColor: '#f3f3f8',
     paddingVertical: 12,
-    paddingLeft: 20,
-    paddingRight: 16
+    paddingStart: 20,
+    paddingEnd: 16
   },
   content: {
     flex: 1

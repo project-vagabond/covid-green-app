@@ -154,14 +154,14 @@ const styles = StyleSheet.create({
     paddingVertical: 4
   },
   icon: {
-    marginRight: 12
+    marginEnd: 12
   },
   date: {
     flex: 1,
     alignItems: 'flex-end'
   },
   symptom: {
-    marginLeft: 32 + 12,
+    marginStart: 32 + 12,
     marginVertical: 8
   }
 });
