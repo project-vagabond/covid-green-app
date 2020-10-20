@@ -11,9 +11,6 @@ import {Markdown, RenderLink, childrenAsText} from 'components/atoms/markdown';
 import {Scrollable} from 'components/templates/scrollable';
 import {useDbText} from 'providers/settings';
 
-const yiddish =
-  'אייער פריוואטקייט און אינפארמאציע זיכערהייט זענען זייער וויכטיג צו די ניו יארק סטעיט דעפארטמענט אוו העלט. די COVID אלערט NY עפפ באשיצט די פריוואטקייט פון אלע עפפ באנוצער, אלעמאל.\n\n**איר בלייבט אנאנים צו אונז און צו אנדערע עפפ באנוצער. דער עפפ ערלויבט נישט פאר אונז אדער אנדערע צו:**\n\n- זאמלען אייער נאמען, אדרעס, אדער סיי וועלכע אנדערע פערזענליך אידענטיפיצירבארע אינפארמאציע. \n- נאכפאלגן אייער לאקאציע. \n- האבן צוטריט צו אינפארמאציע אויף אייער טעלעפאן, סיידן דעם עפפ.\n\n**עס איז אלעמאל אייער אייגענע, פערזענליכע אויסוואל צו:**\n\n- נוצן דעם עפפ אדער נישט.\n- מיטטיילן אייער דעמאגראפיקס און סימפטאמען אינעם געזונטהייט לאג. \n\n[ליינט אונזער פארצווייגטע פריוואטקייט פאליסי](https://CovidAlertNY.health.ny.gov/PrivacyPolicy.html)';
-
 const styles = StyleSheet.create({
   privacy: {
     width: 32,
@@ -73,14 +70,14 @@ const renderStyledPrivacyLink: RenderLink = (href, title, children) => {
 
 export const DataProtectionPolicy = () => {
   const {dpinText} = useDbText();
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
 
   return (
     <Scrollable heading={t('dataProtectionPolicy:title')}>
       <Markdown
         markdownStyles={markDownStyles}
         renderLink={renderStyledPrivacyLink}>
-        {i18n.language === 'yi' ? yiddish : dpinText}
+        {dpinText}
       </Markdown>
     </Scrollable>
   );
