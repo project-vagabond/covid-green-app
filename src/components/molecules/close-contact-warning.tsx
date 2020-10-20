@@ -11,10 +11,11 @@ import {Card} from 'components/atoms/card';
 import {colors, text} from 'theme';
 import {StateIcons} from 'assets/icons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {pluralize} from 'services/i18n/common';
 
 export const CloseContactWarning = forwardRef<TouchableWithoutFeedback>(
   (props, ref) => {
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const navigation = useNavigation();
     const {contacts} = useExposure();
 
@@ -31,9 +32,10 @@ export const CloseContactWarning = forwardRef<TouchableWithoutFeedback>(
             color={colors.white}
           />
           <Text style={styles.notice}>
-            {t('closeContactWarn:notice', {
-              count: (contacts && contacts.length) || 0
-            })}
+            {t(
+              'closeContactWarn:notice',
+              pluralize(contacts ? contacts.length : 0, i18n.language)
+            )}
           </Text>
         </View>
       </Card>
