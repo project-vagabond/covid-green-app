@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   left: {
     width: '25%',
     alignItems: 'flex-start',
-    paddingHorizontal: 12
+    paddingStart: 12
   },
   center: {
     width: '50%',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   right: {
     width: '25%',
     alignItems: 'flex-end',
-    paddingHorizontal: 12
+    paddingEnd: 12
   },
   back: {
     flexDirection: 'row',

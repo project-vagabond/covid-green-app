@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
   notice: {
     ...text.defaultBold,
     color: colors.white,
-    paddingHorizontal: 16,
+    marginStart: 10,
+    marginEnd: 35,
     flex: 1
   }
 });
