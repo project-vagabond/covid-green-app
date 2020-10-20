@@ -8,6 +8,7 @@ import es from 'assets/lang/es.json';
 import ar from 'assets/lang/ar.json';
 import ur from 'assets/lang/ur.json';
 import yi from 'assets/lang/yi.json';
+import {TOptionsBase} from 'i18next';
 
 export const fallback = 'en';
 export const defaultNamespace = 'common';
@@ -56,4 +57,15 @@ export const supportedLocales = {
     name: `${leftToRightMarker}אידיש (Yiddish)`,
     ...yi
   }
+};
+
+// i18next is missing pluralisation rules for these and incorrectly treats all counts as singular
+const langsMissingPluralRules = ['yi', 'ht'];
+
+export const pluralize = (count: number, langCode: string): TOptionsBase => {
+  const options = {count} as TOptionsBase;
+  if (langsMissingPluralRules.includes(langCode) && count !== 1) {
+    options.context = 'plural';
+  }
+  return options;
 };
