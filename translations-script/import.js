@@ -2,8 +2,9 @@ const fs = require('fs');
 const _ = require('lodash');
 const readXlsxFile = require('read-excel-file/node');
 
-const langCodes = ['en', 'ht', 'ru', 'bn', 'ko', 'zh', 'es', 'ar', 'ur', 'yi'];
-const rtlCodes = ['ar', 'ur', 'yi'];
+const rtlCodes = ['yi'];
+const langCodes = ['en', 'ht', 'ru', 'bn', 'ko', 'zh', 'es', ...rtlCodes];
+
 const rtlMarkerChar = '‏';
 const ltrMarkerChar = '‎';
 

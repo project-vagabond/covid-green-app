@@ -8,8 +8,6 @@ import ht from 'assets/lang/ht.json';
 import bn from 'assets/lang/bn.json';
 import ko from 'assets/lang/ko.json';
 import es from 'assets/lang/es.json';
-import ar from 'assets/lang/ar.json';
-import ur from 'assets/lang/ur.json';
 import yi from 'assets/lang/yi.json';
 
 export const fallback = 'en';
@@ -21,10 +19,6 @@ const ltrMarkerChar = '‎';
 const directionChar = I18nManager.isRTL ? rtlMarkerChar : ltrMarkerChar;
 
 export const supportedLocales = Object.entries({
-  ar: {
-    name: 'العربية (Arabic)',
-    ...ar
-  },
   bn: {
     name: 'বাংলা (Bengali)',
     ...bn
@@ -52,10 +46,6 @@ export const supportedLocales = Object.entries({
   es: {
     name: 'Español (Spanish)',
     ...es
-  },
-  ur: {
-    name: 'اردو (Urdu)',
-    ...ur
   },
   yi: {
     name: 'אידיש (Yiddish)',
