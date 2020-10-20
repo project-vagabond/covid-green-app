@@ -16,29 +16,32 @@ const languagesReset = {
   ]
 };
 
+interface RestartStatus {
+  routeName: string;
+  isRestarting: boolean;
+}
+
 export const useRtl = () => {
   const {i18n} = useTranslation();
   const routes = useNavigationState((state) => state.routes);
   const routeName = routes.length ? routes[routes.length - 1].name : '';
 
   const navigation = useNavigation();
-  const screenRef = useRef<string>('');
+  const screenRef = useRef<RestartStatus>({ routeName, isRestarting: false });
 
   const langIsRtl = i18n.dir() === 'rtl';
   const appIsRtl = I18nManager.isRTL;
 
   // Keep the route name fresh in the useEffect, but don't re-run useEffect when it changes
-  screenRef.current = routeName;
+  screenRef.current.routeName = routeName;
   useEffect(() => {
-    if (langIsRtl !== appIsRtl) {
-      AsyncStorage.setItem(StorageKeys.restartScreen, screenRef.current).then(
-        () => {
-          // Unfortunately in 2020 we still need to forceRTL and restart for layout to change
-          // Without allowRTL change, RTL in device + LTR in app causes infinite restart loop
-          I18nManager.allowRTL(langIsRtl);
-          I18nManager.forceRTL(langIsRtl);
-          RNRestarter.Restart();
-        }
+    if (langIsRtl !== appIsRtl && !screenRef.current.isRestarting) {
+      screenRef.current.isRestarting = true;
+
+      I18nManager.allowRTL(langIsRtl);
+      I18nManager.forceRTL(langIsRtl);
+      AsyncStorage.setItem(StorageKeys.restartScreen, screenRef.current.routeName).then(
+        () => RNRestarter.Restart()
       );
     }
   }, [langIsRtl, appIsRtl]);
