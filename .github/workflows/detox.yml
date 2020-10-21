@@ -218,7 +218,15 @@ jobs:
           echo "##[set-env name=BUILD_VERSION;]$BUILD_VERSION"
 
       - name: Install Homebrew Dependencies
-        run: brew update && brew bundle
+        run: |
+          brew uninstall openssl@1.0.2t
+          brew uninstall python@2.7.17
+          brew untap local/openssl
+          brew untap local/python2
+          brew update
+          brew upgrade
+          brew install ace boost cmake eigen gsl ipopt jpeg libedit opencv pkg-config qt5 sqlite swig tinyxml
+          brew bundle
 
       - name: Install CocoaPods Dependencies
         run: cd ios && pod install
