@@ -55,8 +55,9 @@ function fixText(input = '', isRTL = false) {
     fixedText = fixedText.replace(/(\(\S+?\)) *(\[[^\n]+\])/g, '$2$1');
 
     // Force RTL for lines in RTL langs starting with LTR, e.g. "COVID تنبيه NY"
+    // except isolated URLs and Markdown ordered list numbering e.g. "12. تنبيه"
     fixedText = fixedText.replace(
-      /(?<=^|\n)(?!http)(?=[a-zA-Z0-9[(])/g,
+      /(?<=^|\n)(?!http)(?![0-9]+\. )(?=[a-zA-Z0-9[(])/g,
       rtlMarkerChar
     );
 
