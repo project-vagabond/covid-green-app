@@ -290,7 +290,13 @@
     "title": "سجلي الصحي",
     "symptom": "عَرَض",
     "symptoms": "عَرَض",
+    "symptoms_0": "عَرَض",
+    "symptoms_1": "عَرَض",
     "symptoms_plural": "أعراض",
+    "symptoms_2": "أعراض",
+    "symptoms_3": "أعراض",
+    "symptoms_4": "أعراض",
+    "symptoms_5": "أعراض",
     "completed": "يمكنك فحص الأعراض مرة أخرى غدًا"
   },
   "casesByCounty": {
