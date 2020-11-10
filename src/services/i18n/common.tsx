@@ -17,7 +17,7 @@ export const namespaces = ['common'];
 
 const rtlMarkerChar = '‏';
 const ltrMarkerChar = '‎';
-const directionChar = I18nManager.isRTL ? rtlMarkerChar : ltrMarkerChar;
+export const directionChar = I18nManager.isRTL ? rtlMarkerChar : ltrMarkerChar;
 
 export const supportedLocales = Object.entries({
   ar: {
