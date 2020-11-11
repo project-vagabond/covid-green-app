@@ -215,8 +215,6 @@ export const AP = ({appConfig, user, consent, children}: API) => {
           checks = checksData ? JSON.parse(checksData) : [];
         }
 
-        console.log({checks, checksData, legacyChecksData});
-
         checks.sort((a, b) => compareDesc(a.timestamp, b.timestamp));
 
         if (checks.length) {
