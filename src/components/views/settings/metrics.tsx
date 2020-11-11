@@ -30,7 +30,7 @@ export const Metrics = () => {
       <Spacing s={32} />
       <View style={styles.row}>
         <View style={styles.label} accessibilityElementsHidden>
-          <Text>{t('metrics:share')}</Text>
+          <Text style={text.largeBold}>{t('metrics:share')}</Text>
         </View>
         <View>
           <Switch
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   label: {
-    ...text.largeBold,
     flex: 1
   }
 });
