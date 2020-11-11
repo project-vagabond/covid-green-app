@@ -29,8 +29,8 @@ export const Metrics = () => {
       <DataProtectionLink />
       <Spacing s={32} />
       <View style={styles.row}>
-        <View accessibilityElementsHidden>
-          <Text style={styles.label}>{t('metrics:share')}</Text>
+        <View style={styles.label} accessibilityElementsHidden>
+          <Text>{t('metrics:share')}</Text>
         </View>
         <View>
           <Switch
