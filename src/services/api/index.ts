@@ -156,8 +156,6 @@ async function createToken(): Promise<string> {
 
     await SecureStore.setItemAsync(SecureStoreKeys.token, resp.token);
 
-    saveMetric({event: METRIC_TYPES.TOKEN_RENEWAL});
-
     return resp.token;
   } catch (err) {
     if (isMountedRef.current && navigationRef.current) {
@@ -431,7 +429,6 @@ export enum METRIC_TYPES {
   CONTACT_UPLOAD = 'CONTACT_UPLOAD',
   CHECK_IN = 'CHECK_IN',
   FORGET = 'FORGET',
-  TOKEN_RENEWAL = 'TOKEN_RENEWAL',
   CALLBACK_OPTIN = 'CALLBACK_OPTIN'
 }
 
