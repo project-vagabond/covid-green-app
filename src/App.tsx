@@ -430,7 +430,8 @@ function Navigation({
       return;
     }
 
-    if (navigationRef.current && notification) {
+    // Navigate from alert when ready, if user didn't delete data before opening notification
+    if (app.user && navigationRef.current && notification) {
       navigationRef.current.reset(covidAlertReset);
 
       setState((s) => ({...s, notification: null}));
@@ -442,9 +443,13 @@ function Navigation({
       return;
     }
 
-    if (navigationRef.current && exposureNotificationClicked) {
+    if (!app.loading && navigationRef.current && exposureNotificationClicked) {
       console.log('exposureNotificationClicked', exposureNotificationClicked);
-      navigationRef.current.reset(covidAlertReset);
+      if (app.user) {
+        navigationRef.current.reset(covidAlertReset);
+      }
+      // Clear exposureNotificationClicked after loading even if !app.user: if user deleted data
+      // it stays in Android intent and can be re-read if the React Native JS alone restarts.
       setState((s) => ({...s, exposureNotificationClicked: null}));
     }
   }, [app, exposureNotificationClicked]);
