@@ -5,6 +5,7 @@ import * as Haptics from 'expo-haptics';
 import {NavigationProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
 import RNRestarter from 'react-native-restart';
+import PushNotification from 'react-native-push-notification';
 
 import {forget, networkError} from 'services/api';
 import {useApplication} from 'providers/context';
@@ -31,6 +32,8 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
       await app.clearContext();
       await forget();
       await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+      PushNotification.setApplicationIconBadgeNumber(0);
 
       RNRestarter.Restart();
     } catch (e) {
