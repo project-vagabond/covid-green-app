@@ -4,9 +4,8 @@ import {useTranslation} from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import {NavigationProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
+import RNRestarter from 'react-native-restart';
 
-import {ScreenNames} from 'navigation';
-import {getDeviceLanguage} from 'services/i18n';
 import {forget, networkError} from 'services/api';
 import {useApplication} from 'providers/context';
 
@@ -17,7 +16,7 @@ import {PinnedBottom} from 'components/templates/pinned';
 import {DataProtectionLink} from 'components/views/data-protection-policy';
 
 export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const app = useApplication();
   const exposure = useExposure();
   const confirmed = async () => {
@@ -25,21 +24,15 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
     try {
       try {
         await exposure.deleteAllData();
-        exposure.stop();
+        await exposure.stop();
       } catch (err) {
         console.log(err);
       }
-      await forget();
       await app.clearContext();
-      i18n.changeLanguage(getDeviceLanguage());
+      await forget();
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-      app.hideActivityIndicator();
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-
-      navigation.reset({
-        index: 0,
-        routes: [{name: ScreenNames.AgeCheck}]
-      });
+      RNRestarter.Restart();
     } catch (e) {
       app.hideActivityIndicator();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
