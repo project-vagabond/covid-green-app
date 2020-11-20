@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {View, Text, StyleSheet, Alert} from 'react-native';
 import {useExposure} from 'react-native-exposure-notification-service';
 import * as SecureStore from 'expo-secure-store';
+import PushNotification from 'react-native-push-notification';
 
 import {ScreenNames} from 'navigation';
 import {register} from 'services/api';
@@ -74,6 +75,10 @@ export const Permissions: FC<any> = () => {
       });
 
       app.hideActivityIndicator();
+
+      // If app is uninstalled with an active notification, on iOS can stay and be hard to clear
+      // Any notifications on register will be from a previous registration and therefore obsolete
+      PushNotification.setApplicationIconBadgeNumber(0);
 
       if (skip) {
         nav.reset({
