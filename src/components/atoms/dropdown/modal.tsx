@@ -67,10 +67,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
   useEffect(() => {
     if (search && !screenReaderEnabled) {
       const focusInput = () => searchInputRef.current?.focus();
-
-      // On Android, bringing up the keyboard during render causes juddering
-      // and can cause sizes to end up incorrectly calculated
-      Platform.OS === 'android' ? setTimeout(focusInput, 400) : focusInput();
+      focusInput();
     }
   }, []);
 
@@ -131,11 +128,17 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
       return <View style={listStyles.contentWrapper}>{instructions()}</View>;
     }
 
+    // 'padding' works well on all iOS versions and newer android (confirmed on 9.x/API 28)
+    // 'padding' doesn't work on older android: content not visible. 'height' works well.
+    // 'height' performs badly on newer android: jerky as list content changes view height.
+    const behavior =
+      Platform.OS === 'android' && Platform.Version < 28 ? 'height' : 'padding';
+
     return (
       <KeyboardAvoidingView
         keyboardVerticalOffset={insets.top + 12}
         style={listStyles.container}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={behavior}
         enabled>
         <ScrollView keyboardShouldPersistTaps="always">
           {items.map(renderItem)}
