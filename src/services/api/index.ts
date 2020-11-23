@@ -1,8 +1,6 @@
 import {Platform} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {format} from 'date-fns';
-import {fetch} from 'react-native-ssl-pinning';
-import NetInfo from '@react-native-community/netinfo';
 import {SAFETYNET_KEY} from '@env';
 import {ENV, TEST_TOKEN} from '@env';
 import RNGoogleSafetyNet from 'react-native-google-safetynet';
@@ -13,9 +11,13 @@ import {CallBackData} from 'components/organisms/phone-number-us';
 
 import {urls} from 'constants/urls';
 import {Check, SecureStoreKeys} from 'providers/context';
-import {isMountedRef, navigationRef, ScreenNames} from 'navigation';
 import {County} from 'assets/counties';
-import {configureNetInfo, testNetinfo} from './netinfo';
+import {
+  requestRetry,
+  RegisterError,
+  identifyNetworkIssue,
+  request
+} from './connection';
 
 interface CheckIn {
   gender: string;
@@ -30,10 +32,7 @@ export const networkError = 'Network Unavailable';
 
 export type UploadResponse = Response | undefined;
 
-configureNetInfo();
-testNetinfo();
-
-export const verify = async (nonce: string) => {
+export const getDeviceCheckData = async (nonce: string) => {
   if (ENV !== 'production' && TEST_TOKEN) {
     console.log('using test token', TEST_TOKEN);
     return {
@@ -64,155 +63,78 @@ export const verify = async (nonce: string) => {
   }
 };
 
-const connected = async (retry = false): Promise<boolean> => {
-  const networkState = await NetInfo.fetch();
-  if (networkState.isInternetReachable && networkState.isConnected) {
-    return true;
-  }
-
-  if (retry) {
-    throw new Error(networkError);
-  } else {
-    await new Promise((r) => setTimeout(r, 1000));
-    await connected(true);
-    return true;
-  }
-};
-
-export const request = async (url: string, cfg: any) => {
-  await connected();
-  const {authorizationHeaders = false, ...config} = cfg;
-
-  if (authorizationHeaders) {
-    let bearerToken = await SecureStore.getItemAsync(SecureStoreKeys.token);
-    if (!bearerToken) {
-      bearerToken = await createToken();
-    }
-
-    if (!config.headers) {
-      config.headers = {};
-    }
-    config.headers.Authorization = `Bearer ${bearerToken}`;
-  }
-
-  let isUnauthorised;
-  let resp;
-  try {
-    resp = await fetch(url, {
-      ...config,
-      timeoutInterval: 30000,
-      sslPinning: {
-        certs: ['cert1', 'cert2', 'cert3', 'cert4', 'cert5']
-      }
-    });
-    isUnauthorised = resp && resp.status === 401;
-  } catch (e) {
-    if (!authorizationHeaders || e.status !== 401) {
-      throw e;
-    }
-    isUnauthorised = true;
-  }
-
-  if (authorizationHeaders && isUnauthorised) {
-    let newBearerToken = await createToken();
-    const newConfig = {
-      ...config,
-      headers: {...config.headers, Authorization: `Bearer ${newBearerToken}`}
-    };
-
-    return fetch(url, {
-      ...newConfig,
-      timeoutInterval: 30000,
-      sslPinning: {
-        certs: ['cert1', 'cert2', 'cert3', 'cert4', 'cert5']
-      }
-    });
-  }
-
-  return resp;
-};
-
-async function createToken(): Promise<string> {
-  try {
-    const refreshToken = await SecureStore.getItemAsync(
-      SecureStoreKeys.refreshToken
-    );
-
-    const req = await request(`${urls.api}/refresh`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${refreshToken}`
-      },
-      body: JSON.stringify({})
-    });
-    if (!req) {
-      throw new Error('Invalid response');
-    }
-    const resp = await req.json();
-
-    if (!resp.token) {
-      throw new Error('Error getting token');
-    }
-
-    await SecureStore.setItemAsync(SecureStoreKeys.token, resp.token);
-
-    return resp.token;
-  } catch (err) {
-    if (isMountedRef.current && navigationRef.current) {
-      navigationRef.current.reset({
-        index: 0,
-        routes: [{name: ScreenNames.Introduction}]
-      });
-    }
-    return '';
-  }
-}
-
 export async function register(): Promise<{
   token: string;
   refreshToken: string;
 }> {
-  const registerResponse = await request(`${urls.api}/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({})
-  });
+  let nonce;
+  try {
+    const registerResponse = await request(`${urls.api}/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    });
 
-  if (!registerResponse) {
-    throw new Error('Invalid response');
+    if (!registerResponse) {
+      throw new Error('Invalid response');
+    }
+
+    const registerResult = await registerResponse.json();
+    nonce = registerResult.nonce;
+  } catch (err) {
+    console.log('Register error: ', err);
+    if (err.json) {
+      const errBody = await err.json();
+      throw new RegisterError(errBody.message, errBody.code || 1001);
+    }
+    const codeVal = err.cancelled ? '1006' : await identifyNetworkIssue();
+    console.log('Register error code is ', codeVal);
+    throw new RegisterError(err.message, codeVal);
   }
-  const {nonce} = await registerResponse.json();
 
-  const body = {
-    nonce,
-    timestamp: Date.now(),
-    ...(await verify(nonce))
-  };
+  let deviceCheckData;
+  try {
+    deviceCheckData = await getDeviceCheckData(nonce);
+  } catch (err) {
+    console.log('Device check error: ', err);
+    throw new RegisterError(err.message, '1003');
+  }
 
   console.log(SAFETYNET_KEY);
   console.log(urls.api);
-  console.log(body);
+  console.log(deviceCheckData);
 
-  const verifyResponse = await request(`${urls.api}/register`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  });
+  try {
+    const verifyResponse = await request(`${urls.api}/register`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({nonce, ...deviceCheckData})
+    });
 
-  if (!verifyResponse) {
-    throw new Error('Invalid response');
+    if (!verifyResponse) {
+      throw new Error('Invalid response');
+    }
+
+    const resp = await verifyResponse.json();
+
+    console.log('RESP', resp);
+
+    return resp as {
+      token: string;
+      refreshToken: string;
+    };
+  } catch (err) {
+    console.log('Register (verify) error:', err);
+    if (err.json) {
+      const errBody = await err.json();
+      throw new RegisterError(errBody.message, errBody.code || 1004);
+    }
+    throw new RegisterError(err.message, '1005');
   }
-
-  const resp = await verifyResponse.json();
-
-  return resp as {
-    token: string;
-    refreshToken: string;
-  };
 }
 
 export async function forget(): Promise<boolean> {
@@ -266,7 +188,7 @@ export async function checkIn(checks: Check[], checkInData: CheckIn) {
 
 export async function loadSettings() {
   try {
-    const req = await request(`${urls.api}/settings`, {
+    const req = await requestRetry(`${urls.api}/settings`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -360,7 +282,7 @@ export interface StatsData {
 
 export async function loadData(): Promise<StatsData> {
   try {
-    const req = await request(`${urls.api}/stats`, {
+    const req = await requestRetry(`${urls.api}/stats`, {
       authorizationHeaders: true,
       method: 'GET',
       headers: {
