@@ -4,11 +4,12 @@ import {useTranslation} from 'react-i18next';
 import * as Haptics from 'expo-haptics';
 import {NavigationProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
-import RNRestarter from 'react-native-restart';
 import PushNotification from 'react-native-push-notification';
 
 import {forget, networkError} from 'services/api';
+import {getDeviceLanguage} from 'services/i18n';
 import {useApplication} from 'providers/context';
+import {ScreenNames} from 'navigation';
 
 import {Button} from 'components/atoms/button';
 import {Markdown} from 'components/atoms/markdown';
@@ -17,7 +18,7 @@ import {PinnedBottom} from 'components/templates/pinned';
 import {DataProtectionLink} from 'components/views/data-protection-policy';
 
 export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
-  const {t} = useTranslation();
+  const {t, i18n} = useTranslation();
   const app = useApplication();
   const exposure = useExposure();
   const confirmed = async () => {
@@ -29,16 +30,24 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
       } catch (err) {
         console.log(err);
       }
-      await app.clearContext();
-      await forget();
-      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-
       PushNotification.setApplicationIconBadgeNumber(0);
+      const deviceLanguage = getDeviceLanguage();
+      const willRestart = i18n.dir(i18n.language) !== i18n.dir(deviceLanguage);
 
-      RNRestarter.Restart();
+      await forget();
+      await app.clearContext();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      await i18n.changeLanguage(getDeviceLanguage());
+      if (!willRestart) {
+        navigation.reset({
+          index: 0,
+          routes: [{name: ScreenNames.AgeCheck}]
+        });
+      }
     } catch (e) {
       app.hideActivityIndicator();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      console.error(e);
       Alert.alert(
         'Error',
         e.message === networkError ? t('common:networkError') : t('leave:error')
