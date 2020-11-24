@@ -37,7 +37,9 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
       await forget();
       await app.clearContext();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      await i18n.changeLanguage(getDeviceLanguage());
+
+      // If language reset changes RTL/LTR, app will restart, no need to navigate
+      await i18n.changeLanguage(deviceLanguage);
       if (!willRestart) {
         navigation.reset({
           index: 0,
