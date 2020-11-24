@@ -206,7 +206,8 @@ export const Settings: React.FC<SettingsProps> = ({navigation}) => {
       <View style={styles.flex} />
       <Spacing s={20} />
       <Text style={text.default} onPress={versionPressHandler}>
-        App version {Platform.OS === 'ios' ? 'iOS' : 'Android'} {version?.display}
+        App version {Platform.OS === 'ios' ? 'iOS' : 'Android'}{' '}
+        {version?.display}
       </Text>
       <Spacing s={8} />
     </Scrollable>

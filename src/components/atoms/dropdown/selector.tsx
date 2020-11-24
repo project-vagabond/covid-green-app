@@ -1,5 +1,5 @@
 import React, {forwardRef, ReactNode, useState} from 'react';
-import {Text, View, TouchableWithoutFeedback, StyleSheet, I18nManager} from 'react-native';
+import {Text, View, TouchableWithoutFeedback, StyleSheet} from 'react-native';
 
 import {AppIcons} from 'assets/icons';
 import {BasicItem} from 'providers/settings';
@@ -71,7 +71,9 @@ export const SelectorDropdown = forwardRef<
 
     const closeModal = () => {
       setModalVisible(false);
-      setAccessibilityFocusRef(ref);
+      if (ref && 'current' in ref) {
+        setAccessibilityFocusRef(ref);
+      }
     };
 
     return (

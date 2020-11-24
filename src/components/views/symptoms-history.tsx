@@ -44,6 +44,7 @@ export const SymptomsHistory: FC<any> = ({navigation}) => {
 
       readPermissions();
       verifyCheckerStatus();
+      /* eslint-disable-next-line react-hooks/exhaustive-deps */ // don't rerun as readPermissions updates
     }, [isFocused, appState, verifyCheckerStatus])
   );
 

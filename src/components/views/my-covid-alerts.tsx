@@ -60,6 +60,7 @@ export const MyCovidAlerts = () => {
       }
 
       onFocus();
+      /* eslint-disable-next-line react-hooks/exhaustive-deps */ // RNENS fns don't need to update
     }, [isFocused, appState])
   );
 

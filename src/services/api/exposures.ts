@@ -32,7 +32,6 @@ export const validateCode = async (
       },
       body: JSON.stringify({code})
     });
-console.log(resp)
     if (!resp) {
       throw new Error('Invalid response');
     }
@@ -44,7 +43,7 @@ console.log(resp)
       token: responseData.token
     };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     console.log('Code validation error: ', err, err.message);
 
     if (err.message === networkError) {

@@ -47,6 +47,7 @@ export const CheckInFinal: FC<any> = ({route}) => {
 
       readPermissions();
       verifyCheckerStatus();
+      /* eslint-disable-next-line react-hooks/exhaustive-deps */ // readPermissions doesn't need to update
     }, [isFocused, appState, verifyCheckerStatus])
   );
 
@@ -61,6 +62,7 @@ export const CheckInFinal: FC<any> = ({route}) => {
       !symptomsCount || feelingWell ? 'noSymptomsFeelingWell' : 'coronavirus';
 
     setCheckInResult(result);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // run once when screen mounts
   }, []);
 
   return (

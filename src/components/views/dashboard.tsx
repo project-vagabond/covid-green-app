@@ -67,6 +67,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
       }
       readPermissions();
       verifyCheckerStatus();
+      /* eslint-disable-next-line react-hooks/exhaustive-deps */ // readPermissions doesn't need to update
     }, [isFocused, appState, verifyCheckerStatus])
   );
 

@@ -8,7 +8,7 @@ import {DropdownModal} from './modal';
 
 import {text, colors} from 'theme';
 import {AppIcons} from 'assets/icons';
-import { directionChar } from 'services/i18n/common';
+import {directionChar} from 'services/i18n/common';
 
 export interface DropdownProps {
   label?: string;

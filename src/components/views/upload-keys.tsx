@@ -1,7 +1,8 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, FC} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
+import {NavigationProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
 
 import {useApplication, SecureStoreKeys} from 'providers/context';
@@ -32,7 +33,9 @@ type UploadStatus =
   | 'permissionError'
   | 'error';
 
-export const UploadKeys = ({navigation}) => {
+export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
+  navigation
+}) => {
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
   const {showActivityIndicator, hideActivityIndicator} = useApplication();
@@ -71,7 +74,9 @@ export const UploadKeys = ({navigation}) => {
 
   const codeValidationHandler = useCallback(async () => {
     showActivityIndicator();
-    const {result, symptomDate, token} = await validateCode(code);
+    const {result, symptomDate: newSymptomDate, token} = await validateCode(
+      code
+    );
     hideActivityIndicator();
 
     if (result !== ValidationResult.Valid) {
@@ -94,18 +99,22 @@ export const UploadKeys = ({navigation}) => {
 
     try {
       await SecureStore.setItemAsync(SecureStoreKeys.uploadToken, token!);
-      await SecureStore.setItemAsync(SecureStoreKeys.symptomDate, symptomDate!);
+      await SecureStore.setItemAsync(
+        SecureStoreKeys.symptomDate,
+        newSymptomDate!
+      );
     } catch (e) {
       console.log('Error (secure) storing upload token', e);
     }
     setValidationError('');
 
     setUploadToken(token!);
-    setSymptomDate(symptomDate!);
+    setSymptomDate(newSymptomDate!);
     setStatus('upload');
     setTimeout(() => {
       setAccessibilityFocusRef(uploadRef);
     }, 250);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // errorRef and uploadRed are stable
   }, [code, showActivityIndicator, hideActivityIndicator, t]);
 
   useEffect(() => {
