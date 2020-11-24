@@ -443,14 +443,16 @@ function Navigation({
       return;
     }
 
-    if (!app.loading && navigationRef.current && exposureNotificationClicked) {
+    if (navigationRef.current && exposureNotificationClicked) {
       console.log('exposureNotificationClicked', exposureNotificationClicked);
       if (app.user) {
         navigationRef.current.reset(covidAlertReset);
       }
-      // Clear exposureNotificationClicked after loading even if !app.user: if user deleted data
-      // it stays in Android intent and can be re-read if the React Native JS alone restarts.
-      setState((s) => ({...s, exposureNotificationClicked: null}));
+      if (app.user || !app.loading) {
+        // clear flag after navigation, or after confirming there's no user data to load e.g.
+        // if flag was re-read from Android intent after user cleared data & JS restarted
+        setState((s) => ({...s, exposureNotificationClicked: null}));
+      }
     }
   }, [app, exposureNotificationClicked]);
 
