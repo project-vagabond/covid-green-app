@@ -42,12 +42,6 @@ interface DropdownModalProps extends Partial<ModalProps> {
   icon?: ReactNode;
 }
 
-// 'padding' works well on all iOS versions and newer android (confirmed on 9.x/API 28)
-// 'padding' doesn't work on older android: content not visible. 'height' works well.
-// 'height' performs badly on newer android: jerky as list content changes view height.
-const keyboardAvoidingBehavior =
-  Platform.OS === 'android' && Platform.Version < 28 ? 'height' : 'padding';
-
 export const DropdownModal: React.FC<DropdownModalProps> = ({
   title,
   titleHint,
@@ -74,12 +68,9 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
     if (search && !screenReaderEnabled) {
       const focusInput = () => searchInputRef.current?.focus();
 
-      if (keyboardAvoidingBehavior === 'height') {
-        // Give content height time to stabilise before bringing up keyboard
-        setTimeout(focusInput, 400);
-      } else {
-        focusInput();
-      }
+      // On Android, bringing up the keyboard during render causes juddering
+      // and can cause sizes to end up incorrectly calculated
+      Platform.OS === 'android' ? setTimeout(focusInput, 400) : focusInput();
     }
   }, []);
 
@@ -144,7 +135,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
       <KeyboardAvoidingView
         keyboardVerticalOffset={insets.top + 12}
         style={listStyles.container}
-        behavior={keyboardAvoidingBehavior}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         enabled>
         <ScrollView keyboardShouldPersistTaps="always">
           {items.map(renderItem)}
