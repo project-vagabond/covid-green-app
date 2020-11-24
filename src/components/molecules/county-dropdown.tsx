@@ -46,7 +46,7 @@ export const CountyDropdown = forwardRef<
     const items = !searchTerm
       ? countyOptions
       : countyOptions.filter((c) =>
-          normalizeString(c.value)
+          normalizeString(c.label)
             .toLowerCase()
             .includes(normalizeString(searchTerm).toLowerCase())
         );
