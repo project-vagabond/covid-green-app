@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import RNSimpleCrypto from 'react-native-simple-crypto';
 import {getBundleId} from 'react-native-device-info';
-import {request} from '.';
+import {request} from './connection';
 import {networkError} from 'services/api';
 import {urls} from 'constants/urls';
 
@@ -32,7 +32,7 @@ export const validateCode = async (
       },
       body: JSON.stringify({code})
     });
-
+console.log(resp)
     if (!resp) {
       throw new Error('Invalid response');
     }
@@ -44,6 +44,7 @@ export const validateCode = async (
       token: responseData.token
     };
   } catch (err) {
+    console.log(err)
     console.log('Code validation error: ', err, err.message);
 
     if (err.message === networkError) {
