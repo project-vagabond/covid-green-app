@@ -76,7 +76,7 @@ export const request = async (url: string, cfg: any) => {
   let isUnauthorised;
   let resp;
   try {
-    resp = await fetch(url, {
+    resp = await fetchPinned(url, {
       ...config,
       timeoutInterval: 30000,
       sslPinning: {
@@ -98,7 +98,7 @@ export const request = async (url: string, cfg: any) => {
       headers: {...config.headers, Authorization: `Bearer ${newBearerToken}`}
     };
 
-    return fetch(url, {
+    return fetchPinned(url, {
       ...newConfig,
       timeoutInterval: 30000,
       sslPinning: {
