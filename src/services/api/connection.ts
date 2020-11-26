@@ -42,8 +42,6 @@ async function createToken(): Promise<string> {
       throw new Error('Error getting token');
     }
 
-    console.log('TOKEN', typeof resp.token, resp.token, resp);
-
     await SecureStore.setItemAsync(SecureStoreKeys.token, resp.token);
 
     return resp.token;
@@ -116,7 +114,7 @@ export async function requestRetry(
   retries: number = 3,
   startingDelay = 2000
 ) {
-  return backOff(() => console.log('retry...', url) || request(url, cfg), {
+  return backOff(() => request(url, cfg), {
     numOfAttempts: retries,
     startingDelay,
     timeMultiple: 2
