@@ -13,8 +13,8 @@ import {
 
 import {Spacing} from 'components/atoms/layout';
 import {Button} from 'components/atoms/button';
-import {CodeInput} from 'components/molecules/code-input';
 import {Markdown} from 'components/atoms/markdown';
+import {SingleCodeInput} from 'components/molecules/single-code-input';
 import {Toast} from 'components/atoms/toast';
 import {ResultCard} from 'components/molecules/result-card';
 import {KeyboardScrollable} from 'components/templates/keyboard-scrollable';
@@ -31,6 +31,8 @@ type UploadStatus =
   | 'success'
   | 'permissionError'
   | 'error';
+
+const CODE_INPUT_LENGTH = 8;
 
 export const UploadKeys = ({navigation}) => {
   const {t} = useTranslation();
@@ -109,7 +111,7 @@ export const UploadKeys = ({navigation}) => {
   }, [code, showActivityIndicator, hideActivityIndicator, t]);
 
   useEffect(() => {
-    if (code.length !== 6) {
+    if (code.length !== CODE_INPUT_LENGTH) {
       setValidationError('');
       return;
     }
@@ -151,11 +153,13 @@ export const UploadKeys = ({navigation}) => {
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
           {t('uploadKeys:code:intro')}
         </Markdown>
-        <CodeInput
-          style={styles.codeInput}
-          count={6}
+        <SingleCodeInput
+          error={!!validationError}
           onChange={setCode}
           disabled={status !== 'validate'}
+          count={CODE_INPUT_LENGTH}
+          accessibilityHint={t('uploadKeys:code:hint')}
+          accessibilityLabel={t('uploadKeys:code:label')}
         />
         {!!validationError && (
           <>

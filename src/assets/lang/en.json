@@ -372,7 +372,9 @@
   "uploadKeys": {
     "title": "Share Your Close Contact Codes",
     "code": {
-      "intro": "Please enter the 6-digit number that the public health representative has given you over the phone or texted to you:",
+      "intro": "Please enter the 8-digit number that the public health representative has given you over the phone or texted to you:",
+      "hint": "Insert code",
+      "label": "Code input",
       "expiredError": "Code has expired. Contact DOH to request another one.",
       "invalidError": "Invalid code. Please try again.",
       "error": "There was an error validating the code. Please try again."
