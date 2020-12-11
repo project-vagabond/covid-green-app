@@ -42,8 +42,6 @@ async function createToken(): Promise<string> {
       throw new Error('Error getting token');
     }
 
-    console.log('TOKEN', typeof resp.token, resp.token, resp);
-
     await SecureStore.setItemAsync(SecureStoreKeys.token, resp.token);
 
     return resp.token;
@@ -76,7 +74,7 @@ export const request = async (url: string, cfg: any) => {
   let isUnauthorised;
   let resp;
   try {
-    resp = await fetch(url, {
+    resp = await fetchPinned(url, {
       ...config,
       timeoutInterval: 30000,
       sslPinning: {
@@ -98,7 +96,7 @@ export const request = async (url: string, cfg: any) => {
       headers: {...config.headers, Authorization: `Bearer ${newBearerToken}`}
     };
 
-    return fetch(url, {
+    return fetchPinned(url, {
       ...newConfig,
       timeoutInterval: 30000,
       sslPinning: {
@@ -116,7 +114,7 @@ export async function requestRetry(
   retries: number = 3,
   startingDelay = 2000
 ) {
-  return backOff(() => console.log('retry...', url) || request(url, cfg), {
+  return backOff(() => request(url, cfg), {
     numOfAttempts: retries,
     startingDelay,
     timeMultiple: 2
