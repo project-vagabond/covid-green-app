@@ -6,6 +6,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
 
 import {useApplication, SecureStoreKeys} from 'providers/context';
+import {useSettings} from 'providers/settings';
 import {
   validateCode,
   uploadExposureKeys,
@@ -41,6 +42,9 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
   const {showActivityIndicator, hideActivityIndicator} = useApplication();
+  const {
+    appConfig: {ignore6DigitCode}
+  } = useSettings();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
   const [code, setCode] = useState('');
@@ -74,59 +78,65 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
     readUploadToken();
   }, []);
 
-  const codeValidationHandler = useCallback(async () => {
-    showActivityIndicator();
-    const {result, symptomDate: newSymptomDate, token} = await validateCode(
-      code
-    );
-    hideActivityIndicator();
-
-    if (result !== ValidationResult.Valid) {
-      let errorMessage;
-      if (result === ValidationResult.NetworkError) {
-        errorMessage = t('common:networkError');
-      } else if (result === ValidationResult.Expired) {
-        errorMessage = t('uploadKeys:code:expiredError');
-      } else if (result === ValidationResult.Invalid) {
-        errorMessage = t('uploadKeys:code:invalidError');
-      } else {
-        errorMessage = t('uploadKeys:code:error');
-      }
-      setValidationError(errorMessage);
-      setTimeout(() => {
-        setAccessibilityFocusRef(errorRef);
-      }, 550);
-      return;
-    }
-
-    try {
-      await SecureStore.setItemAsync(SecureStoreKeys.uploadToken, token!);
-      await SecureStore.setItemAsync(
-        SecureStoreKeys.symptomDate,
-        newSymptomDate!
+  const codeValidationHandler = useCallback(
+    async (ignoreError: boolean) => {
+      showActivityIndicator();
+      const {result, symptomDate: newSymptomDate, token} = await validateCode(
+        code
       );
-    } catch (e) {
-      console.log('Error (secure) storing upload token', e);
-    }
-    setValidationError('');
+      hideActivityIndicator();
 
-    setUploadToken(token!);
-    setSymptomDate(newSymptomDate!);
-    setStatus('upload');
-    setTimeout(() => {
-      setAccessibilityFocusRef(uploadRef);
-    }, 250);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // errorRef and uploadRed are stable
-  }, [code, showActivityIndicator, hideActivityIndicator, t]);
+      if (result !== ValidationResult.Valid) {
+        let errorMessage;
+        if (result === ValidationResult.NetworkError) {
+          errorMessage = t('common:networkError');
+        } else if (result === ValidationResult.Expired) {
+          errorMessage = t('uploadKeys:code:expiredError');
+        } else if (result === ValidationResult.Invalid) {
+          errorMessage = t('uploadKeys:code:invalidError');
+        } else {
+          errorMessage = t('uploadKeys:code:error');
+        }
+        if (!ignoreError) {
+          setValidationError(errorMessage);
+          setTimeout(() => {
+            setAccessibilityFocusRef(errorRef);
+          }, 550);
+        }
+        return;
+      }
+
+      try {
+        await SecureStore.setItemAsync(SecureStoreKeys.uploadToken, token!);
+        await SecureStore.setItemAsync(
+          SecureStoreKeys.symptomDate,
+          newSymptomDate!
+        );
+      } catch (e) {
+        console.log('Error (secure) storing upload token', e);
+      }
+      setValidationError('');
+
+      setUploadToken(token!);
+      setSymptomDate(newSymptomDate!);
+      setStatus('upload');
+      setTimeout(() => {
+        setAccessibilityFocusRef(uploadRef);
+      }, 250);
+    } /* eslint-disable-next-line react-hooks/exhaustive-deps */, // errorRef and uploadRed are stable
+    [code, showActivityIndicator, hideActivityIndicator, t]
+  );
 
   useEffect(() => {
-    if (code.length !== CODE_INPUT_LENGTH) {
+    if (
+      (!ignore6DigitCode && code.length === 6) ||
+      code.length === CODE_INPUT_LENGTH
+    ) {
+      codeValidationHandler(code.length === 6);
+    } else {
       setValidationError('');
-      return;
     }
-
-    codeValidationHandler();
-  }, [code, codeValidationHandler]);
+  }, [ignore6DigitCode, code, codeValidationHandler]);
 
   const uploadDataHandler = async () => {
     let exposureKeys;
