@@ -7,7 +7,9 @@ import {
   Alert,
   StyleSheet
 } from 'react-native';
-import ExposureNotification from 'react-native-exposure-notification-service';
+import ExposureNotification, {
+  CloseContact
+} from 'react-native-exposure-notification-service';
 import {format} from 'date-fns';
 
 import {Button} from 'components/atoms/button';
@@ -16,39 +18,43 @@ import {Scrollable} from 'components/templates/scrollable';
 
 const emitter = new NativeEventEmitter(ExposureNotification);
 
-export const Debug = ({navigation}) => {
+export const Debug = () => {
   const exposure = useExposure();
   const [events, setLog] = useState([]);
-  const [contacts, setContacts] = useState([]);
-  const [logData, setLogData] = useState(null);
+  const [contacts, setContacts] = useState<CloseContact[] | null>([]);
+  const [logData, setLogData] = useState<Record<string, any> | null>(null);
 
   const loadData = useCallback(async () => {
-    const contacts = await await exposure.getCloseContacts();
+    const newContacts = await exposure.getCloseContacts();
 
-    const logData = await exposure.getLogData();
-    console.log('logdata is', logData);
-    const runDates = logData.lastRun;
+    const newLogData = await exposure.getLogData();
+    console.log('logdata is', newLogData);
+    const runDates = newLogData?.lastRun;
     if (runDates && typeof runDates === 'string') {
       const dates = runDates
         .replace(/^,/, '')
         .split(',')
         .map((d) => {
+          // eslint-disable-next-line radix
           return format(parseInt(d), 'dd/MM HH:mm:ss');
         });
-      logData.lastRun = dates.join(', ');
+      newLogData.lastRun = dates.join(', ');
     } else {
-      logData.lastRun ? format(logData.lastRun, 'dd/MM HH:mm:ss') : 'Unknown';
+      newLogData.lastRun
+        ? format(newLogData.lastRun, 'dd/MM HH:mm:ss')
+        : 'Unknown';
     }
 
-    setLogData(logData);
-    console.log('logdata', logData);
+    setLogData(newLogData);
+    console.log('logdata', newLogData);
     console.log(
       'has api message',
-      Boolean(logData.lastApiError && logData.lastApiError.length)
+      Boolean(newLogData.lastApiError && newLogData.lastApiError.length)
     );
 
-    setContacts(contacts);
-    console.log('contacts', contacts);
+    setContacts(newContacts);
+    console.log('contacts', newContacts);
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // don't update as exposure does
   }, [setLogData, setContacts]);
 
   useEffect(() => {
@@ -90,6 +96,7 @@ export const Debug = ({navigation}) => {
         console.log('Remove error', e);
       }
     };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // run once on screen load
   }, []);
 
   const deleteAllData = async () => {
@@ -113,7 +120,7 @@ export const Debug = ({navigation}) => {
     ]);
   };
 
-  const displayContact = (contact: Object) => {
+  const displayContact = (contact) => {
     const aDay = 24 * 60 * 60 * 1000;
 
     const contactDate =

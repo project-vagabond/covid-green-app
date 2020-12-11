@@ -1,5 +1,5 @@
 import React, {FC, useState, useRef} from 'react';
-import {Text, View, TextInput, ViewStyle, StyleSheet} from 'react-native';
+import {Text, View, TextInput, ViewStyle} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';

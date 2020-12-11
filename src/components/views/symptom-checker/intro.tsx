@@ -80,6 +80,7 @@ export function CheckInIntro() {
         county: (app.user && app.user.county) || ''
       }));
     }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // no unwanted recursion
   }, [app.user]);
 
   const onContinue = async () => {

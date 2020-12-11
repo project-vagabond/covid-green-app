@@ -44,6 +44,7 @@ export const Permissions: FC<any> = () => {
     if (!exposure.supported && exposure.canSupport) {
       SecureStore.setItemAsync(SecureStoreKeys.canSupportENS, 'true');
     }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // run once on screen load
   }, []);
 
   const handleRegistration = async (skip: boolean) => {
@@ -118,7 +119,7 @@ export const Permissions: FC<any> = () => {
         }
       ]);
     }
-  }, [showAlert]);
+  }, [showAlert, t, alertInfo]);
 
   const handlePermissionsRequest = async () => {
     await exposure.askPermissions();

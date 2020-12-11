@@ -5,8 +5,7 @@ import {StyleSheet} from 'react-native';
 import {Markdown} from 'components/atoms/markdown';
 import {CallCard} from 'components/molecules/call-card';
 import {Spacing} from 'components/atoms/spacing';
-import {colors, text} from 'theme';
-import {BubbleIcons} from 'assets/icons';
+import {colors} from 'theme';
 import {Linking} from 'react-native';
 
 export const CoronavirusCard: FC = () => {

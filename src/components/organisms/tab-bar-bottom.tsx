@@ -1,7 +1,6 @@
 import React, {ReactNode, FC} from 'react';
 import {StyleSheet, View, TouchableWithoutFeedback, Text} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import Constants from 'expo-constants';
 
 import {colors, text} from 'theme';
 import {TabBarIcons} from 'assets/icons';

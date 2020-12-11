@@ -33,7 +33,7 @@ export enum ScreenNames {
 
   Dashboard = 'dashboard',
   Settings = 'settings',
-  AgeCheck = 'ageCheck',
+  AgeCheck = 'ageCheck'
 }
 
 // Always navigate to CloseContactAlert so that back action takes user to MyCovidAlerts

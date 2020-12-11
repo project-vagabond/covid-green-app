@@ -436,6 +436,7 @@ function Navigation({
 
       setState((s) => ({...s, notification: null}));
     }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // setState doesn't need to update
   }, [app, notification]);
 
   useEffect(() => {
@@ -454,6 +455,7 @@ function Navigation({
         setState((s) => ({...s, exposureNotificationClicked: null}));
       }
     }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // setState doesn't need to update
   }, [app, exposureNotificationClicked]);
 
   if (app.initializing) {
@@ -611,6 +613,7 @@ export default function App(props: {
     });
 
     loadResourcesAndDataAsync();
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Run once on app load
   }, []);
 
   return (

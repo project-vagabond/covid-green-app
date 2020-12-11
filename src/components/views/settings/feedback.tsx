@@ -25,7 +25,6 @@ import {Scrollable} from 'components/templates/scrollable';
 
 import {text} from 'theme';
 
-
 export const Feedback = () => {
   const {t} = useTranslation();
   const [version, setVersion] = useState<Version>();
@@ -38,7 +37,7 @@ export const Feedback = () => {
     supported,
     isAuthorised
   } = useExposure();
-  
+
   useEffect(() => {
     const getVer = async () => {
       try {
@@ -51,7 +50,7 @@ export const Feedback = () => {
     getVer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getVersion]);
-    
+
   const openEmail = (subject: string) =>
     Linking.openURL(
       `mailto:covidalertny@health.ny.gov?subject=${t(
