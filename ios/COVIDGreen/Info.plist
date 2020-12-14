@@ -29,9 +29,13 @@
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>CFBundleURLIconFile</key>
+			<string>launch_icon</string>
+			<key>CFBundleURLName</key>
+			<string>gov.ny.health.proximity</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fighttogether</string>
+				<string>gov.ny.health.proximity</string>
 			</array>
 		</dict>
 		<dict>

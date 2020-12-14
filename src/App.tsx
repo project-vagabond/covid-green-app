@@ -87,6 +87,7 @@ import {PositiveResult} from 'components/views/positive-result';
 import {Language} from 'components/views/settings/language';
 import {Feedback} from 'components/views/settings/feedback';
 import {AgeCheck} from 'components/views/onboarding/age-check';
+import {DEEP_LINK_PREFIX, DEEP_LINK_DOMAIN} from '@env';
 
 enableScreens();
 
@@ -404,6 +405,18 @@ const MainStack = () => {
   );
 };
 
+const linking = {
+  prefixes: [
+    DEEP_LINK_PREFIX,
+    DEEP_LINK_DOMAIN
+  ],
+  config: {
+    [ScreenNames.CloseContactAlert]: '/alert',
+    [ScreenNames.Settings]: '/settings',
+    [ScreenNames.UploadKeys]: '/upload'
+  },
+};
+
 function Navigation({
   notification,
   exposureNotificationClicked,
@@ -464,6 +477,7 @@ function Navigation({
 
   return (
     <NavigationContainer
+      linking={linking}
       ref={(e) => {
         navigationRef.current = e;
       }}>

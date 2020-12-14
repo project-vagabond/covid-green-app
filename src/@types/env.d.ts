@@ -6,4 +6,6 @@ declare module '@env' {
   export const SAFETYNET_KEY: string;
   export const HIDE_DEBUG: 'y' | 'n';
   export const TEST_TOKEN: string;
+  export const DEEP_LINK_PREFIX: string;
+  export const DEEP_LINK_DOMAIN: string;
 }
