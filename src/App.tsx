@@ -413,7 +413,15 @@ const linking = {
   config: {
     [ScreenNames.CloseContactAlert]: '/alert',
     [ScreenNames.Settings]: '/settings',
-    [ScreenNames.UploadKeys]: '/upload'
+    [ScreenNames.UploadKeys]: {
+      path: '/upload/:code?',
+      parse: {
+        code: (code: any) => code,
+      },
+      stringify: {
+        code: (code: any) => code,
+      },
+    }
   },
 };
 

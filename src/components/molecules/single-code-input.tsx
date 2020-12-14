@@ -19,6 +19,7 @@ interface SingleCodeInputProps extends AccessibilityProps {
   disabled?: boolean;
   autoFocus?: boolean;
   onChange?: (value: string) => void;
+  code?: string;
 }
 
 export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
@@ -29,9 +30,10 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   error,
   count,
   accessibilityHint,
-  accessibilityLabel
+  accessibilityLabel,
+  code = ''
 }) => {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(code);
   const inputRef = createRef<TextInput>();
   const fontScale = PixelRatio.getFontScale();
 
