@@ -168,7 +168,7 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
           error={!!validationError}
           onChange={setCode}
           disabled={status !== 'validate'}
-          count={CODE_INPUT_LENGTH}
+          count={CODE_INPUT_LENGTHS[0]}
           accessibilityHint={t('uploadKeys:code:hint')}
           accessibilityLabel={t('uploadKeys:code:label')}
           code={code}
