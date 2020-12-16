@@ -410,8 +410,26 @@ const linking = {
   config: {
     [ScreenNames.UploadKeys]: {
       path: '/v'
-      // query string params are passed direct to the screen
+      // query string params are passed direct to the route as params
     }
+  },
+  getStateFromPath: (path: string, config: any) => {
+    const state = getStateFromPath(path, config);
+    const uploadKeysRoute = state?.routes.find(
+      (route) => route.name === ScreenNames.UploadKeys
+    );
+
+    if (uploadKeysRoute) {
+      return {
+        ...state,
+        routes: [
+          {name: 'main', params: {screen: ScreenNames.MyCovidAlerts}},
+          uploadKeysRoute
+        ]
+      };
+    }
+
+    return state;
   }
 };
 
