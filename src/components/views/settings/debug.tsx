@@ -67,7 +67,7 @@ export const Debug = () => {
   }
 
   const simulateExposure = async () => {
-    exposure.simulateExposure(5);
+    exposure.simulateExposure(3, 5);
   };
 
   const checkExposure = async () => {
@@ -77,7 +77,7 @@ export const Debug = () => {
       emitter.removeListener('exposureEvent', handleEvent);
     } catch (e) {}
     let subscription = emitter.addListener('exposureEvent', handleEvent);
-    await exposure.checkExposure(true, true);
+    await exposure.checkExposure(true);
   };
 
   useEffect(() => {
@@ -120,38 +120,27 @@ export const Debug = () => {
     ]);
   };
 
-  const displayContact = (contact) => {
-    const aDay = 24 * 60 * 60 * 1000;
-
-    const contactDate =
-      contact.exposureAlertDate - contact.daysSinceLastExposure * aDay;
+  const displayContact = (contact: CloseContact) => {
     const displayData = [
-      `When: ${format(contact.exposureAlertDate, 'dd/MM HH:mm')}`,
-      `Last: ${format(contactDate, 'dd/MM')}`,
+      `Alert: ${format(contact.exposureAlertDate, 'dd/MM HH:mm')}`,
+      `Contact: ${format(contact.exposureDate, 'dd/MM')}`,
       `Score: ${contact.maxRiskScore}`,
       `Keys: ${contact.matchedKeyCount}`,
-      `Durations: ${contact.attenuationDurations}`
+      `Durations: ${contact.attenuationDurations}`,
+      `maximumRiskScoreFullRange: ${contact.maxRiskScoreFullRange}`,
+      `riskScoreSumFullRange: ${contact.riskScoreSumFullRange}`
     ];
 
-    if (contact.maximumRiskScoreFullRange) {
-      displayData.push(
-        `maximumRiskScoreFullRange: ${contact.maximumRiskScoreFullRange}`
-      );
-      displayData.push(
-        `riskScoreSumFullRange: ${contact.riskScoreSumFullRange}`
-      );
-      displayData.push(
-        `customAttenuationDurations: ${contact.customAttenuationDurations}`
-      );
-    }
-
-    if (contact.details) {
-      contact.details.forEach((d) => {
+    if (contact.windows) {
+      contact.windows.forEach((d) => {
         displayData.push(`When: ${format(d.date, 'dd/MM')}`);
-        displayData.push(`Duration: ${d.duration}`);
-        displayData.push(`Attentuation: ${d.attenuationValue}`);
-        displayData.push(`Risk Score: ${d.totalRiskScore}`);
-        displayData.push(`Attentuation Durations: ${d.attenuationDurations}`);
+        displayData.push(`calibrationConfidence: ${d.calibrationConfidence}`);
+        displayData.push(`diagnosisReportType: ${d.diagnosisReportType}`);
+        displayData.push(`infectiousness: ${d.infectiousness}`);
+        displayData.push(`buckets: ${d.buckets}`);
+        displayData.push(`weightedBuckets: ${d.weightedBuckets}`);
+        displayData.push(`numScans: ${d.numScans}`);
+        displayData.push(`exceedsThreshold: ${d.exceedsThreshold}`);
       });
     }
     Alert.alert('Exposure Details', displayData.join('\n'), [
@@ -163,17 +152,13 @@ export const Debug = () => {
     ]);
   };
 
-  const listContactInfo = (contact: Object) => {
-    const aDay = 24 * 60 * 60 * 1000;
-
-    const contactDate =
-      contact.exposureAlertDate - contact.daysSinceLastExposure * aDay;
-    return `When: ${format(
+  const listContactInfo = (contact: CloseContact) => {
+    return `Alert: ${format(
       contact.exposureAlertDate,
       'dd/MM HH:mm'
-    )}, Last: ${format(contactDate, 'dd/MM')}, Score: ${
+    )}, Contact: ${format(contact.exposureDate, 'dd/MM')}, Score: ${
       contact.maxRiskScore
-    }, Keys: ${contact.matchedKeyCount} ${contact.details ? ', *' : ''}`;
+    }, Keys: ${contact.matchedKeyCount} ${contact.windows ? ', *' : ''}`;
   };
 
   return (

@@ -52,7 +52,7 @@
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>ENAPIVersion</key>
-	<integer>1</integer>
+	<integer>2</integer>
 	<key>ENDeveloperRegion</key>
 	<string>US-NY</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

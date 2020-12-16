@@ -35,8 +35,6 @@ export interface AppConfig {
 export interface TraceConfiguration {
   exposureCheckInterval: number;
   storeExposuresFor: number;
-  fileLimit: number;
-  fileLimitiOS: number;
 }
 
 interface AgeOption extends BasicItem {
@@ -92,10 +90,8 @@ const defaultSettings: SettingsContextValue = {
     callBackResetHrs: 72 // hours
   },
   traceConfiguration: {
-    exposureCheckInterval: 120,
-    storeExposuresFor: 14, // days
-    fileLimit: 1,
-    fileLimitiOS: 2
+    exposureCheckInterval: 180,
+    storeExposuresFor: 14 // days
   },
   getTranslatedDbText: () => defaultDbText
 };
@@ -190,12 +186,6 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
       }
       if (apiSettings.storeExposuresFor) {
         tc.storeExposuresFor = Number(apiSettings.storeExposuresFor);
-      }
-      if (apiSettings.fileLimit) {
-        tc.fileLimit = Number(apiSettings.fileLimit);
-      }
-      if (apiSettings.fileLimitiOS) {
-        tc.fileLimitiOS = Number(apiSettings.fileLimitiOS);
       }
 
       const getTranslatedDbText = makeGetTranslatedDbText(apiSettings);
