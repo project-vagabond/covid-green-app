@@ -33,7 +33,7 @@ type UploadStatus =
   | 'permissionError'
   | 'error';
 
-const CODE_INPUT_LENGTH = 8;
+const CODE_INPUT_LENGTHS = [8, 16];
 
 export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
   navigation,
@@ -122,7 +122,7 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
   }, [code, showActivityIndicator, hideActivityIndicator, t]);
 
   useEffect(() => {
-    if (code.length !== CODE_INPUT_LENGTH) {
+    if (!CODE_INPUT_LENGTHS.includes(code.length)) {
       setValidationError('');
       return;
     }
