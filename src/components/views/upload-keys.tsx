@@ -39,14 +39,13 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
   navigation,
   ...rest
 }) => {
-  console.log('b', rest.route.params.code)
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
   const {showActivityIndicator, hideActivityIndicator} = useApplication();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
   // @ts-ignore
-  const [code, setCode] = useState(rest.route?.params?.code || '');
+  const [code, setCode] = useState(rest.route?.params?.c || '');
   const [validationError, setValidationError] = useState<string>('');
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
