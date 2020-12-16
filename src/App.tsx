@@ -1,7 +1,7 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import {enableScreens} from 'react-native-screens';
-import {Platform, StatusBar, Image, AppState} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {Platform, StatusBar, Image, AppState, Linking} from 'react-native';
+import {getStateFromPath, NavigationContainer} from '@react-navigation/native';
 import {
   createStackNavigator,
   CardStyleInterpolators
@@ -87,6 +87,7 @@ import {PositiveResult} from 'components/views/positive-result';
 import {Language} from 'components/views/settings/language';
 import {Feedback} from 'components/views/settings/feedback';
 import {AgeCheck} from 'components/views/onboarding/age-check';
+import {DEEP_LINK_PREFIX, DEEP_LINK_DOMAIN} from '@env';
 
 enableScreens();
 
@@ -404,6 +405,16 @@ const MainStack = () => {
   );
 };
 
+const linking = {
+  prefixes: [DEEP_LINK_PREFIX, DEEP_LINK_DOMAIN],
+  config: {
+    [ScreenNames.UploadKeys]: {
+      path: '/v'
+      // query string params are passed direct to the screen
+    }
+  }
+};
+
 function Navigation({
   notification,
   exposureNotificationClicked,
@@ -464,6 +475,7 @@ function Navigation({
 
   return (
     <NavigationContainer
+      linking={linking}
       ref={(e) => {
         navigationRef.current = e;
       }}>

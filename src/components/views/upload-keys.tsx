@@ -36,14 +36,16 @@ type UploadStatus =
 const CODE_INPUT_LENGTH = 8;
 
 export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
-  navigation
+  navigation,
+  ...rest
 }) => {
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
   const {showActivityIndicator, hideActivityIndicator} = useApplication();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
-  const [code, setCode] = useState('');
+  // @ts-ignore
+  const [code, setCode] = useState(rest.route?.params?.c || '');
   const [validationError, setValidationError] = useState<string>('');
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
@@ -169,6 +171,7 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
           count={CODE_INPUT_LENGTH}
           accessibilityHint={t('uploadKeys:code:hint')}
           accessibilityLabel={t('uploadKeys:code:label')}
+          code={code}
         />
         {!!validationError && (
           <>
