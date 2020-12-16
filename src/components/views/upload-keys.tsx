@@ -159,6 +159,11 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
   };
 
   const renderValidation = () => {
+    // Use default code length unless a longer code was inserted e.g. by deep link
+    const count =
+      CODE_INPUT_LENGTHS.find((l) => l === code.length) ||
+      CODE_INPUT_LENGTHS[0];
+
     return (
       <>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
@@ -168,7 +173,7 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
           error={!!validationError}
           onChange={setCode}
           disabled={status !== 'validate'}
-          count={CODE_INPUT_LENGTHS[0]}
+          count={count}
           accessibilityHint={t('uploadKeys:code:hint')}
           accessibilityLabel={t('uploadKeys:code:label')}
           code={code}
