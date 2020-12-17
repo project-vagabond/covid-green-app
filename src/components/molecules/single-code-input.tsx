@@ -19,6 +19,7 @@ interface SingleCodeInputProps extends AccessibilityProps {
   disabled?: boolean;
   autoFocus?: boolean;
   onChange?: (value: string) => void;
+  code?: string;
 }
 
 export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
@@ -29,9 +30,10 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   error,
   count,
   accessibilityHint,
-  accessibilityLabel
+  accessibilityLabel,
+  code = ''
 }) => {
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(code);
   const inputRef = createRef<TextInput>();
   const fontScale = PixelRatio.getFontScale();
 
@@ -75,6 +77,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
         autoCapitalize="characters"
         style={[
           styles.input,
+          count > 10 ? styles.inputLong : styles.inputShort,
           {height: 60 * fontScale},
           error ? styles.errorBlock : styles.block
         ]}
@@ -101,13 +104,19 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   input: {
-    ...text.xxlargeBlack,
     flex: 1,
     textAlign: 'center',
     paddingHorizontal: 24,
     borderWidth: 1,
-    letterSpacing: scale(10),
     backgroundColor: colors.white
+  },
+  inputLong: {
+    ...text.defaultBold,
+    letterSpacing: scale(5)
+  },
+  inputShort: {
+    ...text.xxlargeBlack,
+    letterSpacing: scale(10)
   },
   block: {
     color: colors.darkGray,
