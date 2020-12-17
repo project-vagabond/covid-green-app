@@ -96,13 +96,18 @@ export const UploadKeys: FC<{
 
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
-      showActivityIndicator();
+      if (!ignoreError) {
+        showActivityIndicator();
+      }
 
       console.log(`Validating ${code.length} character code...`);
       const {result, symptomDate: newSymptomDate, token} = await validateCode(
         code
       );
-      hideActivityIndicator();
+
+      if (!ignoreError) {
+        hideActivityIndicator();
+      }
 
       if (result !== ValidationResult.Valid) {
         let errorMessage;
