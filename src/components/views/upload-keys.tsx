@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, FC} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
 
 import {useApplication, SecureStoreKeys} from 'providers/context';
@@ -35,17 +35,21 @@ type UploadStatus =
 
 const CODE_INPUT_LENGTHS = [8, 16];
 
-export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
-  navigation,
-  ...rest
-}) => {
+export const UploadKeys: FC<{
+  navigation: NavigationProp<any>;
+  route: RouteProp<any, any>;
+}> = ({navigation, route}) => {
+  const paramsCode = route.params?.c || '';
+
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
   const {showActivityIndicator, hideActivityIndicator} = useApplication();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
-  // @ts-ignore
-  const [code, setCode] = useState(rest.route?.params?.c || '');
+
+  const [code, setCode] = useState(paramsCode);
+  const [previousParamsCode, setPreviousParamsCode] = useState(paramsCode);
+
   const [validationError, setValidationError] = useState<string>('');
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
@@ -75,6 +79,16 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
     };
     readUploadToken();
   }, []);
+
+  useEffect(() => {
+    // Apply new params code if deep link used while screen is already open
+    if (paramsCode !== previousParamsCode) {
+      setPreviousParamsCode(paramsCode);
+      if (paramsCode) {
+        setCode(paramsCode);
+      }
+    }
+  }, [paramsCode, previousParamsCode]);
 
   const codeValidationHandler = useCallback(async () => {
     showActivityIndicator();
@@ -164,8 +178,11 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
       CODE_INPUT_LENGTHS.find((l) => l === code.length) ||
       CODE_INPUT_LENGTHS[0];
 
+    // Remount and clear input if a new paramsCode is provided
+    const inputKey = `code-input-${previousParamsCode}`;
+
     return (
-      <>
+      <View key={inputKey}>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
           {t('uploadKeys:code:intro')}
         </Markdown>
@@ -187,7 +204,7 @@ export const UploadKeys: FC<{navigation: NavigationProp<any>}> = ({
           </>
         )}
         <Spacing s={16} />
-      </>
+      </View>
     );
   };
 
