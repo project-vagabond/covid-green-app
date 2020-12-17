@@ -97,6 +97,8 @@ export const UploadKeys: FC<{
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
       showActivityIndicator();
+
+      console.log(`Validating ${code.length} character code...`);
       const {result, symptomDate: newSymptomDate, token} = await validateCode(
         code
       );
@@ -113,6 +115,17 @@ export const UploadKeys: FC<{
         } else {
           errorMessage = t('uploadKeys:code:error');
         }
+
+        console.log(
+          `${code.length}-character code validation ${
+            errorMessage
+              ? `failed with ${
+                  ignoreError ? 'ignored ' : ''
+                }error "${errorMessage}"`
+              : 'passed'
+          }`
+        );
+
         if (!ignoreError) {
           setValidationError(errorMessage);
           setTimeout(() => {
