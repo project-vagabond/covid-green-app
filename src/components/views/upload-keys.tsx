@@ -178,15 +178,17 @@ export const UploadKeys: FC<{
   );
 
   useEffect(() => {
-    if (
-      (!ignore6DigitCode && code.length === 6) ||
-      CODE_INPUT_LENGTHS.includes(code.length)
-    ) {
-      codeValidationHandler(code.length === 6);
-    } else {
-      setValidationError('');
+    if (isRegistered) {
+      if (
+        (!ignore6DigitCode && code.length === 6) ||
+        CODE_INPUT_LENGTHS.includes(code.length)
+      ) {
+        codeValidationHandler(code.length === 6);
+      } else {
+        setValidationError('');
+      }
     }
-  }, [ignore6DigitCode, code, codeValidationHandler]);
+  }, [ignore6DigitCode, code, codeValidationHandler, isRegistered]);
 
   const uploadDataHandler = async () => {
     let exposureKeys;
