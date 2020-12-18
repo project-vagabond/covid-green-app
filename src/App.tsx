@@ -1,7 +1,11 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import {enableScreens} from 'react-native-screens';
-import {Platform, StatusBar, Image, AppState, Linking} from 'react-native';
-import {getStateFromPath, NavigationContainer} from '@react-navigation/native';
+import {Platform, StatusBar, Image, AppState} from 'react-native';
+import {
+  getStateFromPath,
+  LinkingOptions,
+  NavigationContainer
+} from '@react-navigation/native';
 import {
   createStackNavigator,
   CardStyleInterpolators
@@ -405,12 +409,14 @@ const MainStack = () => {
   );
 };
 
-const linking = {
+const linking: LinkingOptions = {
   prefixes: [DEEP_LINK_PREFIX, DEEP_LINK_DOMAIN],
   config: {
-    [ScreenNames.UploadKeys]: {
-      path: '/v'
-      // query string params are passed direct to the route as params
+    screens: {
+      [ScreenNames.UploadKeys]: {
+        path: '/v'
+        // query string params are passed direct to the route as params
+      }
     }
   },
   getStateFromPath: (path: string, config: any) => {
