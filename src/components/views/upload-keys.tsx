@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {useExposure} from 'react-native-exposure-notification-service';
 
+import {ScreenNames} from 'navigation';
 import {useApplication, SecureStoreKeys} from 'providers/context';
 import {useSettings} from 'providers/settings';
 import {
@@ -40,19 +41,26 @@ export const UploadKeys: FC<{
   navigation: NavigationProp<any>;
   route: RouteProp<any, any>;
 }> = ({navigation, route}) => {
-  const paramsCode = route.params?.c || '';
-
   const {t} = useTranslation();
   const {getDiagnosisKeys} = useExposure();
-  const {showActivityIndicator, hideActivityIndicator} = useApplication();
+  const {
+    showActivityIndicator,
+    hideActivityIndicator,
+    pendingCode,
+    setContext,
+    user
+  } = useApplication();
   const {
     appConfig: {ignore6DigitCode}
   } = useSettings();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
 
-  const [code, setCode] = useState(paramsCode);
-  const [previousParamsCode, setPreviousParamsCode] = useState(paramsCode);
+  const paramsCode = route.params?.c;
+  const presetCode = paramsCode || pendingCode || '';
+
+  const [code, setCode] = useState(presetCode);
+  const [previousPresetCode, setPreviousPresetCode] = useState(presetCode);
 
   const [validationError, setValidationError] = useState<string>('');
   const [uploadToken, setUploadToken] = useState('');
@@ -61,6 +69,8 @@ export const UploadKeys: FC<{
     timeout: 1000,
     count: 2
   });
+
+  const isRegistered = !!user;
 
   useEffect(() => {
     const readUploadToken = async () => {
@@ -82,17 +92,23 @@ export const UploadKeys: FC<{
       setStatus('validate');
     };
     readUploadToken();
+
+    if (!isRegistered && paramsCode && !pendingCode) {
+      // Store code so we can bring new user back with it they onboard
+      setContext({pendingCode: paramsCode});
+    }
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Run this only once
   }, []);
 
   useEffect(() => {
     // Apply new params code if deep link used while screen is already open
-    if (paramsCode !== previousParamsCode) {
-      setPreviousParamsCode(paramsCode);
-      if (paramsCode) {
-        setCode(paramsCode);
+    if (presetCode !== previousPresetCode) {
+      setPreviousPresetCode(presetCode);
+      if (presetCode) {
+        setCode(presetCode);
       }
     }
-  }, [paramsCode, previousParamsCode]);
+  }, [presetCode, previousPresetCode]);
 
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
@@ -162,15 +178,17 @@ export const UploadKeys: FC<{
   );
 
   useEffect(() => {
-    if (
-      (!ignore6DigitCode && code.length === 6) ||
-      CODE_INPUT_LENGTHS.includes(code.length)
-    ) {
-      codeValidationHandler(code.length === 6);
-    } else {
-      setValidationError('');
+    if (isRegistered) {
+      if (
+        (!ignore6DigitCode && code.length === 6) ||
+        CODE_INPUT_LENGTHS.includes(code.length)
+      ) {
+        codeValidationHandler(code.length === 6);
+      } else {
+        setValidationError('');
+      }
     }
-  }, [ignore6DigitCode, code, codeValidationHandler]);
+  }, [ignore6DigitCode, code, codeValidationHandler, isRegistered]);
 
   const uploadDataHandler = async () => {
     let exposureKeys;
@@ -206,8 +224,8 @@ export const UploadKeys: FC<{
       CODE_INPUT_LENGTHS.find((l) => l === code.length) ||
       CODE_INPUT_LENGTHS[0];
 
-    // Remount and clear input if a new paramsCode is provided
-    const inputKey = `code-input-${previousParamsCode}`;
+    // Remount and clear input if a new presetCode is provided
+    const inputKey = `code-input-${previousPresetCode}`;
 
     return (
       <View key={inputKey}>
@@ -295,6 +313,14 @@ export const UploadKeys: FC<{
       : status === 'error'
       ? renderUploadError()
       : null;
+
+  if (!isRegistered) {
+    navigation.reset({
+      index: 0,
+      routes: [{name: ScreenNames.AgeCheck}]
+    });
+    return null;
+  }
 
   return (
     <KeyboardScrollable

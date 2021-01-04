@@ -63,6 +63,7 @@ interface State {
   callBackQueuedTs?: CallBackQueuedTs;
   accessibility: Accessibility;
   county: County | 'u';
+  pendingCode?: string | null;
 }
 
 export interface ApplicationContextValue extends State {

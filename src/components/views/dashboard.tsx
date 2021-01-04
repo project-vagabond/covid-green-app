@@ -9,6 +9,7 @@ import {
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {useTranslation} from 'react-i18next';
 
+import {ScreenNames} from 'navigation';
 import {useApplication} from 'providers/context';
 import {useAppState} from 'hooks/app-state';
 import {useSymptomChecker} from 'hooks/symptom-checker';
@@ -37,6 +38,8 @@ export const Dashboard: FC<any> = ({navigation}) => {
     loadAppData,
     data,
     county,
+    pendingCode,
+    setContext,
     setCountyScope
   } = useApplication();
   const {t} = useTranslation();
@@ -79,7 +82,21 @@ export const Dashboard: FC<any> = ({navigation}) => {
     });
   };
 
-  useEffect(onRefresh, []);
+  useEffect(() => {
+    if (pendingCode) {
+      setContext({pendingCode: null});
+      navigation.reset({
+        index: 1,
+        routes: [
+          {name: 'main', params: {screen: ScreenNames.MyCovidAlerts}},
+          {name: ScreenNames.UploadKeys, params: {c: pendingCode}}
+        ]
+      });
+    }
+
+    onRefresh();
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Only run this when screen first mounts
+  }, []);
 
   const errorToast = (data === null || loadError) && (
     <Toast
