@@ -12,6 +12,7 @@ import {format, compareDesc, startOfDay, subDays, isBefore} from 'date-fns';
 
 import {AppConfig} from './settings';
 import {loadData, StatsData, checkIn as apiCheckIn} from 'services/api';
+import {requestWithCache} from 'services/api/connection';
 import {SymptomRecord} from 'constants/symptoms';
 import {County} from 'assets/counties';
 
@@ -114,7 +115,9 @@ export const AsyncStorageKeys = {
   debug: 'covidApp.showDebug',
   county: 'nysCounty',
   restartScreen: 'restartScreen',
-  symptomKeys: 'covidApp.checks'
+  symptomKeys: 'covidApp.checks',
+  stats: 'app.stats',
+  settings: 'app.settings'
 } as const;
 
 export const SecureStoreKeys = {
@@ -267,19 +270,14 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     }
   }, [state.user]);
 
-  const loadAppData = async () => {
-    try {
-      const data = await loadData();
-      setState((s) => ({...s, loading: false, data}));
-      return true;
-    } catch (err) {
-      setState((s) => ({...s, loading: false, data: null}));
-      console.log('Error loading app data: ', err);
-      console.log(err);
-      return err;
-    }
-  };
-  const loadAppDataRef = useCallback(loadAppData, [loadData]);
+  const loadAppDataRef = useCallback(async () => {
+    const {data, error} = await requestWithCache(
+      AsyncStorageKeys.stats,
+      loadData
+    );
+    setState((s) => ({...s, loading: false, data}));
+    return error ?? true;
+  }, []);
 
   const setContext = async (data: Partial<State>) => {
     setState((s) => ({...s, ...data}));

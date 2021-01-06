@@ -44,12 +44,6 @@ cd ios && pod install
 
 ## Running the applications locally
 
-### Configure Firebase
-
-This application uses Firebase. In order to run it locally, the configuration for Firebase needs to be added. Log in to the development project in Firebase and download the `GoogleService-Info.plist` file for the iOS version of the app and place it in `ios/firebase/development`. For the Android version, download the `google-services.json` file and place it in `android/app/src/debug`.
-
-For the production versions, log in to the production project in Firebase and place the configuration files in `ios/firebase/production` and `android/app/src/release` respectively.
-
 ### Running the app in a simulator
 
 Start the React Native bundler:
@@ -71,9 +65,11 @@ yarn ios
 ```
 
 ## Adding and optimizing icons
+
 Any new SVG icons which are included within `assets/icons` should be optimized with `npm run optimize:svg`.
 
 ## Translations
+
 There are import and export scripts located in `translations-script`. These can be run with `npm run translations:import` and `npm run:translations:export`. The output file(`output.xlsx`) is output in the `translations-script` directory.
 
 The import script expects an `input.xlsx` file to be located in the `translations-script` directory.
@@ -130,27 +126,27 @@ This command will increment the build number. It will not change the app version
 
 ### Lead Maintainers
 
-* @colmharte - Colm Harte <colm.harte@nearform.com>
-* @jasnell - James M Snell <jasnell@gmail.com>
-* @aspiringarc - Gar Mac Críosta <gar.maccriosta@hse.ie>
+- @colmharte - Colm Harte <colm.harte@nearform.com>
+- @jasnell - James M Snell <jasnell@gmail.com>
+- @aspiringarc - Gar Mac Críosta <gar.maccriosta@hse.ie>
 
 ### Core Team
 
-* @ShaunBaker - Shaun Baker <shaun.baker@nearform.com>
-* @floridemai - Paul Negrutiu <paul.negrutiu@nearform.com>
-* @jackdclark - Jack Clark <jack.clark@nearform.com>
-* @andreaforni - Andrea Forni <andrea.forni@nearform.com>
-* @jackmurdoch - Jack Murdoch <jack.murdoch@nearform.com>
+- @ShaunBaker - Shaun Baker <shaun.baker@nearform.com>
+- @floridemai - Paul Negrutiu <paul.negrutiu@nearform.com>
+- @jackdclark - Jack Clark <jack.clark@nearform.com>
+- @andreaforni - Andrea Forni <andrea.forni@nearform.com>
+- @jackmurdoch - Jack Murdoch <jack.murdoch@nearform.com>
 
 ### Contributors
 
-* @dharding - David J Harding <davidjasonharding@gmail.com>
-* @jh3y - Jhey Tompkins <jhey@jhey.dev>
+- @dharding - David J Harding <davidjasonharding@gmail.com>
+- @jh3y - Jhey Tompkins <jhey@jhey.dev>
 
 ### Past Contributors
 
-* TBD
-* TBD
+- TBD
+- TBD
 
 ## Hosted By
 

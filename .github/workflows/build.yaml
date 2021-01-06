@@ -7,7 +7,7 @@ on:
 jobs:
   android-build:
     name: Android Build
-    runs-on: macos-latest 
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -34,13 +34,7 @@ jobs:
         run: echo "${{ secrets.ANDROID_API_KEY }}" | base64 -d -o "android/android-api-key.json"
 
       - name: Generate Android Upload Keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"        
-
-      - name: Generate Android firebase config DEV
-        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_DEV }}" | base64 -d -o "android/app/src/debug/google-services.json"        
-
-      - name: Generate Android firebase config PROD
-        run: echo "${{ secrets.FIREBASE_CFG_ANDROID_PROD }}" | base64 -d -o "android/app/src/release/google-services.json"        
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE }}" | base64 -d -o "android/upload-keystore.jks"
 
       - name: Generate Android env.default
         uses: covid-alert-ny/template-action@v1
@@ -72,7 +66,7 @@ jobs:
       - name: Kick yarn
         run: yarn install --network-timeout 100000
 
-      - name: Setup Ruby 
+      - name: Setup Ruby
         uses: actions/setup-ruby@v1
         env:
           BUNDLE_GEMFILE: "${{ github.workspace }}/ios/Gemfile"
@@ -93,7 +87,7 @@ jobs:
 #
       - name: Android Build
         run: |
-          cd android 
+          cd android
           . .env.default
           ./gradlew bundleReleaseJsAndAssets
           ./gradlew assembleRelease || true
@@ -107,22 +101,22 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: release.aab
-          path: '**/*.aab' 
+          path: '**/*.aab'
 
       - uses: actions/upload-artifact@v2
         with:
           name: release.apk
-          path: '**/*.apk' 
+          path: '**/*.apk'
 
       - name: Play Store Upload
         run: |
           cd android
           . .env.default
-          fastlane internal_release || true 
+          fastlane internal_release || true
 
   ios-build:
     name: iOS Build
-    runs-on: macos-latest 
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
@@ -151,7 +145,7 @@ jobs:
       - name: Generate iOS Signing Key
         run: echo "${{ secrets.SIGNING_KEY_P12_B64 }}" | base64 -d > "ios/NY COVID Proximity.key.p12"
 
-      - name: Generate iOS mobile provisioning profile        
+      - name: Generate iOS mobile provisioning profile
         run: |
           # fastlane cert/sigh and provisioning profile was not playing well with the existing setup. manually provisioning instead.
           echo "${{ secrets.IOS_MOBILE_PROV }}" | base64 -d -o "ios/COVID_Proximity_Tracing.mobileprovision"
@@ -166,12 +160,6 @@ jobs:
           echo "~/Library/MobileDevice/Provisioning Profiles/"
           ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
 
-      - name: Generate iOS firebase config DEV
-        run: echo "${{ secrets.FIREBASE_CFG_IOS_DEV }}" | base64 -d -o "ios/firebase/development/GoogleService-Info.plist"        
-
-      - name: Generate iOS firebase config PROD
-        run: echo "${{ secrets.FIREBASE_CFG_IOS_PROD }}" | base64 -d -o "ios/firebase/production/GoogleService-Info.plist"        
-            
 
       - name: Generate iOS env.default
         uses: covid-alert-ny/template-action@v1
@@ -192,7 +180,7 @@ jobs:
               "FASTLANE_USER": "${{ secrets.FASTLANE_USER }}",
               "FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD": "${{ secrets.FASTLANE_APP_PASSWORD }}",
               "FASTLANE_PASSWORD": "${{ secrets.FASTLANE_PASSWORD }}",
-              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"              
+              "SAFETYNET_KEY": "${{ secrets.SAFETYNET_KEY }}"
             }
 
 
@@ -217,7 +205,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
 
-      - name: Setup Ruby 
+      - name: Setup Ruby
         uses: actions/setup-ruby@v1
         env:
           BUNDLE_GEMFILE: "${{ github.workspace }}/ios/Gemfile"
@@ -257,20 +245,20 @@ jobs:
         env:
           FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
         run: |
-          cd ios 
+          cd ios
           . .env.default
           fastlane beta_build
 
       - uses: actions/upload-artifact@v2
         with:
           name: release.ipa
-          path: '**/*.ipa' 
+          path: '**/*.ipa'
 
       - name: iOS Testflight
         env:
           FASTLANE_USER: "${{ secrets.FASTLANE_USER }}"
         run: |
-          cd ios 
+          cd ios
           . .env.default
           fastlane beta_release || true
           # fastlane can fail due to random timeouts when pushing to apple. we capture the ipa for testing just in case.
