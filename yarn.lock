@@ -7051,7 +7051,7 @@ react-native-easy-markdown@^2.0.0:
   dependencies:
     simple-markdown "^0.4.4"
 
-react-native-exposure-notification-service@^1.2.1:
+react-native-exposure-notification-service@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-exposure-notification-service/-/react-native-exposure-notification-service-1.2.3.tgz#7ff95707a0ff74949323d0f2dfb4aaaef41cfa04"
   integrity sha512-RkfNsGzuFiXKx2uLeu24fN8jV2R41ORGDd1PwRWNn9bwpZssOo5EJUWx0ulKZG9AD8CnxDee+h08ux91h+0etA==
