@@ -535,14 +535,14 @@
     },
     "notEnabledIOS": {
       "title": "Closeness Sensing is not enabled",
-      "text": "To turn on Closeness Sensing, you must enable COVID-19 Exposure Notifications in App Settings.\n\nYou should also go to Privacy > Health in your device's settings and make sure COVID-19 Exposure Logging is on.",
+      "text": "To turn on Closeness Sensing, you must enable COVID-19 Exposure Notifications in App Settings by first switching the Share Exposure Information toggle followed by clicking Set As Active Region.",
       "gotoSettings": "Go to App Settings"
     },
     "notActive": {
       "title": "Closeness Sensing is not active",
       "ios": {
         "text": "You need to enable Exposure Notifications services and Bluetooth to enable Closeness Sensing",
-        "ens": "To turn on Closeness Sensing, you must enable COVID-19 Exposure Notifications in App Settings.\n\nYou should also go to Privacy > Health in your device's settings and make sure COVID-19 Exposure Logging is on.",
+        "ens": "To turn on Closeness Sensing, you must enable COVID-19 Exposure Notifications in App Settings by first switching the Share Exposure Information toggle followed by clicking Set As Active Region.",
         "bt": "Please turn on Bluetooth.\n\n**Note:** Turn this on in your device’s settings, not by tapping the Bluetooth button in the Control Center.",
         "gotoSettings": "Go to Settings"
       },
