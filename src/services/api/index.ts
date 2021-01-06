@@ -315,7 +315,6 @@ export async function uploadContacts(contacts: any) {
       throw new Error('Invalid response');
     }
     console.log('Contacts Uploaded');
-    saveMetric({event: METRIC_TYPES.CONTACT_UPLOAD});
     return true;
   } catch (err) {
     console.log('Error uploading contacts');
@@ -348,7 +347,6 @@ export async function loadNotifications() {
 }
 
 export enum METRIC_TYPES {
-  CONTACT_UPLOAD = 'CONTACT_UPLOAD',
   CHECK_IN = 'CHECK_IN',
   FORGET = 'FORGET',
   CALLBACK_OPTIN = 'CALLBACK_OPTIN'

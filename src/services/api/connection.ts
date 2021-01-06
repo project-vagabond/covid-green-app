@@ -1,5 +1,6 @@
 import {backOff} from 'exponential-backoff';
 import {fetch as fetchPinned} from 'react-native-ssl-pinning';
+import AsyncStorage from '@react-native-community/async-storage';
 import * as SecureStore from 'expo-secure-store';
 
 import {isMountedRef, navigationRef, ScreenNames} from '../../navigation';
@@ -119,6 +120,44 @@ export async function requestRetry(
     startingDelay,
     timeMultiple: 2
   });
+}
+
+export async function requestWithCache<T extends unknown>(
+  cacheKey: string,
+  loadFunc: () => Promise<T>
+) {
+  try {
+    const data = await loadFunc();
+    // try caching the data
+    try {
+      console.log(`Saving ${cacheKey} data in storage...`);
+      AsyncStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (err) {
+      console.log(`Error writing "${cacheKey}" in storage:`, err);
+    }
+
+    return {data};
+  } catch (error) {
+    console.log(`Error loading "${cacheKey}" data: `, error);
+
+    let data = null;
+
+    // try loading data from cache
+    try {
+      console.log(`Loading "${cacheKey}" data from storage...`);
+      const storageData = await AsyncStorage.getItem(cacheKey);
+      if (storageData) {
+        data = JSON.parse(storageData) as T;
+      }
+    } catch (err) {
+      console.log(`Error reading "${cacheKey}" from storage:`, err);
+    }
+
+    return {
+      data,
+      error
+    };
+  }
 }
 
 export const identifyNetworkIssue = async (): Promise<string> => {

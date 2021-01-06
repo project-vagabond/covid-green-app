@@ -16,6 +16,7 @@ import {isObject} from 'formik';
 import {AllHtmlEntities} from 'html-entities';
 
 import * as api from 'services/api';
+import {requestWithCache} from 'services/api/connection';
 import {fallback} from 'services/i18n/common';
 import {counties} from 'assets/counties';
 import {AsyncStorageKeys} from './context';
@@ -167,13 +168,11 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
         AsyncStorageKeys.checkinConsent
       ]);
 
-      let apiSettings: ApiSettings;
-      try {
-        apiSettings = await api.loadSettings();
-      } catch (e) {
-        console.log('Error loading settings: ', e);
-        apiSettings = {};
-      }
+      const {data} = await requestWithCache(
+        AsyncStorageKeys.settings,
+        api.loadSettings
+      );
+      const apiSettings: ApiSettings = data ?? {};
 
       const appConfig: AppConfig = {...defaultSettings.appConfig};
       if (apiSettings.checkInMaxAge) {
