@@ -4,8 +4,8 @@ import android.app.Application;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.pedrouid.crypto.RNSCCryptoPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.pedrouid.crypto.RCTCryptoPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
