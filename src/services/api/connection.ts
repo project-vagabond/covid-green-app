@@ -155,7 +155,7 @@ export async function requestWithCache<T extends unknown>(
 
     return {
       data,
-      error
+      error: error instanceof Error ? error : new Error(error)
     };
   }
 }
