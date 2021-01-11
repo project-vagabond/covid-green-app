@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:us-ny.en.express</string>
+		<string>applinks:api-dela-qa.nf-covid-services.com</string>
 	</array>
 	<key>com.apple.developer.exposure-notification</key>
 	<true/>
