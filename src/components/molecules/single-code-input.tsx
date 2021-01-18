@@ -74,6 +74,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
       <TextInput
         ref={inputRef}
         selectTextOnFocus
+        autoFocus={true}
         autoCapitalize="characters"
         style={[
           styles.input,
@@ -87,7 +88,6 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
         textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
         editable={!disabled}
         value={value}
-        placeholder={'_'.repeat(count)}
         onFocus={onFocusHandler}
         onChangeText={onChangeTextHandler}
         accessibilityLabel={accessibilityLabel}
