@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
@@ -61,8 +61,8 @@ export const UploadKeys: FC<{
 
   const [code, setCode] = useState(presetCode);
   const [previousPresetCode, setPreviousPresetCode] = useState(presetCode);
-
   const [validationError, setValidationError] = useState<string>('');
+
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
   const [uploadRef, errorRef] = useFocusRef({
@@ -71,6 +71,11 @@ export const UploadKeys: FC<{
   });
 
   const isRegistered = !!user;
+
+  const updateCode = useCallback((input: string) => {
+    setValidationError('');
+    setCode(input);
+  }, []);
 
   useEffect(() => {
     const readUploadToken = async () => {
@@ -105,13 +110,14 @@ export const UploadKeys: FC<{
     if (presetCode !== previousPresetCode) {
       setPreviousPresetCode(presetCode);
       if (presetCode) {
-        setCode(presetCode);
+        updateCode(presetCode);
       }
     }
-  }, [presetCode, previousPresetCode]);
+  }, [updateCode, presetCode, previousPresetCode]);
 
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
+      console.log('codeValidationHandler');
       if (!ignoreError) {
         showActivityIndicator();
       }
@@ -173,7 +179,7 @@ export const UploadKeys: FC<{
       setTimeout(() => {
         setAccessibilityFocusRef(uploadRef);
       }, 250);
-    } /* eslint-disable-next-line react-hooks/exhaustive-deps */, // errorRef and uploadRed are stable
+    } /* eslint-disable-next-line react-hooks/exhaustive-deps */, // errorRef and uploadRef are stable
     [code, showActivityIndicator, hideActivityIndicator, t]
   );
 
@@ -183,7 +189,7 @@ export const UploadKeys: FC<{
         (!ignore6DigitCode && code.length === 6) ||
         CODE_INPUT_LENGTHS.includes(code.length)
       ) {
-        codeValidationHandler(code.length === 6);
+        codeValidationHandler(true);
       } else {
         setValidationError('');
       }
@@ -227,20 +233,61 @@ export const UploadKeys: FC<{
     // Remount and clear input if a new presetCode is provided
     const inputKey = `code-input-${previousPresetCode}`;
 
+    const okayDisabled = !(
+      status === 'validate' &&
+      code.length &&
+      !validationError
+    );
+
     return (
       <View key={inputKey}>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
           {t('uploadKeys:code:intro')}
         </Markdown>
-        <SingleCodeInput
-          error={!!validationError}
-          onChange={setCode}
-          disabled={status !== 'validate'}
-          count={count}
-          accessibilityHint={t('uploadKeys:code:hint')}
-          accessibilityLabel={t('uploadKeys:code:label')}
-          code={code}
-        />
+        <View style={styles.row}>
+          <View style={styles.flex}>
+            <SingleCodeInput
+              error={!!validationError}
+              onChange={updateCode}
+              disabled={status !== 'validate'}
+              count={count}
+              accessibilityHint={t('uploadKeys:code:hint')}
+              accessibilityLabel={t('uploadKeys:code:label')}
+              code={code}
+            />
+          </View>
+          <View
+            importantForAccessibility={
+              okayDisabled ? 'no-hide-descendants' : 'auto'
+            }
+            accessibilityElementsHidden={okayDisabled}>
+            <TouchableOpacity
+              style={[styles.okayButton, okayDisabled && styles.okayDisabled]}
+              onPress={() => codeValidationHandler(false)}
+              disabled={okayDisabled}
+              accessible
+              activeOpacity={0.8}
+              importantForAccessibility={'no-hide-descendants'}
+              accessibilityRole={'button'}
+              accessibilityLabel={t('common:ok:label')}>
+              {['upload', 'uploadOnly'].includes(status) ? (
+                <AppIcons.Success
+                  width={24}
+                  height={24}
+                  color={colors.icons.gray}
+                />
+              ) : (
+                <View style={styles.arrowOffset}>
+                  <AppIcons.ArrowRight
+                    width={21}
+                    height={21}
+                    color={colors.white}
+                  />
+                </View>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
         {!!validationError && (
           <>
             <Spacing s={8} />
@@ -350,5 +397,30 @@ const styles = StyleSheet.create({
   },
   codeInput: {
     marginTop: -12
+  },
+  flex: {
+    flex: 1
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  okayButton: {
+    backgroundColor: colors.purple,
+    width: 48,
+    height: 48,
+    marginLeft: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 32,
+    borderColor: colors.softPurple,
+    borderWidth: 10
+  },
+  okayDisabled: {
+    backgroundColor: colors.icons.gray,
+    borderColor: 'transparent'
+  },
+  arrowOffset: {
+    marginLeft: -10
   }
 });
