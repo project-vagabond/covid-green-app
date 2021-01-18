@@ -32,10 +32,8 @@ export const colors = {
   empty: {
     border: '#eeeeee'
   },
-  yellow: '#FFEA0C', // review & remove,
-  lightpurple: '#fff37a',
-  mildpurple: '#fff16f',
-  darkerpurple: '#FFDA1A', // review & merge to purple
+  yellow: '#FFDA1A', // review - only in unused <Progress>
+  softPurple: `${purple}1E`, // translucent, same as outer bubble icon SVG
   orange: '#FF8248',
   lightOrange: '#FFC0A3',
   white,
@@ -76,4 +74,4 @@ export const colors = {
       shadow: 'transparent'
     }
   }
-};
+} as const;

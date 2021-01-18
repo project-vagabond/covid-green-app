@@ -11,12 +11,12 @@ interface FocusRefProps {
 
 export function setAccessibilityFocusRef(ref: RefObject<any>) {
   if (ref.current) {
-    const tag = findNodeHandle(ref.current);
-    tag &&
-      setTimeout(
-        () => ref.current && AccessibilityInfo.setAccessibilityFocus(tag),
-        250
-      );
+    setTimeout(() => {
+      const tag = ref.current && findNodeHandle(ref.current);
+      if (tag) {
+        AccessibilityInfo.setAccessibilityFocus(tag);
+      }
+    }, 250);
   }
 }
 
