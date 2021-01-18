@@ -7,7 +7,8 @@ import {
   AccessibilityInfo,
   AccessibilityProps,
   PixelRatio,
-  Platform
+  Platform,
+  LayoutChangeEvent
 } from 'react-native';
 
 import {scale, text, colors} from 'theme';
@@ -36,6 +37,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   const [value, setValue] = useState<string>(code);
   const inputRef = createRef<TextInput>();
   const fontScale = PixelRatio.getFontScale();
+  const [containerWidth, setContainerWidth] = useState(280);
 
   useEffect(() => {
     const isScreenReaderEnabled = (async function () {
@@ -69,8 +71,25 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
     }
   };
 
+  const hasLongCode = count > 10;
+
+  const onLayoutHandler = ({
+    nativeEvent: {
+      layout: {width}
+    }
+  }: LayoutChangeEvent) => {
+    setContainerWidth(width);
+  };
+
+  // Distribute characters based on approximate available horizontal space
+  const spacePerChar = scale(hasLongCode ? 14 : 26);
+  const letterSpacing = Math.max(
+    0,
+    (containerWidth - count * spacePerChar) / (count + 1)
+  );
+
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, style]} onLayout={onLayoutHandler}>
       <TextInput
         ref={inputRef}
         selectTextOnFocus
@@ -78,8 +97,8 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
         autoCapitalize="characters"
         style={[
           styles.input,
-          count > 10 ? styles.inputLong : styles.inputShort,
-          {height: 60 * fontScale},
+          hasLongCode ? styles.inputLong : styles.inputShort,
+          {height: 60 * fontScale, letterSpacing},
           error ? styles.errorBlock : styles.block
         ]}
         maxLength={count}
@@ -106,17 +125,15 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     textAlign: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 0,
     borderWidth: 1,
     backgroundColor: colors.white
   },
   inputLong: {
-    ...text.defaultBold,
-    letterSpacing: scale(5)
+    ...text.defaultBold
   },
   inputShort: {
-    ...text.xxlargeBlack,
-    letterSpacing: scale(10)
+    ...text.xxlargeBlack
   },
   block: {
     color: colors.darkGray,
