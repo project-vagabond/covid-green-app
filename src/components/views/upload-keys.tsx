@@ -118,7 +118,6 @@ export const UploadKeys: FC<{
 
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
-      console.log('codeValidationHandler');
       if (!ignoreError) {
         showActivityIndicator();
       }
