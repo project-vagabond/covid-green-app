@@ -109,7 +109,9 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
         ]}
         onSubmitEditing={() => {
           Keyboard.dismiss();
-          onDone();
+          if (onDone) {
+            onDone();
+          }
         }}
         maxLength={count}
         keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
