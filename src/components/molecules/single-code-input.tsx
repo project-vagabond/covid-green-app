@@ -51,7 +51,12 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   }, [inputRef, autoFocus]);
 
   const onChangeTextHandler = (v: string) => {
-    const validatedValue = v.replace(/[^0-9]/g, '');
+    // 16-digit codes are alphanumeric: commenting out to allow their copy-paste
+    // const validatedValue = v.replace(/[^0-9]/g, '');
+
+    // autoCapitalize rarely works on Android; longstanding RN bug
+    const validatedValue = `${v}`.toUpperCase();
+
     setValue(validatedValue);
 
     if (!validatedValue) {
@@ -73,7 +78,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
     }
   };
 
-  const hasLongCode = code.length > CODE_INPUT_LENGTHS[0];
+  const hasLongCode = code.length && code.length > CODE_INPUT_LENGTHS[0];
   const nextLength = CODE_INPUT_LENGTHS.find((l) => l >= code.length) || count;
 
   const onLayoutHandler = ({
@@ -105,7 +110,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           error ? styles.errorBlock : styles.block
         ]}
         maxLength={count}
-        keyboardType="number-pad"
+        keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
         returnKeyType="done"
         textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
         editable={!disabled}
