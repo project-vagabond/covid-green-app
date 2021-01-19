@@ -66,9 +66,9 @@ export const UploadKeys: FC<{
 
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
-  const [uploadRef, errorRef] = useFocusRef({
+  const [uploadRef, errorRef, okayRef] = useFocusRef({
     timeout: 1000,
-    count: 2
+    count: 3
   });
 
   const isRegistered = !!user;
@@ -235,6 +235,8 @@ export const UploadKeys: FC<{
       !validationError
     );
 
+    const onDoneHandler = () => setAccessibilityFocusRef(okayRef);
+
     return (
       <View key={inputKey}>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
@@ -249,6 +251,7 @@ export const UploadKeys: FC<{
               accessibilityHint={t('uploadKeys:code:hint')}
               accessibilityLabel={t('uploadKeys:code:label')}
               code={code}
+              onDone={onDoneHandler}
             />
           </View>
           <View
@@ -260,10 +263,10 @@ export const UploadKeys: FC<{
               style={[styles.okayButton, okayDisabled && styles.okayDisabled]}
               onPress={() => codeValidationHandler(false)}
               disabled={okayDisabled}
-              accessible
+              ref={okayRef}
+              accessible={!okayDisabled}
               activeOpacity={0.8}
-              importantForAccessibility={'no-hide-descendants'}
-              accessibilityRole={'button'}
+              accessibilityRole="button"
               accessibilityLabel={t('common:ok:label')}>
               {['upload', 'uploadOnly'].includes(status) ? (
                 <AppIcons.Success

@@ -7,7 +7,8 @@ import {
   AccessibilityProps,
   PixelRatio,
   Platform,
-  LayoutChangeEvent
+  LayoutChangeEvent,
+  Keyboard
 } from 'react-native';
 
 import {useApplication} from 'providers/context';
@@ -21,6 +22,7 @@ interface SingleCodeInputProps extends AccessibilityProps {
   autoFocus?: boolean;
   onChange?: (value: string) => void;
   code?: string;
+  onDone?: () => void;
 }
 
 export const CODE_INPUT_LENGTHS = [8, 16];
@@ -30,8 +32,8 @@ const count = CODE_INPUT_LENGTHS[CODE_INPUT_LENGTHS.length - 1];
 export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   style,
   disabled = false,
-  autoFocus = false,
   onChange,
+  onDone,
   error,
   accessibilityHint,
   accessibilityLabel,
@@ -105,9 +107,14 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           {height: 60 * fontScale, letterSpacing},
           error ? styles.errorBlock : styles.block
         ]}
+        onSubmitEditing={() => {
+          Keyboard.dismiss();
+          onDone();
+        }}
         maxLength={count}
         keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
         returnKeyType="done"
+        blurOnSubmit={true}
         textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
         editable={!disabled}
         value={value}
