@@ -1,15 +1,16 @@
-import React, {useState, createRef, useEffect} from 'react';
+import React, {useState, createRef} from 'react';
 import {
   StyleSheet,
   View,
   TextInput,
   ViewStyle,
-  AccessibilityInfo,
   AccessibilityProps,
   PixelRatio,
   Platform,
   LayoutChangeEvent
 } from 'react-native';
+
+import {useApplication} from 'providers/context';
 
 import {scale, text, colors} from 'theme';
 
@@ -41,14 +42,9 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   const fontScale = PixelRatio.getFontScale();
   const [containerWidth, setContainerWidth] = useState(280);
 
-  useEffect(() => {
-    const isScreenReaderEnabled = (async function () {
-      await AccessibilityInfo.isScreenReaderEnabled();
-    })();
-    if (autoFocus && !isScreenReaderEnabled) {
-      inputRef.current?.focus();
-    }
-  }, [inputRef, autoFocus]);
+  const {
+    accessibility: {screenReaderEnabled}
+  } = useApplication();
 
   const onChangeTextHandler = (v: string) => {
     // 16-digit codes are alphanumeric: commenting out to allow their copy-paste
@@ -101,7 +97,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
       <TextInput
         ref={inputRef}
         selectTextOnFocus
-        autoFocus={true}
+        autoFocus={!screenReaderEnabled}
         autoCapitalize="characters"
         style={[
           styles.input,
