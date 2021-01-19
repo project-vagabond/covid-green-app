@@ -1,19 +1,13 @@
-import React, {ReactNode, useEffect, useState} from 'react';
-import {
-  Text,
-  StyleSheet,
-  Linking,
-  AccessibilityInfo,
-  AppState,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import React, {ReactNode} from 'react';
+import {Text, StyleSheet, Linking, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import * as WebBrowser from 'expo-web-browser';
 import M from 'react-native-easy-markdown';
 
-import {Link} from 'components/atoms/link';
+import {useApplication} from 'providers/context';
 import {markdownStyles as defaultMarkdownStyles, colors} from 'theme';
+
+import {Link} from 'components/atoms/link';
 import {WarningBullet} from './warning-bullet';
 
 interface Markdown {
@@ -113,18 +107,9 @@ export const Markdown: React.FC<Markdown> = ({
 }) => {
   const navigation = useNavigation();
 
-  const [screenReaderEnabled, setScreenReaderEnabled] = useState(false);
-
-  useEffect(() => {
-    const checkScreenReader = () =>
-      AccessibilityInfo.isScreenReaderEnabled().then((enabled) =>
-        setScreenReaderEnabled(enabled)
-      );
-    // Re-check state on app refocus to catch changes to device settings
-    AppState.addEventListener('change', checkScreenReader);
-    checkScreenReader();
-    return () => AppState.removeEventListener('change', checkScreenReader);
-  }, []);
+  const {
+    accessibility: {screenReaderEnabled}
+  } = useApplication();
 
   const defaultRenderLink: RenderLink = (href, title, children, key) =>
     MarkdownLink(href, title, children, key, navigation, screenReaderEnabled);
