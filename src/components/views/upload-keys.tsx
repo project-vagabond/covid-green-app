@@ -17,7 +17,10 @@ import {
 import {Spacing} from 'components/atoms/layout';
 import {Button} from 'components/atoms/button';
 import {Markdown} from 'components/atoms/markdown';
-import {SingleCodeInput} from 'components/molecules/single-code-input';
+import {
+  SingleCodeInput,
+  CODE_INPUT_LENGTHS
+} from 'components/molecules/single-code-input';
 import {Toast} from 'components/atoms/toast';
 import {ResultCard} from 'components/molecules/result-card';
 import {KeyboardScrollable} from 'components/templates/keyboard-scrollable';
@@ -34,8 +37,6 @@ type UploadStatus =
   | 'success'
   | 'permissionError'
   | 'error';
-
-const CODE_INPUT_LENGTHS = [8, 16];
 
 export const UploadKeys: FC<{
   navigation: NavigationProp<any>;
@@ -225,11 +226,6 @@ export const UploadKeys: FC<{
   };
 
   const renderValidation = () => {
-    // Use default code length unless a longer code was inserted e.g. by deep link
-    const count =
-      CODE_INPUT_LENGTHS.find((l) => l === code.length) ||
-      CODE_INPUT_LENGTHS[0];
-
     // Remount and clear input if a new presetCode is provided
     const inputKey = `code-input-${previousPresetCode}`;
 
@@ -250,7 +246,6 @@ export const UploadKeys: FC<{
               error={!!validationError}
               onChange={updateCode}
               disabled={status !== 'validate'}
-              count={count}
               accessibilityHint={t('uploadKeys:code:hint')}
               accessibilityLabel={t('uploadKeys:code:label')}
               code={code}

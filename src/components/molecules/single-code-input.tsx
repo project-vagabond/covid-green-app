@@ -16,12 +16,15 @@ import {scale, text, colors} from 'theme';
 interface SingleCodeInputProps extends AccessibilityProps {
   error?: boolean;
   style?: ViewStyle;
-  count: number;
   disabled?: boolean;
   autoFocus?: boolean;
   onChange?: (value: string) => void;
   code?: string;
 }
+
+export const CODE_INPUT_LENGTHS = [8, 16];
+
+const count = CODE_INPUT_LENGTHS[CODE_INPUT_LENGTHS.length - 1];
 
 export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   style,
@@ -29,7 +32,6 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   autoFocus = false,
   onChange,
   error,
-  count,
   accessibilityHint,
   accessibilityLabel,
   code = ''
@@ -49,7 +51,12 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   }, [inputRef, autoFocus]);
 
   const onChangeTextHandler = (v: string) => {
-    const validatedValue = v.replace(/[^0-9]/g, '');
+    // 16-digit codes are alphanumeric: commenting out to allow their copy-paste
+    // const validatedValue = v.replace(/[^0-9]/g, '');
+
+    // autoCapitalize rarely works on Android; longstanding RN bug
+    const validatedValue = `${v}`.toUpperCase();
+
     setValue(validatedValue);
 
     if (!validatedValue) {
@@ -71,7 +78,8 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
     }
   };
 
-  const hasLongCode = count > 10;
+  const hasLongCode = code.length && code.length > CODE_INPUT_LENGTHS[0];
+  const nextLength = CODE_INPUT_LENGTHS.find((l) => l >= code.length) || count;
 
   const onLayoutHandler = ({
     nativeEvent: {
@@ -85,7 +93,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   const spacePerChar = scale(hasLongCode ? 14 : 26);
   const letterSpacing = Math.max(
     0,
-    (containerWidth - count * spacePerChar) / (count + 1)
+    (containerWidth - nextLength * spacePerChar) / (nextLength + 1)
   );
 
   return (
@@ -102,7 +110,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           error ? styles.errorBlock : styles.block
         ]}
         maxLength={count}
-        keyboardType="number-pad"
+        keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
         returnKeyType="done"
         textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
         editable={!disabled}
