@@ -7,6 +7,7 @@ import {isMountedRef, navigationRef, ScreenNames} from '../../navigation';
 
 import {urls} from 'constants/urls';
 import {SecureStoreKeys} from 'providers/context';
+import {networkError} from '.';
 
 // Strip any trailing '/' if there is one
 const match = urls.api.match(/^(.*?)\/?$/);
@@ -85,6 +86,10 @@ export const request = async (url: string, cfg: any) => {
     isUnauthorised = resp && resp.status === 401;
   } catch (e) {
     if (!authorizationHeaders || e.status !== 401) {
+      const issue = await identifyNetworkIssue();
+      if (issue.split(':')[0] === '1012') {
+        throw new Error(networkError);
+      }
       throw e;
     }
     isUnauthorised = true;
