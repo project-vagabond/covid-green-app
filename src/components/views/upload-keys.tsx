@@ -189,12 +189,13 @@ export const UploadKeys: FC<{
         (!ignore6DigitCode && code.length === 6) ||
         CODE_INPUT_LENGTHS.includes(code.length)
       ) {
-        codeValidationHandler(true);
+        const isPreset = presetCode && code === presetCode;
+        codeValidationHandler(!isPreset);
       } else {
         setValidationError('');
       }
     }
-  }, [ignore6DigitCode, code, codeValidationHandler, isRegistered]);
+  }, [ignore6DigitCode, code, presetCode, codeValidationHandler, isRegistered]);
 
   const uploadDataHandler = async () => {
     let exposureKeys;
