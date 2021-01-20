@@ -240,7 +240,9 @@ export const UploadKeys: FC<{
     return (
       <View key={inputKey}>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
-          {t('uploadKeys:code:intro')}
+          {t('uploadKeys:code:intro', {
+            length: ignore6DigitCode || true ? '8-digit' : '6 or 8 digit'
+          })}
         </Markdown>
         <View style={styles.row}>
           <View style={styles.flex}>
