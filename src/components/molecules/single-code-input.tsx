@@ -88,10 +88,17 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   };
 
   // Distribute characters based on approximate available horizontal space
-  const spacePerChar = scale(hasLongCode ? 14 : 26);
+  const paddedLength = nextLength + 1;
+  const uncappedFontSize = scale(hasLongCode ? 16 : 32);
+  const approxFontSizeToWidth = 0.7;
+  const maxCharWidth = containerWidth / paddedLength;
+  const maxFontSize = maxCharWidth / approxFontSizeToWidth / fontScale;
+  const fontSize = Math.min(maxFontSize, uncappedFontSize);
+
+  const cappedSpacePerChar = fontScale * fontSize * approxFontSizeToWidth;
   const letterSpacing = Math.max(
     0,
-    (containerWidth - nextLength * spacePerChar) / (nextLength + 1)
+    (containerWidth - paddedLength * cappedSpacePerChar) / paddedLength
   );
 
   return (
@@ -105,7 +112,8 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           styles.input,
           hasLongCode ? styles.inputLong : styles.inputShort,
           {height: 60 * fontScale, letterSpacing},
-          error ? styles.errorBlock : styles.block
+          error ? styles.errorBlock : styles.block,
+          {fontSize}
         ]}
         onSubmitEditing={() => {
           Keyboard.dismiss();
