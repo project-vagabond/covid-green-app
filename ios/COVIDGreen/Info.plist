@@ -54,7 +54,7 @@
 	<key>ENAPIVersion</key>
 	<integer>2</integer>
 	<key>ENDeveloperRegion</key>
-	<string>US-NY2</string>
+	<string>US-NY</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
