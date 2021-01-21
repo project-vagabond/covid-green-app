@@ -103,6 +103,10 @@ export const UploadKeys: FC<{
       // Store code so we can bring new user back with it they onboard
       setContext({pendingCode: paramsCode});
     }
+
+    // Call hideActivityIndicator on screen dismount: prevent hard-to replicate
+    // bug where screen re-opening from deep link might leave spinner active
+    return hideActivityIndicator;
     /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Run this only once
   }, []);
 
