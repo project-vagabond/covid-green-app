@@ -14,8 +14,7 @@ import {
   useExposure,
   StatusState,
   PermissionStatus,
-  getVersion,
-  Version
+  getVersion
 } from 'react-native-exposure-notification-service';
 
 import {Card} from 'components/atoms/card';
@@ -27,7 +26,7 @@ import {text} from 'theme';
 
 export const Feedback = () => {
   const {t} = useTranslation();
-  const [version, setVersion] = useState<Version>();
+  const [version, setVersion] = useState<String>('unavailable');
 
   const {
     canSupport,
@@ -42,14 +41,15 @@ export const Feedback = () => {
     const getVer = async () => {
       try {
         const ver = await getVersion();
-        setVersion(ver);
+        if (ver?.display) {
+          setVersion(ver.display);
+        }
       } catch (err) {
         console.log('Error getting version:', err);
       }
     };
     getVer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getVersion]);
+  }, []);
 
   const openEmail = (subject: string) =>
     Linking.openURL(
@@ -62,7 +62,7 @@ export const Feedback = () => {
 
 
 Please do not remove. This info helps the technical team assist you
-App Version: ${version?.display}
+App Version: ${version}
 Device: ${getModel()}
 OS version: ${Platform.OS} ${Platform.Version}
 Closeness sensing status: ${
