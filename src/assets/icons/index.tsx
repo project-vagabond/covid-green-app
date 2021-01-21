@@ -1,3 +1,4 @@
+import {SvgProps} from 'react-native-svg';
 import React, {FC} from 'react';
 import {I18nManager, Platform, View, ViewStyle} from 'react-native';
 
@@ -69,16 +70,12 @@ import SeparateBathroom from './how-to-keep-others-safe/separate-bathroom.svg';
 import GetTested from './how-to-keep-others-safe/get-tested.svg';
 import CallHotline from './how-to-keep-others-safe/call-hotline.svg';
 
-const flipStyle = {
+const flipStyle: ViewStyle = {
   transform: [{scaleX: -1}]
-} as ViewStyle;
-
-interface FlipIconProps {
-  style?: ViewStyle;
-}
+};
 
 const getRtlFlipIcon = (Icon: FC) => {
-  const RtlFlipIcon: FC<FlipIconProps> = ({style, ...iconProps}) =>
+  const RtlFlipIcon: FC<SvgProps> = ({style, ...iconProps}) =>
     I18nManager.isRTL ? (
       <View style={[flipStyle, style]}>
         <Icon {...iconProps} />

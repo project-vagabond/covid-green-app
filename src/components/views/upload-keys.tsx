@@ -270,7 +270,7 @@ export const UploadKeys: FC<{
               activeOpacity={0.8}
               accessibilityRole="button"
               accessibilityLabel={t('common:ok:label')}>
-              {['upload', 'uploadOnly'].includes(status) ? (
+              {status === 'upload' ? (
                 <AppIcons.Success
                   width={24}
                   height={24}
@@ -296,7 +296,7 @@ export const UploadKeys: FC<{
             </Text>
           </>
         )}
-        <Spacing s={16} />
+        <Spacing s={status === 'upload' ? 16 : 96} />
       </View>
     );
   };
@@ -371,7 +371,7 @@ export const UploadKeys: FC<{
 
   return (
     <KeyboardScrollable
-      safeArea={false}
+      safeArea={true}
       headingShort
       backgroundColor={colors.background}
       heading={t('uploadKeys:title')}

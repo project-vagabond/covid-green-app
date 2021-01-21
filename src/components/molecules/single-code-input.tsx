@@ -49,11 +49,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   } = useApplication();
 
   const onChangeTextHandler = (v: string) => {
-    // 16-digit codes are alphanumeric: commenting out to allow their copy-paste
-    // const validatedValue = v.replace(/[^0-9]/g, '');
-
-    // autoCapitalize rarely works on Android; longstanding RN bug
-    const validatedValue = `${v}`.toUpperCase();
+    const validatedValue = v.replace(/\s/g, '');
 
     setValue(validatedValue);
 
@@ -101,13 +97,13 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
     (containerWidth - paddedLength * cappedSpacePerChar) / paddedLength
   );
 
+  const isIos = Platform.OS === 'ios';
   return (
     <View style={[styles.container, style]} onLayout={onLayoutHandler}>
       <TextInput
         ref={inputRef}
         selectTextOnFocus
         autoFocus={!screenReaderEnabled}
-        autoCapitalize="characters"
         style={[
           styles.input,
           hasLongCode ? styles.inputLong : styles.inputShort,
@@ -122,10 +118,11 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           }
         }}
         maxLength={count}
-        keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
+        keyboardType={isIos ? 'ascii-capable' : 'visible-password'}
+        secureTextEntry={!isIos}
         returnKeyType="done"
         blurOnSubmit={true}
-        textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
+        textContentType={isIos ? 'oneTimeCode' : 'none'}
         editable={!disabled}
         value={value}
         onFocus={onFocusHandler}
