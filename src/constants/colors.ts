@@ -33,7 +33,7 @@ export const colors = {
     border: '#eeeeee'
   },
   yellow: '#FFDA1A', // review - only in unused <Progress>
-  softPurple: `${purple}1E`, // translucent, same as outer bubble icon SVG
+  softPurple: '#DCD6E4',
   orange: '#FF8248',
   lightOrange: '#FFC0A3',
   white,
