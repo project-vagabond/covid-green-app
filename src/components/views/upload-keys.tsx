@@ -184,7 +184,6 @@ export const UploadKeys: FC<{
   useEffect(() => {
     if (isRegistered) {
       if (
-        (!ignore6DigitCode && code.length === 6) ||
         CODE_INPUT_LENGTHS.includes(code.length)
       ) {
         const isPreset = presetCode && code === presetCode;
