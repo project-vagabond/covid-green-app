@@ -103,6 +103,10 @@ export const UploadKeys: FC<{
       // Store code so we can bring new user back with it they onboard
       setContext({pendingCode: paramsCode});
     }
+
+    // Call hideActivityIndicator on screen dismount: prevent hard-to replicate
+    // bug where screen re-opening from deep link might leave spinner active
+    return hideActivityIndicator;
     /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Run this only once
   }, []);
 
@@ -127,9 +131,7 @@ export const UploadKeys: FC<{
         code
       );
 
-      if (!ignoreError) {
-        hideActivityIndicator();
-      }
+      hideActivityIndicator();
 
       if (result !== ValidationResult.Valid) {
         let errorMessage;
@@ -186,7 +188,6 @@ export const UploadKeys: FC<{
   useEffect(() => {
     if (isRegistered) {
       if (
-        (!ignore6DigitCode && code.length === 6) ||
         CODE_INPUT_LENGTHS.includes(code.length)
       ) {
         const isPreset = presetCode && code === presetCode;
@@ -235,7 +236,7 @@ export const UploadKeys: FC<{
       !validationError
     );
 
-    const onDoneHandler = () => setAccessibilityFocusRef(okayRef);
+    const onDoneHandler = () => !okayDisabled && setAccessibilityFocusRef(okayRef);
 
     return (
       <View key={inputKey}>
