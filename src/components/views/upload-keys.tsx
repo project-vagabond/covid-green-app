@@ -127,9 +127,7 @@ export const UploadKeys: FC<{
         code
       );
 
-      if (!ignoreError) {
-        hideActivityIndicator();
-      }
+      hideActivityIndicator();
 
       if (result !== ValidationResult.Valid) {
         let errorMessage;
