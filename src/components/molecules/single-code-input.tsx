@@ -101,13 +101,13 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
     (containerWidth - paddedLength * cappedSpacePerChar) / paddedLength
   );
 
+  const isIos = Platform.OS === 'ios';
   return (
     <View style={[styles.container, style]} onLayout={onLayoutHandler}>
       <TextInput
         ref={inputRef}
         selectTextOnFocus
         autoFocus={!screenReaderEnabled}
-        autoCapitalize="characters"
         style={[
           styles.input,
           hasLongCode ? styles.inputLong : styles.inputShort,
@@ -122,10 +122,11 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
           }
         }}
         maxLength={count}
-        keyboardType={hasLongCode ? 'ascii-capable' : 'number-pad'}
+        keyboardType={isIos ? 'ascii-capable' : 'visible-password'}
+        secureTextEntry={!isIos}
         returnKeyType="done"
         blurOnSubmit={true}
-        textContentType={Platform.OS === 'ios' ? 'oneTimeCode' : 'none'}
+        textContentType={isIos ? 'oneTimeCode' : 'none'}
         editable={!disabled}
         value={value}
         onFocus={onFocusHandler}
