@@ -49,11 +49,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   } = useApplication();
 
   const onChangeTextHandler = (v: string) => {
-    // 16-digit codes are alphanumeric: commenting out to allow their copy-paste
-    // const validatedValue = v.replace(/[^0-9]/g, '');
-
-    // autoCapitalize rarely works on Android; longstanding RN bug
-    const validatedValue = `${v}`.toUpperCase();
+    const validatedValue = v.replace(/\s/g, '');
 
     setValue(validatedValue);
 
