@@ -106,7 +106,7 @@ export const ContactTracingSettings: FC = () => {
                 ? askPermissions
                 : gotoSettings
             }>
-            {ensNotAuthorised && !isBluetoothOff 
+            {ensNotAuthorised && !isBluetoothOff
               ? t(`closenessSensing:notAuthorised:${Platform.OS}:setup`)
               : t('settings:status:gotoSettings')}
           </Button>
