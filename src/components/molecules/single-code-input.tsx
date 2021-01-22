@@ -119,6 +119,8 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
         }}
         maxLength={count}
         keyboardType={isIos ? 'ascii-capable' : 'visible-password'}
+        autoCompleteType={'off'}
+        autoCorrect={false}
         secureTextEntry={!isIos}
         returnKeyType="done"
         blurOnSubmit={true}

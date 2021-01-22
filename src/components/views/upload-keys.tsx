@@ -187,9 +187,7 @@ export const UploadKeys: FC<{
 
   useEffect(() => {
     if (isRegistered) {
-      if (
-        CODE_INPUT_LENGTHS.includes(code.length)
-      ) {
+      if (CODE_INPUT_LENGTHS.includes(code.length)) {
         const isPreset = presetCode && code === presetCode;
         codeValidationHandler(!isPreset);
       } else {
@@ -236,7 +234,9 @@ export const UploadKeys: FC<{
       !validationError
     );
 
-    const onDoneHandler = () => !okayDisabled && setAccessibilityFocusRef(okayRef);
+    const onDoneHandler = () =>
+      (validationError && setAccessibilityFocusRef(errorRef)) ||
+      (!okayDisabled && setAccessibilityFocusRef(okayRef));
 
     return (
       <View key={inputKey}>

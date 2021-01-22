@@ -4,7 +4,8 @@ import * as IntentLauncher from 'expo-intent-launcher';
 import {
   useExposure,
   StatusState,
-  AuthorisedStatus
+  AuthorisedStatus,
+  StatusType
 } from 'react-native-exposure-notification-service';
 import {useTranslation} from 'react-i18next';
 
@@ -74,6 +75,8 @@ export const ContactTracingSettings: FC = () => {
     !isServiceActive &&
     (Platform.OS === 'android' || isAuthorised === AuthorisedStatus.unknown);
 
+  const isBluetoothOff = status.type?.indexOf(StatusType.bluetooth) !== -1;
+
   return (
     <KeyboardScrollable
       heading={t('myCovidAlerts:title')}
@@ -89,19 +92,21 @@ export const ContactTracingSettings: FC = () => {
         <>
           <Spacing s={24} />
           <Text style={text.default}>
-            {ensNotAuthorised
-              ? t(`closenessSensing:notAuthorised:${Platform.OS}:text`)
-              : t('settings:status:intro')}
+            {(isBluetoothOff &&
+              t(`closenessSensing:notActive:${Platform.OS}:bt`)) ||
+              (ensNotAuthorised &&
+                t(`closenessSensing:notAuthorised:${Platform.OS}:text`)) ||
+              t('settings:status:intro')}
           </Text>
           <Spacing s={12} />
           <Button
             type="empty"
             onPress={
-              ensNotAuthorised
-                ? async () => await askPermissions()
+              ensNotAuthorised && !isBluetoothOff
+                ? askPermissions
                 : gotoSettings
             }>
-            {ensNotAuthorised
+            {ensNotAuthorised && !isBluetoothOff
               ? t(`closenessSensing:notAuthorised:${Platform.OS}:setup`)
               : t('settings:status:gotoSettings')}
           </Button>
