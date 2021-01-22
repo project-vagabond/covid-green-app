@@ -61,6 +61,11 @@ const MarkdownLink = (
           });
         };
 
+    // For screenreaders, read tel numbers as "one two three" not "one hundred and..."
+    const accessibilityLabel = isTel
+      ? href.replace(/\D/g, '').split('').join(' ')
+      : childrenAsText(children);
+
     return screenReaderEnabled ? (
       // we can't use TouchableWithoutFeedback because is not selectable by keyboard tab navigation
       <TouchableOpacity
@@ -69,7 +74,7 @@ const MarkdownLink = (
         accessible={true}
         accessibilityRole="link"
         accessibilityHint={title}
-        accessibilityLabel={childrenAsText(children)}
+        accessibilityLabel={accessibilityLabel}
         onPress={handle}>
         <Text>{children}</Text>
       </TouchableOpacity>
