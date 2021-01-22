@@ -236,7 +236,8 @@ export const UploadKeys: FC<{
       !validationError
     );
 
-    const onDoneHandler = () => !okayDisabled && setAccessibilityFocusRef(okayRef);
+    const onDoneHandler = () => (validationError && setAccessibilityFocusRef(errorRef))
+      || (!okayDisabled && setAccessibilityFocusRef(okayRef));
 
     return (
       <View key={inputKey}>
