@@ -2,7 +2,7 @@ name: Build and Push to Fastlane
 on:
   push:
     tags:
-      - v1.*
+      - vx.*
 
 jobs:
   android-build:
