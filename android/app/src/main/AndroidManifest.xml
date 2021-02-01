@@ -81,7 +81,6 @@
         <data android:scheme="https" android:host="us-ny.en.express" android.pathPrefix="/v" />
       </intent-filter>
     </activity>
-    <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     <!-- needed for react-native-push-notification localNotificationSchedule() -->
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="true" />
     <meta-data android:name="com.dieam.reactnativepushnotification.channel_create_default" android:value="true" />
