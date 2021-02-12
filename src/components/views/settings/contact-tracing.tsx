@@ -75,7 +75,8 @@ export const ContactTracingSettings: FC = () => {
     !isServiceActive &&
     (Platform.OS === 'android' || isAuthorised === AuthorisedStatus.unknown);
 
-  const isBluetoothOff = status.type?.indexOf(StatusType.bluetooth) !== -1;
+  const isBluetoothOff =
+    !isServiceActive && status.type?.indexOf(StatusType.bluetooth) !== -1;
 
   return (
     <KeyboardScrollable
@@ -91,13 +92,13 @@ export const ContactTracingSettings: FC = () => {
       {canSupport && supported && (
         <>
           <Spacing s={24} />
-          <Text style={text.default}>
+          <Markdown style={text.default}>
             {(isBluetoothOff &&
               t(`closenessSensing:notActive:${Platform.OS}:bt`)) ||
               (ensNotAuthorised &&
                 t(`closenessSensing:notAuthorised:${Platform.OS}:text`)) ||
               t('settings:status:intro')}
-          </Text>
+          </Markdown>
           <Spacing s={12} />
           <Button
             type="empty"
