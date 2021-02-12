@@ -259,6 +259,7 @@ export const UploadKeys: FC<{
               disabled={status !== 'validate'}
               accessibilityHint={t('uploadKeys:code:hint')}
               accessibilityLabel={t('uploadKeys:code:label')}
+              hasPreset={!!presetCode}
               code={code}
               onDone={onDoneHandler}
             />

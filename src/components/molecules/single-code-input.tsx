@@ -17,6 +17,7 @@ import {scale, text, colors} from 'theme';
 
 interface SingleCodeInputProps extends AccessibilityProps {
   error?: boolean;
+  hasPreset?: boolean;
   style?: ViewStyle;
   disabled?: boolean;
   autoFocus?: boolean;
@@ -35,6 +36,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
   onChange,
   onDone,
   error,
+  hasPreset,
   accessibilityHint,
   accessibilityLabel,
   code = ''
@@ -103,7 +105,7 @@ export const SingleCodeInput: React.FC<SingleCodeInputProps> = ({
       <TextInput
         ref={inputRef}
         selectTextOnFocus
-        autoFocus={!screenReaderEnabled}
+        autoFocus={!screenReaderEnabled && !error && !hasPreset}
         style={[
           styles.input,
           hasLongCode ? styles.inputLong : styles.inputShort,
