@@ -122,7 +122,6 @@ export const AsyncStorageKeys = {
 
 export const SecureStoreKeys = {
   analytics: 'analyticsConsent',
-  canSupportENS: 'supportPossible',
   uploadToken: 'uploadToken',
   symptomDate: 'symptomDate',
   token: 'token',

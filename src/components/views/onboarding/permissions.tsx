@@ -40,13 +40,6 @@ export const Permissions: FC<any> = () => {
     message: t('common:tryAgain:description')
   });
 
-  useEffect(() => {
-    if (!exposure.supported && exposure.canSupport) {
-      SecureStore.setItemAsync(SecureStoreKeys.canSupportENS, 'true');
-    }
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */ // run once on screen load
-  }, []);
-
   const handleRegistration = async (skip: boolean) => {
     try {
       app.showActivityIndicator();
