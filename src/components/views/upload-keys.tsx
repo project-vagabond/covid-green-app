@@ -56,6 +56,7 @@ export const UploadKeys: FC<{
   } = useSettings();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
+  const [isValidating, setIsValidating] = useState(false);
 
   const paramsCode = route.params?.c;
   const presetCode = paramsCode || pendingCode || '';
@@ -128,6 +129,7 @@ export const UploadKeys: FC<{
 
   const codeValidationHandler = useCallback(
     async (ignoreError: boolean) => {
+      setIsValidating(true);
       if (!ignoreError) {
         showActivityIndicator();
       }
@@ -167,6 +169,7 @@ export const UploadKeys: FC<{
             setAccessibilityFocusRef(errorRef);
           }, 550);
         }
+        setIsValidating(false);
         return;
       }
 
@@ -176,8 +179,10 @@ export const UploadKeys: FC<{
           SecureStoreKeys.symptomDate,
           newSymptomDate!
         );
+        setIsValidating(false);
       } catch (e) {
         console.log('Error (secure) storing upload token', e);
+        setIsValidating(false);
       }
       setValidationError('');
 
@@ -236,6 +241,7 @@ export const UploadKeys: FC<{
 
     const okayDisabled = !(
       status === 'validate' &&
+      !isValidating &&
       code.length &&
       !validationError
     );
