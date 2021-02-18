@@ -179,16 +179,15 @@ export const UploadKeys: FC<{
           SecureStoreKeys.symptomDate,
           newSymptomDate!
         );
-        setIsValidating(false);
       } catch (e) {
         console.log('Error (secure) storing upload token', e);
-        setIsValidating(false);
       }
       setValidationError('');
 
       setUploadToken(token!);
       setSymptomDate(newSymptomDate!);
       setStatus('upload');
+      setIsValidating(false);
       setTimeout(() => {
         setAccessibilityFocusRef(uploadRef);
       }, 250);
@@ -246,6 +245,7 @@ export const UploadKeys: FC<{
       !validationError
     );
     const validationDone = status !== 'validate';
+    const showValidationError = !!validationError && !validationDone;
 
     const onDoneHandler = () =>
       (validationError && setAccessibilityFocusRef(errorRef)) ||
@@ -261,7 +261,7 @@ export const UploadKeys: FC<{
         <View style={styles.row}>
           <View style={styles.flex}>
             <SingleCodeInput
-              error={!!validationError && !validationDone}
+              error={showValidationError}
               onChange={updateCode}
               disabled={validationDone}
               accessibilityHint={t('uploadKeys:code:hint')}
@@ -303,7 +303,7 @@ export const UploadKeys: FC<{
             </TouchableOpacity>
           </View>
         </View>
-        {!!validationError && (
+        {showValidationError && (
           <>
             <Spacing s={8} />
             <Text ref={errorRef} style={baseStyles.error}>
