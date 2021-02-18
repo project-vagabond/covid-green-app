@@ -8,7 +8,11 @@ import PushNotification from 'react-native-push-notification';
 
 import {ScreenNames} from 'navigation';
 import {register} from 'services/api';
-import {useApplication, SecureStoreKeys, clearSecureStore} from 'providers/context';
+import {
+  useApplication,
+  SecureStoreKeys,
+  clearSecureStore
+} from 'providers/context';
 import {useFocusRef} from 'hooks/accessibility';
 
 import {Button} from 'components/atoms/button';
