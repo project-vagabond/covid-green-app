@@ -245,6 +245,7 @@ export const UploadKeys: FC<{
       code.length &&
       !validationError
     );
+    const validationDone = status !== 'validate';
 
     const onDoneHandler = () =>
       (validationError && setAccessibilityFocusRef(errorRef)) ||
@@ -260,9 +261,9 @@ export const UploadKeys: FC<{
         <View style={styles.row}>
           <View style={styles.flex}>
             <SingleCodeInput
-              error={!!validationError}
+              error={!!validationError && !validationDone}
               onChange={updateCode}
-              disabled={status !== 'validate'}
+              disabled={validationDone}
               accessibilityHint={t('uploadKeys:code:hint')}
               accessibilityLabel={t('uploadKeys:code:label')}
               hasPreset={!!presetCode}
