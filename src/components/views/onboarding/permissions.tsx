@@ -8,7 +8,11 @@ import PushNotification from 'react-native-push-notification';
 
 import {ScreenNames} from 'navigation';
 import {register} from 'services/api';
-import {useApplication, SecureStoreKeys} from 'providers/context';
+import {
+  useApplication,
+  SecureStoreKeys,
+  clearSecureStore
+} from 'providers/context';
 import {useFocusRef} from 'hooks/accessibility';
 
 import {Button} from 'components/atoms/button';
@@ -43,6 +47,9 @@ export const Permissions: FC<any> = () => {
   const handleRegistration = async (skip: boolean) => {
     try {
       app.showActivityIndicator();
+
+      await clearSecureStore(); // Clear anything leftover from uninstall / reinstall
+
       const analyticsOptIn = true;
 
       const {token, refreshToken} = await register();
