@@ -129,6 +129,14 @@ export const SecureStoreKeys = {
   callbackQueued: 'covidApp.callBackQueuedTs'
 } as const;
 
+export const clearSecureStore = async (): Promise<void> => {
+  await Promise.all(
+    Object.values(SecureStoreKeys).map((key) =>
+      SecureStore.deleteItemAsync(key)
+    )
+  );
+};
+
 export const AP = ({appConfig, user, consent, children}: API) => {
   const [state, setState] = useState<State>({
     ...initialState,
@@ -305,9 +313,7 @@ export const AP = ({appConfig, user, consent, children}: API) => {
 
   const clearContext = async (): Promise<void> => {
     await Promise.all([
-      ...Object.values(SecureStoreKeys).map((key) =>
-        SecureStore.deleteItemAsync(key)
-      ),
+      clearSecureStore(),
       ...Object.values(AsyncStorageKeys).map((key) =>
         AsyncStorage.removeItem(key)
       ),
