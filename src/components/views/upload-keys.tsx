@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, Platform} from 'react-native';
+import {Text, StyleSheet, View, Platform} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
@@ -56,7 +56,6 @@ export const UploadKeys: FC<{
   } = useSettings();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
-  const [isValidating, setIsValidating] = useState(false);
 
   const paramsCode = route.params?.c;
   const presetCode = paramsCode || pendingCode || '';
@@ -67,7 +66,7 @@ export const UploadKeys: FC<{
 
   const [uploadToken, setUploadToken] = useState('');
   const [symptomDate, setSymptomDate] = useState('');
-  const [uploadRef, errorRef, okayRef] = useFocusRef({
+  const [uploadRef, errorRef] = useFocusRef({
     timeout: 1000,
     count: 3
   });
@@ -128,11 +127,8 @@ export const UploadKeys: FC<{
   }, [updateCode, presetCode, previousPresetCode]);
 
   const codeValidationHandler = useCallback(
-    async (ignoreError: boolean) => {
-      setIsValidating(true);
-      if (!ignoreError) {
-        showActivityIndicator();
-      }
+    async () => {
+      showActivityIndicator();
 
       console.log(`Validating ${code.length} character code...`);
       const {result, symptomDate: newSymptomDate, token} = await validateCode(
@@ -155,21 +151,14 @@ export const UploadKeys: FC<{
 
         console.log(
           `${code.length}-character code validation ${
-            errorMessage
-              ? `failed with ${
-                  ignoreError ? 'ignored ' : ''
-                }error "${errorMessage}"`
-              : 'passed'
+            errorMessage ? `failed with error "${errorMessage}"` : 'passed'
           }`
         );
 
-        if (!ignoreError) {
-          setValidationError(errorMessage);
-          setTimeout(() => {
-            setAccessibilityFocusRef(errorRef);
-          }, 550);
-        }
-        setIsValidating(false);
+        setValidationError(errorMessage);
+        setTimeout(() => {
+          setAccessibilityFocusRef(errorRef);
+        }, 550);
         return;
       }
 
@@ -187,7 +176,6 @@ export const UploadKeys: FC<{
       setUploadToken(token!);
       setSymptomDate(newSymptomDate!);
       setStatus('upload');
-      setIsValidating(false);
       setTimeout(() => {
         setAccessibilityFocusRef(uploadRef);
       }, 250);
@@ -198,8 +186,7 @@ export const UploadKeys: FC<{
   useEffect(() => {
     if (isRegistered) {
       if (CODE_INPUT_LENGTHS.includes(code.length)) {
-        const isPreset = presetCode && code === presetCode;
-        codeValidationHandler(!isPreset);
+        codeValidationHandler();
       } else {
         setValidationError('');
       }
@@ -238,18 +225,11 @@ export const UploadKeys: FC<{
     // Remount and clear input if a new presetCode is provided
     const inputKey = `code-input-${previousPresetCode}`;
 
-    const okayDisabled = !(
-      status === 'validate' &&
-      !isValidating &&
-      code.length &&
-      !validationError
-    );
     const validationDone = status !== 'validate';
     const showValidationError = !!validationError && !validationDone;
 
     const onDoneHandler = () =>
-      (validationError && setAccessibilityFocusRef(errorRef)) ||
-      (!okayDisabled && setAccessibilityFocusRef(okayRef));
+      validationError && setAccessibilityFocusRef(errorRef);
 
     return (
       <View key={inputKey}>
@@ -270,37 +250,6 @@ export const UploadKeys: FC<{
               code={code}
               onDone={onDoneHandler}
             />
-          </View>
-          <View
-            importantForAccessibility={
-              okayDisabled ? 'no-hide-descendants' : 'auto'
-            }
-            accessibilityElementsHidden={okayDisabled}>
-            <TouchableOpacity
-              style={[styles.okayButton, okayDisabled && styles.okayDisabled]}
-              onPress={() => codeValidationHandler(false)}
-              disabled={okayDisabled}
-              ref={okayRef}
-              accessible={!okayDisabled}
-              activeOpacity={0.8}
-              accessibilityRole="button"
-              accessibilityLabel={t('common:ok:label')}>
-              {status === 'upload' ? (
-                <AppIcons.Success
-                  width={24}
-                  height={24}
-                  color={colors.icons.gray}
-                />
-              ) : (
-                <View style={styles.arrowOffset}>
-                  <AppIcons.ArrowRight
-                    width={21}
-                    height={21}
-                    color={colors.white}
-                  />
-                </View>
-              )}
-            </TouchableOpacity>
           </View>
         </View>
         {showValidationError && (
