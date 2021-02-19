@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback, FC} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, Platform} from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useTranslation} from 'react-i18next';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
@@ -67,6 +67,13 @@ export const UploadKeys: FC<{
     count: 3
   });
 
+  // On iOS, spinner can get stuck on forever if hidden too quickly e.g. network error
+  const hideActivityIndicatorSafe = useCallback(() => {
+    Platform.OS === 'ios'
+      ? setTimeout(hideActivityIndicator, 1000)
+      : hideActivityIndicator();
+  }, [hideActivityIndicator]);
+
   const isRegistered = !!user;
 
   const updateCode = useCallback((input: string) => {
@@ -101,7 +108,7 @@ export const UploadKeys: FC<{
     }
 
     // Ensure spinner isn't left running on screen re-mount from reusing deep link
-    return hideActivityIndicator;
+    return hideActivityIndicatorSafe;
     /* eslint-disable-next-line react-hooks/exhaustive-deps */ // Run this only once
   }, []);
 
@@ -124,7 +131,7 @@ export const UploadKeys: FC<{
         code
       );
 
-      hideActivityIndicator();
+      hideActivityIndicatorSafe();
 
       if (result !== ValidationResult.Valid) {
         let errorMessage;
@@ -169,7 +176,7 @@ export const UploadKeys: FC<{
         setAccessibilityFocusRef(uploadRef);
       }, 250);
     } /* eslint-disable-next-line react-hooks/exhaustive-deps */, // errorRef and uploadRef are stable
-    [code, showActivityIndicator, hideActivityIndicator, t]
+    [code, showActivityIndicator, hideActivityIndicatorSafe, t]
   );
 
   useEffect(() => {
@@ -194,12 +201,12 @@ export const UploadKeys: FC<{
     try {
       showActivityIndicator();
       await uploadExposureKeys(uploadToken, symptomDate, exposureKeys);
-      hideActivityIndicator();
+      hideActivityIndicatorSafe();
 
       setStatus('success');
     } catch (err) {
       console.log('error uploading exposure keys:', err);
-      hideActivityIndicator();
+      hideActivityIndicatorSafe();
 
       setStatus('error');
     }

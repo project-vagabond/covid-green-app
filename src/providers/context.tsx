@@ -3,10 +3,9 @@ import React, {
   useEffect,
   useState,
   useContext,
-  useCallback,
-  useRef
+  useCallback
 } from 'react';
-import {AccessibilityInfo, Platform} from 'react-native';
+import {AccessibilityInfo} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import {format, compareDesc, startOfDay, subDays, isBefore} from 'date-fns';
@@ -144,7 +143,6 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     checkInConsent: consent === 'y',
     user: (user && JSON.parse(user as string)) || undefined
   });
-  const [spinnerShown, setSpinnerShown] = useState<number | null>(null);
 
   const handleReduceMotionChange = (reduceMotionEnabled: boolean): void => {
     setState((s) => ({
@@ -329,32 +327,13 @@ export const AP = ({appConfig, user, consent, children}: API) => {
     }));
   };
 
-  const showActivityIndicatorRef = useCallback((message?: string) => {
-    if (Platform.OS === 'ios') {
-      setSpinnerShown(Date.now());
-    }
+  const showActivityIndicator = (message?: string) => {
     setState((s) => ({...s, loading: message || true}));
-  }, []);
+  };
+  const showActivityIndicatorRef = useCallback(showActivityIndicator, []);
 
   const hideActivityIndicator = () => setState((s) => ({...s, loading: false}));
-  // useRef to not re-render components or re-fire useEffects (e.g. send code validation) on spinnerShown change
-  const {current: hideActivityIndicatorRef} = useRef(() => {
-    if (Platform.OS === 'ios' && spinnerShown) {
-      // Avoid react-native-loading-spinner-overlay ios bug (fast show/hide -> spinner never removed)
-      // https://github.com/joinspontaneous/react-native-loading-spinner-overlay/issues/30 (closed not fixed)
-      const minIosSpinnerDurationMs = 1000;
-      const spinnerDurationMs = Date.now() - spinnerShown;
-      setSpinnerShown(null);
-      if (spinnerDurationMs < minIosSpinnerDurationMs) {
-        setTimeout(
-          hideActivityIndicator,
-          minIosSpinnerDurationMs - spinnerDurationMs
-        );
-        return;
-      }
-    }
-    hideActivityIndicator();
-  });
+  const hideActivityIndicatorRef = useCallback(hideActivityIndicator, []);
 
   const checkIn = async (
     symptoms: SymptomRecord,
