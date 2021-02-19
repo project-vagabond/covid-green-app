@@ -383,7 +383,7 @@
   "uploadKeys": {
     "title": "Comparta sus Códigos de Contactos Cercanos",
     "code": {
-      "intro": "Introduzca el número de 6 dígitos que el representante de salud pública le proporcionó por teléfono o por mensaje de texto:",
+      "intro": "Introduzca el número de 8 dígitos que el representante de salud pública le proporcionó por teléfono o por mensaje de texto:",
       "expiredError": "El código ha expirado. Comuníquese con el Departamento de Salud del Estado de Nueva York para solicitar otro código.",
       "invalidError": "Código inválido. Inténtelo de nuevo.",
       "error": "Hubo un error al validar el código. Inténtelo de nuevo."

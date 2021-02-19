@@ -383,7 +383,7 @@
   "uploadKeys": {
     "title": "Pataje Kòd pou Kontak Pwòch ou yo",
     "code": {
-      "intro": "Tanpri antre nimewo 6 chif la ke reprezantan sante piblik la ba ou nan telefòn oswa nan mesaj tèks li te voye pou ou a:",
+      "intro": "Tanpri antre nimewo 8 chif la ke reprezantan sante piblik la ba ou nan telefòn oswa nan mesaj tèks li te voye pou ou a:",
       "expiredError": "Kòd la ekspire. Kontakte NYSDOH pou mande yon lòt.",
       "invalidError": "Kòd la pa valid. Tanpri eseye ankò.",
       "error": "Te gen yon erè pandan validasyon kòd la. Tanpri eseye ankò."

@@ -31,7 +31,6 @@ export interface BasicItem {
 export interface AppConfig {
   checkInMaxAge: number;
   callBackResetHrs: number;
-  ignore6DigitCode: boolean;
 }
 
 export interface TraceConfiguration {
@@ -89,8 +88,7 @@ const defaultSettings: SettingsContextValue = {
   consent: null,
   appConfig: {
     checkInMaxAge: 28,
-    callBackResetHrs: 72, // hours,
-    ignore6DigitCode: false
+    callBackResetHrs: 72 // hours
   },
   traceConfiguration: {
     exposureCheckInterval: 180,
@@ -98,9 +96,6 @@ const defaultSettings: SettingsContextValue = {
   },
   getTranslatedDbText: () => defaultDbText
 };
-
-const parseStringAsBoolean = (str: string): boolean =>
-  Boolean(JSON.parse(str.toLowerCase()));
 
 const getDbText = (apiSettings: any, key: string): any => {
   const data =
@@ -180,11 +175,6 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
       }
       if (apiSettings.callBackResetHrs) {
         appConfig.callBackResetHrs = Number(apiSettings.callBackResetHrs);
-      }
-      if (apiSettings.ignore6DigitCode) {
-        appConfig.ignore6DigitCode = parseStringAsBoolean(
-          apiSettings.ignore6DigitCode
-        );
       }
 
       const tc: TraceConfiguration = {
