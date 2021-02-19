@@ -7,7 +7,6 @@ import {useExposure} from 'react-native-exposure-notification-service';
 
 import {ScreenNames} from 'navigation';
 import {useApplication, SecureStoreKeys} from 'providers/context';
-import {useSettings} from 'providers/settings';
 import {
   validateCode,
   uploadExposureKeys,
@@ -51,9 +50,6 @@ export const UploadKeys: FC<{
     setContext,
     user
   } = useApplication();
-  const {
-    appConfig: {ignore6DigitCode}
-  } = useSettings();
 
   const [status, setStatus] = useState<UploadStatus>('initialising');
 
@@ -191,7 +187,7 @@ export const UploadKeys: FC<{
         setValidationError('');
       }
     }
-  }, [ignore6DigitCode, code, presetCode, codeValidationHandler, isRegistered]);
+  }, [code, presetCode, codeValidationHandler, isRegistered]);
 
   const uploadDataHandler = async () => {
     let exposureKeys;
@@ -235,7 +231,7 @@ export const UploadKeys: FC<{
       <View key={inputKey}>
         <Markdown markdownStyles={{block: {marginBottom: 24}}}>
           {t('uploadKeys:code:intro', {
-            length: ignore6DigitCode ? '8-digit' : '6 or 8 digit'
+            length: '8-digit'
           })}
         </Markdown>
         <View style={styles.row}>
