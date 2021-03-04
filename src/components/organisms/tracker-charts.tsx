@@ -141,7 +141,7 @@ const getBarchartData = (
 };
 
 const getComparableDate = (date: Date) => {
-  return format(date, 'yyyy-mm-dd');
+  return format(date, 'yyyy-MM-dd');
 };
 
 export const TrackerCharts: FC<TrackerChartsProps> = ({
