@@ -38,6 +38,14 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
       await app.clearContext();
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
+      if (Platform.OS === 'ios' && willRestart) {
+        // Published builds (not local) in this scenario get spinner stuck on forever
+        // Wait until spinner is fully hidden before allowing app to restart
+        app.hideActivityIndicator();
+        setTimeout(() => i18n.changeLanguage(deviceLanguage), 800);
+        return;
+      }
+
       // If language reset changes RTL/LTR, app will restart, no need to navigate
       await i18n.changeLanguage(deviceLanguage);
       if (!willRestart) {
