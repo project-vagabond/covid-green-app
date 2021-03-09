@@ -22,7 +22,15 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
   const app = useApplication();
   const exposure = useExposure();
   const confirmed = async () => {
-    app.showActivityIndicator();
+    const deviceLanguage = getDeviceLanguage();
+    const willRestart = i18n.dir(i18n.language) !== i18n.dir(deviceLanguage);
+
+    // On iOS, spinner may get stuck on forever if leave changes lang direction
+    // Can't replicate on local builds, so don't show spinner in this rare scenario
+    if (!(Platform.OS === 'ios' && willRestart)) {
+      app.showActivityIndicator();
+    }
+
     try {
       try {
         await exposure.deleteAllData();
@@ -31,8 +39,6 @@ export const Leave: FC<{navigation: NavigationProp<any>}> = ({navigation}) => {
         console.log(err);
       }
       PushNotification.setApplicationIconBadgeNumber(0);
-      const deviceLanguage = getDeviceLanguage();
-      const willRestart = i18n.dir(i18n.language) !== i18n.dir(deviceLanguage);
 
       await forget();
       await app.clearContext();
