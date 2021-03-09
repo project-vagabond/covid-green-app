@@ -12,6 +12,7 @@ import {
   uploadExposureKeys,
   ValidationResult
 } from 'services/api/exposures';
+import {networkError} from 'services/api';
 
 import {Spacing} from 'components/atoms/layout';
 import {Button} from 'components/atoms/button';
@@ -35,7 +36,8 @@ type UploadStatus =
   | 'uploadOnly'
   | 'success'
   | 'permissionError'
-  | 'error';
+  | 'error'
+  | 'offline';
 
 export const UploadKeys: FC<{
   navigation: NavigationProp<any>;
@@ -208,6 +210,11 @@ export const UploadKeys: FC<{
       console.log('error uploading exposure keys:', err);
       hideActivityIndicatorSafe();
 
+      if (err?.message === networkError) {
+        return setStatus('offline');
+      }
+
+      // No return on legit error, allow rejected token to be deleted
       setStatus('error');
     }
 
@@ -294,7 +301,11 @@ export const UploadKeys: FC<{
       <>
         <Toast
           type="error"
-          message={t('uploadKeys:uploadError')}
+          message={
+            status === 'offline'
+              ? t('common:networkError')
+              : t('uploadKeys:uploadError')
+          }
           icon={<AppIcons.ErrorWarning width={24} height={24} />}
         />
         <Spacing s={8} />
@@ -317,7 +328,7 @@ export const UploadKeys: FC<{
   let headerError =
     status === 'permissionError'
       ? renderPermissionError()
-      : status === 'error'
+      : ['error', 'offline'].includes(status)
       ? renderUploadError()
       : null;
 
@@ -340,6 +351,7 @@ export const UploadKeys: FC<{
       {(status === 'upload' ||
         status === 'uploadOnly' ||
         status === 'error' ||
+        status === 'offline' ||
         status === 'permissionError') &&
         renderUpload()}
       {status === 'success' && renderUploadSuccess()}
