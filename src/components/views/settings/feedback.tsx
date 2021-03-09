@@ -96,21 +96,13 @@ ENS Details:
       <Text style={styles.intro}>{t('submitFeedback:intro')}</Text>
       <Spacing s={20} />
       <Card padding={{h: 0, v: 4, r: 0}} style={styles.card}>
-        <TouchableWithoutFeedback onPress={() => openEmail('enhancement')}>
-          <View style={styles.item}>
-            <Text style={styles.text}>{t('submitFeedback:enhancement')}</Text>
-          </View>
-        </TouchableWithoutFeedback>
-      </Card>
-      <Spacing s={14} />
-      <Card padding={{h: 0, v: 4, r: 0}} style={styles.card}>
         <TouchableWithoutFeedback onPress={() => openEmail('report')}>
           <View style={styles.item}>
             <Text style={styles.text}>{t('submitFeedback:report')}</Text>
           </View>
         </TouchableWithoutFeedback>
       </Card>
-      <Spacing s={14} />
+      <Spacing s={20} />
       <Card padding={{h: 0, v: 4, r: 0}} style={styles.card}>
         <TouchableWithoutFeedback onPress={() => openEmail('feedback')}>
           <View style={styles.item}>
@@ -118,6 +110,7 @@ ENS Details:
           </View>
         </TouchableWithoutFeedback>
       </Card>
+      <Spacing s={32} />
     </Scrollable>
   );
 };
