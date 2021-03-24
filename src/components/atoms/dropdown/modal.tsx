@@ -70,7 +70,7 @@ export const DropdownModal: React.FC<DropdownModalProps> = ({
 
       // On Android, bringing up the keyboard during render causes juddering
       // and can cause sizes to end up incorrectly calculated
-      Platform.OS === 'android' ? setTimeout(focusInput, 400) : focusInput();
+      Platform.OS === 'android' ? setTimeout(focusInput, 800) : focusInput();
     }
     /* eslint-disable-next-line react-hooks/exhaustive-deps */ // run only when modal is mounted
   }, []);
