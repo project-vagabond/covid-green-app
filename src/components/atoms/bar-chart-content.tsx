@@ -92,7 +92,13 @@ export const BarChartContent: FC<BarChartContentProps> = ({
         if (isNaN(x(index))) {
           return points;
         }
-        return [...points, [(x(index) || 0) + bandwidth / 2, y(value) || 0]];
+        return [
+          ...points,
+          [
+            (x(index) || 0) + bandwidth / 2,
+            (y(value) || 0) + cornerRoundness
+          ]
+        ];
       }, [] as [number, number][])
     );
     return pathDef ? (
