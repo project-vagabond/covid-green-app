@@ -485,6 +485,11 @@
     "stats": {
       "title": "NY COVID Data",
       "subtitle": "How fast is COVID-19 spreading?"
+    },
+    "text": {
+      "top": "",
+      "middle": "",
+      "bottom": "Click on the link to view the New York State Department of Health [Vaccine Tracker](https://covid19vaccine.health.ny.gov/covid-19-vaccine-tracker)."
     }
   },
   "positiveResult": {
