@@ -19,6 +19,7 @@ import {networkError} from 'services/api';
 import {Button} from 'components/atoms/button';
 import {Heading} from 'components/atoms/heading';
 import {Spacing} from 'components/atoms/layout';
+import {TextBlock} from 'components/atoms/text-block';
 import {Toast} from 'components/atoms/toast';
 import {AlertInformation} from 'components/molecules/alert-information';
 import {CheckInCard} from 'components/molecules/check-in-card';
@@ -137,6 +138,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
           <Spacing s={16} />
         </>
       )}
+      <TextBlock text={t('dashboard:text:top')} />
       {!completedChecker && (
         <>
           <CheckInCard
@@ -157,6 +159,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
           </View>
         </>
       )}
+      <TextBlock text={t('dashboard:text:middle')} />
       {data && (
         <>
           <Heading
@@ -180,6 +183,7 @@ export const Dashboard: FC<any> = ({navigation}) => {
           <TrackerCharts data={data} county={county.split('_')[0]} />
         </>
       )}
+      <TextBlock text={t('dashboard:text:bottom')} />
     </Scrollable>
   );
 };

@@ -55,7 +55,10 @@ interface SettingsContextValue {
   traceConfiguration: TraceConfiguration;
   user: string | null;
   consent: string | null;
-  getTranslatedDbText: (t: TFunction) => DbTextContextValue;
+  getTranslatedDbText: (
+    t: TFunction,
+    i18nCurrent: typeof i18n
+  ) => DbTextContextValue;
 }
 
 interface DbTextContextValue {
@@ -69,7 +72,7 @@ interface DbTextContextValue {
   checkerThankYouText: CheckerThankYouText;
 }
 
-type ApiSettings = Record<any, string>;
+type ApiSettings = Record<string, any>;
 
 const defaultDbText: DbTextContextValue = {
   genderOptions: [],
@@ -145,16 +148,8 @@ interface SettingsProviderProps {
 }
 
 export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
-  const {t} = useTranslation();
+  const {t, i18n: i18nCurrent} = useTranslation();
   const [state, dispatchState] = useReducer(settingsReducer, defaultSettings);
-  const setState = useCallback(
-    (newState) => dispatchState({type: 'set', state: newState}),
-    []
-  );
-  const setIsLoaded = useCallback(
-    (loaded: boolean) => dispatchState({type: 'loaded', loaded}),
-    []
-  );
 
   useEffect(() => {
     const loadSettingsAsync = async () => {
@@ -189,28 +184,33 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({children}) => {
 
       const getTranslatedDbText = makeGetTranslatedDbText(apiSettings);
 
-      setState({
-        loaded: true,
-        user: user[1],
-        consent: consent[1],
-        appConfig,
-        traceConfiguration: tc,
-        getTranslatedDbText
+      dispatchState({
+        type: 'set',
+        state: {
+          loaded: true,
+          user: user[1],
+          consent: consent[1],
+          appConfig,
+          traceConfiguration: tc,
+          getTranslatedDbText
+        }
       });
     };
 
     try {
       loadSettingsAsync();
     } catch (err) {
-      setIsLoaded(true);
+      dispatchState({type: 'loaded', loaded: true});
     }
-  }, [setIsLoaded, setState]); // These never change; this useEffect runs on first mount only
+  }, []);
 
-  // useSettings never re-renders after useEffect, useDbText re-renders when t changes
-  const translatedDbText = useMemo(() => state.getTranslatedDbText(t), [
-    state,
-    t
-  ]);
+  // Re-apply saved db text on language change. Since getTranslatedDbText modifies i18n object contents,
+  // to ensure future updates can't cause an infinite loop, exclude useTranslation returns from deps array.
+  const translatedDbText = useMemo(
+    () => state.getTranslatedDbText(t, i18nCurrent),
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+    [state, i18nCurrent.language]
+  );
   return (
     <SettingsContext.Provider value={state}>
       <DbTextContext.Provider value={translatedDbText}>
@@ -284,7 +284,22 @@ function getCountiesOptions(t: TFunction): BasicItem[] {
 }
 
 function makeGetTranslatedDbText(apiSettings: ApiSettings) {
-  return (t: TFunction) => {
+  return (t: TFunction, i18nCurrent: typeof i18n) => {
+    const textOverrides =
+      apiSettings.textOverrides &&
+      apiSettings.textOverrides[i18nCurrent.language];
+    if (textOverrides) {
+      Object.entries(textOverrides).forEach(([namespace, bundle]) => {
+        i18nCurrent.addResourceBundle(
+          i18nCurrent.language,
+          namespace,
+          bundle,
+          true,
+          true
+        );
+      });
+    }
+
     const dpinText =
       getDbText(apiSettings, 'dpinText') || t('dataProtectionPolicy:text');
 
