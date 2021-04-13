@@ -546,7 +546,7 @@ const ExposureApp: React.FC = ({children}) => {
   }>({authToken: '', refreshToken: ''});
 
   const settings = useSettings();
-  const {analyticsOptIn, user} = useApplication();
+  const {analyticsOptIn, user, initializing} = useApplication();
 
   useEffect(() => {
     async function getTokens() {
@@ -571,7 +571,7 @@ const ExposureApp: React.FC = ({children}) => {
 
   return (
     <ExposureProvider
-      isReady={Boolean(user?.valid && tokens.authToken && tokens.refreshToken)}
+      isReady={Boolean(user?.valid && tokens.authToken && tokens.refreshToken && !initializing)}
       traceConfiguration={settings.traceConfiguration}
       serverUrl={urls.api}
       keyServerUrl={urls.keyDownload}

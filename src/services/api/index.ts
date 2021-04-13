@@ -349,7 +349,8 @@ export async function loadNotifications() {
 export enum METRIC_TYPES {
   CHECK_IN = 'CHECK_IN',
   FORGET = 'FORGET',
-  CALLBACK_OPTIN = 'CALLBACK_OPTIN'
+  CALLBACK_OPTIN = 'CALLBACK_OPTIN',
+  UPLOAD_AFTER_CLOSE_CONTACT = 'UPLOAD_AFTER_CONTACT'
 }
 
 // 1.2 downloads, 2,7, 2.6

@@ -407,7 +407,10 @@
     "male": "男性",
     "transgender": "变性人",
     "nonBinary": "非二元性别",
-    "other": "其他"
+    "other": "其他",
+    "transFemale": "变性人 女性",
+    "transMale": "变性人 女性",
+    "unknown": "未知"
   },
   "race": {
     "label": "种族",

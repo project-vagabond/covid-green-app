@@ -12,7 +12,7 @@ import {
   uploadExposureKeys,
   ValidationResult
 } from 'services/api/exposures';
-import {networkError} from 'services/api';
+import {METRIC_TYPES, networkError, saveMetric} from 'services/api';
 
 import {Spacing} from 'components/atoms/layout';
 import {Button} from 'components/atoms/button';
@@ -44,7 +44,7 @@ export const UploadKeys: FC<{
   route: RouteProp<any, any>;
 }> = ({navigation, route}) => {
   const {t} = useTranslation();
-  const {getDiagnosisKeys} = useExposure();
+  const {getDiagnosisKeys, getCloseContacts} = useExposure();
   const {
     showActivityIndicator,
     hideActivityIndicator,
@@ -193,8 +193,10 @@ export const UploadKeys: FC<{
 
   const uploadDataHandler = async () => {
     let exposureKeys;
+    let contacts;
     try {
       exposureKeys = await getDiagnosisKeys();
+      contacts = await getCloseContacts();
     } catch (err) {
       console.log('getDiagnosisKeys error:', err);
       return setStatus('permissionError');
@@ -203,6 +205,9 @@ export const UploadKeys: FC<{
     try {
       showActivityIndicator();
       await uploadExposureKeys(uploadToken, symptomDate, exposureKeys);
+      if (contacts && contacts.length > 0) {
+        saveMetric({ event: METRIC_TYPES.UPLOAD_AFTER_CLOSE_CONTACT });
+      }      
       hideActivityIndicatorSafe();
 
       setStatus('success');

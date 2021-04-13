@@ -398,7 +398,10 @@
     "male": "Male",
     "transgender": "Transgender",
     "nonBinary": "Non-binary",
-    "other": "Other"
+    "other": "Other",
+    "transFemale": "Transgender Female",
+    "transMale": "Transgender Male",
+    "unknown": "Unknown"
   },
   "race": {
     "label": "Race",

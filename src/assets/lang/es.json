@@ -407,7 +407,10 @@
     "male": "Masculino",
     "transgender": "Transgénero",
     "nonBinary": "No binario",
-    "other": "Otro"
+    "other": "Otro",
+    "transFemale": "Transgénero Femenino",
+    "transMale": "Transgénero Masculino",
+    "unknown": "Desconocida"
   },
   "race": {
     "label": "Raza",

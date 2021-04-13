@@ -19,6 +19,14 @@ interface ValidateCodeResponse {
   token?: string;
 }
 
+const randomString = (minLen: number, maxLen: number) => {
+  const stringLen = Math.floor(Math.random() * (maxLen - minLen) + minLen)
+  const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = new Array(stringLen);
+  for (let i = stringLen; i > 0; --i) result[i] = chars[Math.floor(Math.random() * chars.length)];
+  return result.join();
+}
+
 export const validateCode = async (
   code: string
 ): Promise<ValidateCodeResponse> => {
@@ -30,7 +38,7 @@ export const validateCode = async (
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({code})
+      body: JSON.stringify({code, padding: randomString(512, 1024)})
     });
     if (!resp) {
       throw new Error('Invalid response');
@@ -93,9 +101,6 @@ export const uploadExposureKeys = async (
   const hmacKey = await RNSimpleCrypto.utils.randomBytes(128);
   const hmacData = RNSimpleCrypto.utils.convertUtf8ToArrayBuffer(data);
   const ekeyhmac = await RNSimpleCrypto.HMAC.hmac256(hmacData, hmacKey);
-  const padding = await RNSimpleCrypto.utils.randomBytes(
-    Math.floor(Math.random() * 1024 + 1024)
-  );
 
   const certificateResponse = await request(`${urls.api}/certificate`, {
     authorizationHeaders: true,
@@ -106,7 +111,8 @@ export const uploadExposureKeys = async (
     },
     body: JSON.stringify({
       token: uploadToken,
-      ekeyhmac: RNSimpleCrypto.utils.convertArrayBufferToBase64(ekeyhmac)
+      ekeyhmac: RNSimpleCrypto.utils.convertArrayBufferToBase64(ekeyhmac),
+      padding: randomString(512, 1024)
     })
   });
 
@@ -132,7 +138,7 @@ export const uploadExposureKeys = async (
       rollingPeriod: exposure.rollingPeriod,
       transmissionRisk: exposure.transmissionRiskLevel
     })),
-    padding: RNSimpleCrypto.utils.convertArrayBufferToBase64(padding)
+    padding: randomString(512, 1024)
   };
 
   console.log(`uploading keys to ${urls.keyPublish}/publish`, publishData);

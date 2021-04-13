@@ -228,8 +228,11 @@ function getGenderOptions(t: TFunction): BasicItem[] {
     {label: t('gender:female'), value: 'f'},
     {label: t('gender:male'), value: 'm'},
     {label: t('gender:nonBinary'), value: 'nb'},
+    {label: t('gender:transFemale'), value: 'tf'},
+    {label: t('gender:transMale'), value: 'tm'},
     {label: t('gender:other'), value: 'other'},
-    {label: t('common:preferNotToSay'), value: 'u'}
+    {label: t('common:preferNotToSay'), value: 'u'},
+    {label: t('gender:unknown'), value: 'un'}
   ];
 }
 

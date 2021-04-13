@@ -402,7 +402,10 @@
     "male": "ذكر",
     "transgender": "متحول جنسي",
     "nonBinary": "غير ثنائي الجنس",
-    "other": "غير ذلك"
+    "other": "غير ذلك",
+    "transFemale": "متحول جنسي أنثى",
+    "transMale": "متحول جنسي ذكر",
+    "unknown": "غير معروف"
   },
   "race": {
     "label": "العرق",

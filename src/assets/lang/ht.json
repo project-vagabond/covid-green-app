@@ -407,7 +407,10 @@
     "male": "Gason",
     "transgender": "Transjanr",
     "nonBinary": "Non-binè",
-    "other": "Lòt"
+    "other": "Lòt",
+    "transFemale": "Transjanr Fi",
+    "transMaler": "Transjanr Gason",
+    "unknown": "enkoni"
   },
   "race": {
     "label": "Ras",
