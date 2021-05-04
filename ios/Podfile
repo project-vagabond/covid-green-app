@@ -66,7 +66,7 @@ post_install do |installer|
   end
   #Workaround for Xcode 12 and Auto-Linking
   installer.pods_project.targets.each do |target|
-    if ['RNCAsyncStorage', 'RNGestureHandler', 'RNPermissions', 'RNReanimated', 'RNScreens', 'RNShare', 'react-native-netinfo', 'react-native-safe-area-context', 'react-native-webview', 'RNCMaskedView', 'RNIOS11DeviceCheck', 'RNSVG', 'react-native-exposure-notification-service', 'RNCPushNotificationIOS', 'react-native-restart', 'react-native-viewpager', 'react-native-simple-crypto', 'RNDeviceInfo'].include?(target.name) #list all affected target in the array
+    if ['RNCAsyncStorage', 'RNGestureHandler', 'RNPermissions', 'RNReanimated', 'RNScreens', 'RNShare', 'react-native-netinfo', 'react-native-safe-area-context', 'react-native-webview', 'RNCMaskedView', 'RNIOS11DeviceCheck', 'RNSVG', 'react-native-exposure-notification-service', 'RNCPushNotificationIOS', 'react-native-restart', 'react-native-viewpager', 'react-native-simple-crypto'].include?(target.name) #list all affected target in the array
       target.build_phases.each do |build_phases|
         if build_phases.display_name == 'Frameworks'
           file_ref = installer.pods_project.new(Xcodeproj::Project::Object::PBXFileReference)
@@ -134,7 +134,4 @@ target 'COVIDGreen' do
   #   flipper_post_install(installer)
   # end
   pod 'react-native-simple-crypto', :path => '../node_modules/react-native-simple-crypto'
-
-  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-
 end

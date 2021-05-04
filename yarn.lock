@@ -7032,11 +7032,6 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-device-info@^5.6.5:
-  version "5.6.5"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-5.6.5.tgz#3f18d7c38b21cfc475163351a9aae6e9037a43a0"
-  integrity sha512-l457wv7gYXSRnm38AH+NpCgKYa1zxxfN0EL8mTBxo+TnasXtk0FZ86zWDLhm4eqpcSH8xpT/+z2MQrATfqCaoA==
-
 react-native-dotenv@^2.3.0:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-2.4.3.tgz#1d04043ecbba185dc1ddc01fd22b5aec162b891c"
@@ -7051,10 +7046,10 @@ react-native-easy-markdown@^2.0.0:
   dependencies:
     simple-markdown "^0.4.4"
 
-react-native-exposure-notification-service@^1.3.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/react-native-exposure-notification-service/-/react-native-exposure-notification-service-1.3.4.tgz#1ef5970d576ceb8763f3d508d2610c6f9eeaa48d"
-  integrity sha512-Da+U0rV2DvVhuWPZDCW9b3DXb3AClDjEx1Lwbopqpi2Sq8zVJ8BVgSp68ifBKCS9rQvaDhXSFwf2WBtntF45YQ==
+react-native-exposure-notification-service@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/react-native-exposure-notification-service/-/react-native-exposure-notification-service-1.3.6.tgz#599bc42016227ad671b116960cd3f13bb97be389"
+  integrity sha512-IinNH/Fx3C+0eGeb8O4+jSXKussXZETYr6VlNkCPOhF26XRjJFIrlxmLDtBy0LDX3Esyr9EtGVmnM6FuabJc3A==
 
 react-native-gesture-handler@^1.7.0:
   version "1.9.0"

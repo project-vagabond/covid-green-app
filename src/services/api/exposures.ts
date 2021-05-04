@@ -1,6 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import RNSimpleCrypto from 'react-native-simple-crypto';
-import {getBundleId} from 'react-native-device-info';
+import { getBundleId } from 'react-native-exposure-notification-service';
 import {request} from './connection';
 import {networkError} from 'services/api';
 import {urls} from 'constants/urls';
@@ -122,10 +122,11 @@ export const uploadExposureKeys = async (
 
   const certificateJson = await certificateResponse.json();
   const revisionToken = await SecureStore.getItemAsync('revisionToken');
+  const bundle = await getBundleId();
 
   const publishData = {
     hmacKey: RNSimpleCrypto.utils.convertArrayBufferToBase64(hmacKey),
-    healthAuthorityID: getBundleId(),
+    healthAuthorityID: bundle,
     verificationPayload: certificateJson.certificate,
     symptomOnsetInterval: Math.floor(
       new Date(symptomDate).getTime() / 1000 / 600

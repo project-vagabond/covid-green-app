@@ -575,6 +575,7 @@ const ExposureApp: React.FC = ({children}) => {
       traceConfiguration={settings.traceConfiguration}
       serverUrl={urls.api}
       keyServerUrl={urls.keyDownload}
+      publishServerUrl={urls.keyPublish}
       keyServerType={KeyServerType.google}
       authToken={tokens.authToken}
       refreshToken={tokens.refreshToken}

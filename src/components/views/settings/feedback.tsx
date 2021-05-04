@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {getModel} from 'react-native-device-info';
 import {
   useExposure,
   StatusState,
@@ -63,7 +62,6 @@ export const Feedback = () => {
 
 Please do not remove. This info helps the technical team assist you
 App Version: ${version}
-Device: ${getModel()}
 OS version: ${Platform.OS} ${Platform.Version}
 Closeness sensing status: ${
         !enabled ||
