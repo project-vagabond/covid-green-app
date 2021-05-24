@@ -133,8 +133,8 @@ android {
         applicationId "gov.ny.health.proximity"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 82
-        versionName "1.1.6"
+        versionCode 83
+        versionName "1.1.7"
         resConfigs "en", "es", "ht", "ru", "bn", "ko", "zh", "yi", "ar"
     }
 
@@ -239,6 +239,8 @@ dependencies {
     // debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
     //     exclude group:'com.facebook.flipper'
     // }
+
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
